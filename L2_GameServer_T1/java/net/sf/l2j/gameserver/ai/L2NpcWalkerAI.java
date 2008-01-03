@@ -42,7 +42,7 @@ public class L2NpcWalkerAI extends L2CharacterAI implements Runnable
 	/**
 	 * route of the current npc
 	 */
-	private final FastList<L2NpcWalkerNode> _route = NpcWalkerRoutesTable.getInstance().getRouteForNpc(getActor().getNpcId());
+	private FastList<L2NpcWalkerNode> _route;
 
 	/**
 	 * current node
@@ -58,9 +58,15 @@ public class L2NpcWalkerAI extends L2CharacterAI implements Runnable
 	public L2NpcWalkerAI(L2Character.AIAccessor accessor)
 	{
 		super(accessor);
-		// Do we really need 2 minutes delay before start?
-		// no we dont... :)
-		ThreadPoolManager.getInstance().scheduleAiAtFixedRate(this, 0, 1000);
+
+		if(!Config.ALLOW_NPC_WALKERS)
+			return;
+
+		 _route = NpcWalkerRoutesTable.getInstance().getRouteForNpc(getActor().getNpcId());
+
+		// Here we need 1 second initial delay cause getActor().hasAI() will return null...
+		// Constructor of L2NpcWalkerAI is called faster then ai object is attached in L2NpcWalkerInstance
+		ThreadPoolManager.getInstance().scheduleAiAtFixedRate(this, 1000, 1000);
 	}
 
 	public void run()

@@ -338,10 +338,9 @@ public class GameServer
 		    throw new Exception("Could not initialize the skill table");
 		}
 		
-//		L2EMU_ADD by Rayan. L2J - BigBro
-		//if(Config.ALLOW_NPC_WALKERS)
-		NpcWalkerRoutesTable.getInstance().load();
-		//L2EMU_ADD by Rayan. L2J - BigBro
+		// L2EMU_ADD by Rayan. L2J - BigBro
+		if(Config.ALLOW_NPC_WALKERS)
+		    NpcWalkerRoutesTable.getInstance().load();
 		
 		RecipeController.getInstance();
 

@@ -17,14 +17,14 @@
  */
 package net.sf.l2j.gameserver.model.actor.instance;
 
+import java.util.Map;
+
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.ai.L2NpcWalkerAI;
 import net.sf.l2j.gameserver.ai.L2CharacterAI;
+import net.sf.l2j.gameserver.ai.L2NpcWalkerAI;
+import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.serverpackets.CreatureSay;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
-import net.sf.l2j.gameserver.model.L2Character;
-
-import java.util.Map;
 
 /**
  * This class manages some npcs can walk in the city. <br>
@@ -37,6 +37,8 @@ public class L2NpcWalkerInstance extends L2NpcInstance
 {
 	/**
 	 * Constructor of L2NpcWalkerInstance (use L2Character and L2NpcInstance constructor).<BR><BR>
+	 * @param objectId given object id
+	 * @param template L2NpcTemplateForThisAi
 	 */
 	public L2NpcWalkerInstance(int objectId, L2NpcTemplate template)
 	{
@@ -50,16 +52,15 @@ public class L2NpcWalkerInstance extends L2NpcInstance
 	 */
 	public void setAI(L2CharacterAI newAI)
 	{
-		if(_ai == null)
-			super.setAI(newAI);
+		if(_ai == null || !(_ai instanceof L2NpcWalkerAI))
+			_ai = newAI;			
 	}
 
 	public void onSpawn()
 	{
-		
-		((L2NpcWalkerAI) getAI()).setHomeX(getX());
-		((L2NpcWalkerAI) getAI()).setHomeY(getY());
-		((L2NpcWalkerAI) getAI()).setHomeZ(getZ());
+		getAI().setHomeX(getX());
+		getAI().setHomeY(getY());
+		getAI().setHomeZ(getZ());
 	}
 
 	/**
@@ -109,9 +110,9 @@ public class L2NpcWalkerInstance extends L2NpcInstance
 		return false;
 	}
 
-	public L2CharacterAI getAI()
+	public L2NpcWalkerAI getAI()
 	{
-		return  super.getAI();
+		return (L2NpcWalkerAI)_ai;
 	}
 
 	protected class L2NpcWalkerAIAccessor extends L2Character.AIAccessor
