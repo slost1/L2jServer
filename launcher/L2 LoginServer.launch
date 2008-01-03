@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<listEntry value="/L2_GameServer_t1"/>
+</listAttribute>
+<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="E:\shared\L2J_Tests\l2j-server\login"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="L2_GameServer_t1"/>
+<stringAttribute key="org.eclipse.debug.ui.target_debug_perspective" value="perspective_default"/>
+<booleanAttribute key="org.eclipse.jdt.launching.STOP_IN_MAIN" value="true"/>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="net.sf.l2j.loginserver.L2LoginServer"/>
+<booleanAttribute key="yk-disable-alloc" value="false"/>
+<booleanAttribute key="yk-capture-memory-on-exit" value="false"/>
+<booleanAttribute key="org.eclipse.debug.core.appendEnvironmentVariables" value="true"/>
+<booleanAttribute key="yk-launch-ui" value="true"/>
+<stringAttribute key="org.eclipse.debug.ui.target_run_perspective" value="perspective_default"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx64m"/>
+<listAttribute key="org.eclipse.debug.ui.favoriteGroups">
+<listEntry value="org.eclipse.debug.ui.launchGroup.profile"/>
+<listEntry value="org.eclipse.debug.ui.launchGroup.debug"/>
+<listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="4"/>
+</listAttribute>
+<booleanAttribute key="yk-disable-counts" value="false"/>
+<booleanAttribute key="yk-capture-cpu-on-exit" value="false"/>
+<booleanAttribute key="yk-startup-with-object-allocations" value="false"/>
+<intAttribute key="yk-mem-threshold" value="0"/>
+</launchConfiguration>
