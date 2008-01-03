@@ -138,8 +138,8 @@ public final class RequestExEnchantSkill extends L2GameClientPacket
             			player.sendPacket(new SystemMessage(SystemMessageId.YOU_DONT_HAVE_ALL_OF_THE_ITEMS_NEEDED_TO_ENCHANT_THAT_SKILL));
             			return;
             		}
-            		// ok
-            		player.destroyItem("Consume", spb, trainer, true);
+            		// ok.  Destroy ONE copy of the book
+            		player.destroyItem("Consume", spb.getObjectId(), 1, trainer, true);
             	}
         	}
         	else
