@@ -253,6 +253,7 @@ public final class Util
 
 	public static boolean isAlphaNumeric(String text)
 	{
+		if (text == null) return false;
 		boolean result = true;
 		char[] chars = text.toCharArray();
 		for (int i = 0; i < chars.length; i++)
