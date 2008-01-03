@@ -55,6 +55,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2BoatInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2MonsterInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2NpcWalkerInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
@@ -596,7 +597,22 @@ public abstract class L2Character extends L2Object
 		        	return;
 		        }
 	        }
+			// Checking if target has moved to peace zone
+			if (target.isInsidePeaceZone((L2PcInstance)this))
+			{
+				getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
+				sendPacket(new ActionFailed());
+				return;
+			}
+
 		}
+		else if (isInsidePeaceZone(this, target))
+		{
+			getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
+			sendPacket(new ActionFailed());
+			return;
+		}
+
 
 		// Get the active weapon instance (always equiped in the right hand)
 		L2ItemInstance weaponInst = getActiveWeaponInstance();
@@ -630,15 +646,6 @@ public abstract class L2Character extends L2Object
 			//Check for arrows and MP
 			if (this instanceof L2PcInstance)
 			{
-				// Checking if target has moved to peace zone - only for player-bow attacks at the moment
-				// Other melee is checked in movement code and for offensive spells a check is done every time
-				if (target.isInsidePeaceZone((L2PcInstance)this))
-				{
-					getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
-					sendPacket(new ActionFailed());
-					return;
-				}
-
 				// Verify if the bow can be use
 				if (_disableBowAttackEndTime <= GameTimeController.getGameTicks())
 				{
@@ -4027,7 +4034,7 @@ public abstract class L2Character extends L2Object
 
 		// GEODATA MOVEMENT CHECKS AND PATHFINDING
 		m.onGeodataPathIndex = -1; // Initialize not on geodata path
-		if (Config.GEODATA > 0 && !this.isFlying()) // currently flying characters not checked
+		if (Config.GEODATA > 0 && !this.isFlying() && !(this instanceof L2NpcWalkerInstance)) // currently flying characters not checked
 		{
 			double originalDistance = distance;
 			int originalX = x;
@@ -4042,6 +4049,7 @@ public abstract class L2Character extends L2Object
 			if ((Config.GEODATA == 2 &&	!(this instanceof L2Attackable && ((L2Attackable)this).isReturningToSpawnPoint())) 
 					|| this instanceof L2PcInstance 
 					|| (this instanceof L2Summon && !(this.getAI().getIntention() == AI_INTENTION_FOLLOW)) // assuming intention_follow only when following owner
+					|| isAfraid()
 					|| this instanceof L2RiftInvaderInstance)
 			{
 				if (isOnGeodataPath())
@@ -4072,7 +4080,7 @@ public abstract class L2Character extends L2Object
 			// Pathfinding checks. Only when geodata setting is 2, the LoS check gives shorter result
 			// than the original movement was and the LoS gives a shorter distance than 2000
 			// This way of detecting need for pathfinding could be changed.
-			if(Config.GEODATA == 2 && originalDistance-distance > 100 && distance < 2000)
+			if(Config.GEODATA == 2 && originalDistance-distance > 100 && distance < 2000 && !this.isAfraid())
 			{
 				// Path calculation
 				// Overrides previous movement check
@@ -4155,7 +4163,8 @@ public abstract class L2Character extends L2Object
 			}
 			// If no distance to go through, the movement is canceled
 			if (distance < 1 && (Config.GEODATA == 2 
-					|| this instanceof L2PlayableInstance 
+					|| this instanceof L2PlayableInstance
+					|| this.isAfraid()
 					|| this instanceof L2RiftInvaderInstance))
 			{
 				sin = 0;

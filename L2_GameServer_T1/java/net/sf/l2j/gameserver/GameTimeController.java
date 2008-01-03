@@ -38,7 +38,7 @@ public class GameTimeController
 {
 	static final Logger _log = Logger.getLogger(GameTimeController.class.getName());
 
-	public static final int TICKS_PER_SECOND = 10;
+	public static final int TICKS_PER_SECOND = 10; // not able to change this without checking through code
 	public static final int MILLIS_IN_TICK = 1000 / TICKS_PER_SECOND;
 
 	private static GameTimeController _instance = new GameTimeController();

@@ -1693,10 +1693,15 @@ public abstract class L2Skill
             case TARGET_CORPSE_CLAN:
             case TARGET_CLAN:
             {
-                if (activeChar instanceof L2PcInstance)
+                if (activeChar instanceof L2PlayableInstance)
                 {
                     int radius = getSkillRadius();
-                    L2PcInstance player = (L2PcInstance) activeChar;
+                    L2PcInstance player = null;
+                    if (activeChar instanceof L2Summon) 
+                    	player = ((L2Summon)activeChar).getOwner();
+                    else
+                    	player = (L2PcInstance) activeChar;
+                    if (player == null) return null;
                     L2Clan clan = player.getClan();
 
                     if (player.isInOlympiadMode())

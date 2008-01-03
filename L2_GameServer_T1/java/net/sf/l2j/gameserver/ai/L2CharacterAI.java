@@ -926,28 +926,6 @@ public class L2CharacterAI extends AbstractAI
         	// Caller should be L2Playable and thinkAttack/thinkCast/thinkInteract/thinkPickUp
             if (getFollowTarget() != null) {
 
-            	// prevent attack-follow into peace zones
-            	if(getAttackTarget() != null && _actor instanceof L2PlayableInstance && target instanceof L2PlayableInstance)
-                {
-                    if(getAttackTarget() == getFollowTarget())
-                    {
-                    	// allow GMs to keep following
-                    	boolean isGM = (_actor instanceof L2PcInstance ? ((L2PcInstance)_actor).isGM() : false);
-                        if (((L2PlayableInstance)_actor).isInsidePeaceZone(_actor, target) && !isGM)
-                        {
-                            stopFollow();
-                            setIntention(AI_INTENTION_IDLE);
-                            return true;
-                        }
-                    }
-                }
-            	// if the target is too far (maybe also teleported)
-            	if (!_actor.isInsideRadius(target, 2000, false, false))
-            	{
-            		stopFollow();
-            		setIntention(AI_INTENTION_IDLE);
-            		return true;
-            	}
             	// allow larger hit range when the target is moving (check is run only once per second)
                 if (!_actor.isInsideRadius(target, offset + 100, false, false)) return true;
                 stopFollow();
