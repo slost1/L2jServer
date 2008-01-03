@@ -141,7 +141,8 @@ public class Quest extends ManagedScript
         QUEST_TALK(true),		// onTalk action from npcs participating in a quest
         MOBGOTATTACKED(true),	// onAttack action triggered when a mob gets attacked by someone
         MOBKILLED(true),		// onKill action triggered when a mob gets killed. 
-    	MOB_TARGETED_BY_SKILL(true);  // onSkillUse action triggered when a character uses a skill on a mob
+    	MOB_TARGETED_BY_SKILL(true),  // onSkillUse action triggered when a character uses a skill on a mob
+    	NPC_SPAWNED(true);            // onSpawn action triggered when an NPC is spawned or respawned.
         
         // control whether this event type is allowed for the same npc template in multiple quests
         // or if the npc must be registered in at most one quest for the specified event 
@@ -302,6 +303,10 @@ public class Quest extends ManagedScript
         try { res = onDeath(killer, victim, qs); } catch (Exception e) { return showError(qs.getPlayer(), e); }
         return showResult(qs.getPlayer(), res);
     } 
+    public final boolean notifySpawn(L2NpcInstance npc) {
+        try { onSpawn(npc); } catch (Exception e) { _log.log(Level.WARNING, "", e); return true;}
+        return false;
+    } 
     public final boolean notifyEvent(String event, L2NpcInstance npc, L2PcInstance player) {
         String res = null;
         try { res = onAdvEvent(event, npc, player); } catch (Exception e) { return showError(player, e); }
@@ -362,7 +367,8 @@ public class Quest extends ManagedScript
     @SuppressWarnings("unused") public String onTalk (L2NpcInstance npc, L2PcInstance talker) { return null; }
     @SuppressWarnings("unused") public String onFirstTalk(L2NpcInstance npc, L2PcInstance player) { return null; } 
     @SuppressWarnings("unused") public String onSkillUse (L2NpcInstance npc, L2PcInstance caster, L2Skill skill) { return null; }
-	
+    @SuppressWarnings("unused") public String onSpawn (L2NpcInstance npc) { return null; }
+    
 	/**
 	 * Show message error to player who has an access level greater than 0
 	 * @param player : L2PcInstance
@@ -835,6 +841,15 @@ public class Quest extends ManagedScript
      */
     public L2NpcTemplate addSkillUseId(int npcId) {
     	return addEventId(npcId, Quest.QuestEventType.MOB_TARGETED_BY_SKILL);
+    }
+    
+    /**
+     * Add this quest to the list of quests that the passed npc will respond to for Talk Events.<BR><BR>
+     * @param talkId : ID of the NPC
+     * @return int : ID of the NPC
+     */
+    public L2NpcTemplate addSpawnId(int npcId) {
+        return addEventId(npcId, Quest.QuestEventType.NPC_SPAWNED);
     }
     
     // returns a random party member's L2PcInstance for the passed player's party
