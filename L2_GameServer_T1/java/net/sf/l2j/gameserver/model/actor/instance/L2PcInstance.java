@@ -7256,6 +7256,14 @@ public final class L2PcInstance extends L2PlayableInstance
             return;
         }
 
+		if(_disabledSkills != null && _disabledSkills.contains(skill.getId()))
+		{
+			SystemMessage sm = new SystemMessage(SystemMessageId.S1_PREPARED_FOR_REUSE);
+			sm.addSkillName(skill.getId(), skill.getLevel());
+			sendPacket(sm);
+			return;
+		}
+
 		// Check if it's ok to summon
         // siege golem (13), Wild Hog Cannon (299), Swoop Cannon (448)
         if ((skill.getId() == 13 || skill.getId() == 299 || skill.getId() == 448)
