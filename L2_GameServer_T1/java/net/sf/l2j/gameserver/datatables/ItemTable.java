@@ -624,10 +624,6 @@ public class ItemTable
 		{
 			assert _allTemplates[item.getItemId()] == null;
 			_allTemplates[item.getItemId()] = item;
-            if (item.getItemId() == 9577)
-            {
-                System.err.println("WTF");
-            }
 		}
 
 		// Insert weapon item in Fast Look Up Table
