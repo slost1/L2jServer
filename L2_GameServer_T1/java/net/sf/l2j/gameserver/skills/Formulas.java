@@ -273,11 +273,12 @@ public final class Formulas
 			if (env.player instanceof L2PcInstance)
             {
                 L2PcInstance p = (L2PcInstance) env.player;
+                boolean hasMagePDef = (p.getClassId().isMage() || p.getClassId().getId() == 0x31); // orc mystics are a special case
     			if (p.getInventory().getPaperdollItem(Inventory.PAPERDOLL_HEAD) != null) env.value -= 12;
     			if (p.getInventory().getPaperdollItem(Inventory.PAPERDOLL_CHEST) != null)
-    				env.value -= ((p.getClassId().isMage()) ? 15 : 31);
+    				env.value -= hasMagePDef ? 15 : 31;
     			if (p.getInventory().getPaperdollItem(Inventory.PAPERDOLL_LEGS) != null)
-    				env.value -= ((p.getClassId().isMage()) ? 8 : 18);
+    				env.value -= hasMagePDef ? 8 : 18;
     			if (p.getInventory().getPaperdollItem(Inventory.PAPERDOLL_GLOVES) != null) env.value -= 8;
     			if (p.getInventory().getPaperdollItem(Inventory.PAPERDOLL_FEET) != null) env.value -= 7;
             }

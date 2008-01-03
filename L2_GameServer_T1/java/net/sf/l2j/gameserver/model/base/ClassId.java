@@ -66,8 +66,8 @@ public enum ClassId {
             0x2e, false, Race.Orc, orcRaider), orcMonk(0x2f, false, Race.Orc, orcFighter), tyrant(0x30,
             false, Race.Orc, orcMonk),
 
-    orcMage(0x31, false, Race.Orc, null), orcShaman(0x32, false, Race.Orc, orcMage), overlord(0x33, false,
-            Race.Orc, orcShaman), warcryer(0x34, false, Race.Orc, orcShaman),
+    orcMage(0x31, false, Race.Orc, null), orcShaman(0x32, true, Race.Orc, orcMage), overlord(0x33, true,
+            Race.Orc, orcShaman), warcryer(0x34, true, Race.Orc, orcShaman),
 
     dwarvenFighter(0x35, false, Race.Dwarf, null), scavenger(0x36, false, Race.Dwarf, dwarvenFighter), bountyHunter(
             0x37, false, Race.Dwarf, scavenger), artisan(0x38, false, Race.Dwarf, dwarvenFighter), warsmith(
@@ -118,7 +118,7 @@ public enum ClassId {
             true, Race.DarkElf, shillenElder),
 
     titan(0x71, false, Race.Orc, destroyer), grandKhauatari(0x72, false, Race.Orc, tyrant), dominator(
-            0x73, false, Race.Orc, overlord), doomcryer(0x74, false, Race.Orc, warcryer),
+            0x73, true, Race.Orc, overlord), doomcryer(0x74, true, Race.Orc, warcryer),
 
     fortuneSeeker(0x75, false, Race.Dwarf, bountyHunter), maestro(0x76, false, Race.Dwarf, warsmith),
     
