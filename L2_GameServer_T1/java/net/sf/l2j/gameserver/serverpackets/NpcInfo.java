@@ -161,7 +161,7 @@ public final class NpcInfo extends L2GameServerPacket
 		writeC(_isSummoned ? 2 : 0); // invisible ?? 0=false  1=true   2=summoned (only works if model has a summon animation)
 		writeS(_name);
 		writeS(_title);
-		writeD(0);
+		writeD(0); // Title color 0=client default
 		writeD(0);
 		writeD(0000);  // hmm karma ??
 
