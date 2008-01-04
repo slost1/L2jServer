@@ -168,6 +168,9 @@ public class ObjectPosition
     public final L2WorldRegion getWorldRegion() { return _worldRegion; }
     public final void setWorldRegion(L2WorldRegion value)
     {
-    	_worldRegion = value;
+        if(_worldRegion != null && getActiveObject() instanceof L2Character) // confirm revalidation of old region's zones  
+            _worldRegion.revalidateZones((L2Character)getActiveObject());    // at world region change
+  
+        _worldRegion = value;
     }
 }
