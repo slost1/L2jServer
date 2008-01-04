@@ -192,6 +192,7 @@ import net.sf.l2j.gameserver.handler.usercommandhandlers.ClanPenalty;
 import net.sf.l2j.gameserver.handler.usercommandhandlers.ClanWarsList;
 import net.sf.l2j.gameserver.handler.usercommandhandlers.DisMount;
 import net.sf.l2j.gameserver.handler.usercommandhandlers.Escape;
+import net.sf.l2j.gameserver.handler.usercommandhandlers.InstanceZone;
 import net.sf.l2j.gameserver.handler.usercommandhandlers.Loc;
 import net.sf.l2j.gameserver.handler.usercommandhandlers.Mount;
 import net.sf.l2j.gameserver.handler.usercommandhandlers.OlympiadStat;
@@ -596,6 +597,7 @@ public class GameServer
         _userCommandHandler.registerUserCommandHandler(new ClanWarsList());
         _userCommandHandler.registerUserCommandHandler(new DisMount());
         _userCommandHandler.registerUserCommandHandler(new Escape());
+        _userCommandHandler.registerUserCommandHandler(new InstanceZone());
         _userCommandHandler.registerUserCommandHandler(new Loc());
         _userCommandHandler.registerUserCommandHandler(new Mount());
         _userCommandHandler.registerUserCommandHandler(new PartyInfo());
