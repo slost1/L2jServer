@@ -131,6 +131,7 @@ import net.sf.l2j.gameserver.model.entity.Siege;
 import net.sf.l2j.gameserver.model.entity.TvTEvent;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
+import net.sf.l2j.gameserver.model.quest.State;
 import net.sf.l2j.gameserver.network.L2GameClient;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.AbnormalStatusUpdate;
@@ -1337,7 +1338,7 @@ public final class L2PcInstance extends L2PlayableInstance
 							if ((state.getQuest().getQuestIntId() == qs.getQuest().getQuestIntId()) && !qs.isCompleted())
 							{
 								if (qs.getQuest().notifyEvent(event, npc, this))
-									showQuestWindow(quest, qs.getStateId());
+									showQuestWindow(quest, State.getStateName(qs.getState()));
 
 								retval = qs;
 							}

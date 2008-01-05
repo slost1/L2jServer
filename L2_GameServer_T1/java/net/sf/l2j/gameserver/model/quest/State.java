@@ -18,65 +18,45 @@
  */
 package net.sf.l2j.gameserver.model.quest;
 
-import net.sf.l2j.gameserver.instancemanager.QuestManager;
-
 /**
- * @author Luis Arias
+ * @author Luis Arias;  version 2 by Fulminus
  *
- * Functions in this class are used in python files
+ * This class merely enumerates the three necessary states for all quests:
+ * CREATED: a quest state is created but the quest is not yet accepted.
+ * STARTED: the player has accepted the quest.  Quest is currently in progress
+ * COMPLETED: the quest has been completed.
+ * 
+ * In addition, this class defines two functions for lookup and inverse lookup
+ * of the state given a name.  This is useful only for saving the state values
+ * into the database with a more readable form and then being able to read the
+ * string back and remap them to their correct states.
+ * 
+ * All quests have these and only these states.
  */
 public class State
 {
-	/** Name of the quest */
-    private String _questName;
-    private String _name;
-
-
-	/**
-	 * Constructor for the state of the quest.
-	 * @param name : String pointing out the name of the quest
-	 * @param quest : Quest
-	 */
-    public State(String name, Quest quest)
+    public final static byte CREATED = 0;
+    public final static byte STARTED = 1;
+    public final static byte COMPLETED = 2;
+    
+    // discover the string representation of the state, for readable DB storage 
+    public static String getStateName(byte state)
     {
-        _name = name;
-        _questName = quest.getName();
-		quest.addState(this);
+        switch (state)
+        {
+            case 1: return "Started";
+            case 2: return "Completed";
+            default: return "Start";
+        }
     }
-
-    // =========================================================
-    // Method - Public
-    /**
-     * Add drop for the quest at this state of the quest
-     * @param npcId : int designating the ID of the NPC
-     * @param itemId : int designating the ID of the item dropped
-     * @param chance : int designating the chance the item dropped
-     * 
-     * DEPRECATING THIS...only the itemId is really needed, and even 
-     * that is only here for backwards compatibility
-     */
-    public void addQuestDrop(int npcId, int itemId, int chance) {
-    	QuestManager.getInstance().getQuest(_questName).registerItem(itemId);
-    }
-
-    // =========================================================
-    // Property
-
-    /**
-     * Return name of the quest
-     * @return String
-     */
-    public String getName()
+    
+    // discover the state from its string representation (for reconstruction after DB read)
+    public static byte getStateId(String statename)
     {
-        return _name;
-    }
-
-    /**
-     * Return name of the quest
-     * @return String
-     */
-    @Override
-	public String toString() {
-        return _name;
+        if(statename.equals("Started"))
+            return 1;
+        if(statename.equals("Completed"))
+            return 2;
+        return 0;    
     }
 }

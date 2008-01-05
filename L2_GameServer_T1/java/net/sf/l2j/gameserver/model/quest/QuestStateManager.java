@@ -56,11 +56,11 @@ public class QuestStateManager
     /**
      * Add QuestState for the specified player instance
      */
-    public void addQuestState(Quest quest, L2PcInstance player, State state, boolean completed)
+    public void addQuestState(Quest quest, L2PcInstance player, byte state)
     {
         QuestState qs = getQuestState(player);
         if (qs == null)
-            qs = new QuestState(quest, player, state, completed);
+            qs = new QuestState(quest, player, state);
     }
 
     /**

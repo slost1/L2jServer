@@ -68,9 +68,13 @@ public class Quest extends ManagedScript
 	private final String _name;
 	private final String _prefixPath;	// used only for admin_quest_reload
 	private final String _descr;
-    private State _initialState;
-    private Map<String, State> _states;
-    private FastList<Integer> _questItemIds;
+    private final byte _initialState = State.CREATED;
+    // NOTE: questItemIds will be overriden by child classes.  Ideally, it should be
+    // protected instead of public.  However, quest scripts written in Jython will
+    // have trouble with protected, as Jython only knows private and public...
+    // In fact, protected will typically be considered private thus breaking the scripts.
+    // Leave this as public as a workaround.
+    public int[] questItemIds = null;   
 
 	/**
 	 * Return collection view of the values contains in the allEventS
@@ -91,7 +95,6 @@ public class Quest extends ManagedScript
 		_questId = questId;
 		_name = name;
 		_descr = descr;
-        _states = new FastMap<String, State>();
         
     	// Given the quest instance, create a string representing the path and questName 
     	// like a simplified version of a canonical class name.  That is, if a script is in 
@@ -168,20 +171,12 @@ public class Quest extends ManagedScript
 	}
 	
 	/**
-	 * Set the initial state of the quest with parameter "state"
-	 * @param state
-	 */
-	public void setInitialState(State state) {
-		_initialState = state;
-	}
-	
-	/**
 	 * Add a new QuestState to the database and return it.
 	 * @param player
 	 * @return QuestState : QuestState created
 	 */
 	public QuestState newQuestState(L2PcInstance player) {
-		QuestState qs = new QuestState(this, player, getInitialState(), false);
+		QuestState qs = new QuestState(this, player, getInitialState());
 		Quest.createQuestInDb(qs);
 		return qs;
 	}
@@ -190,7 +185,7 @@ public class Quest extends ManagedScript
 	 * Return initial state of the quest
 	 * @return State
 	 */
-	public State getInitialState() {
+	public byte getInitialState() {
 		return _initialState;
 	}
     
@@ -219,17 +214,6 @@ public class Quest extends ManagedScript
 		return _descr;
 	}
 	
-	/**
-	 * Add a state to the quest
-	 * @param state
-	 * @return state added
-	 */
-    public State addState(State state)
-    {
-        _states.put(state.getName(), state);
-		return state;
-    }
-    
     /**
      * Add a timer to the quest, if it doesn't exist already
      * @param name: name of the timer (also passed back as "event" in onAdvEvent)
@@ -444,7 +428,7 @@ public class Quest extends ManagedScript
 				
 				// Get ID of the quest and ID of its state
 				String questId = rs.getString("name");
-				String stateId = rs.getString("value");
+				String statename = rs.getString("value");
 				
 				// Search quest associated with the ID
 				Quest q = QuestManager.getInstance().getQuest(questId);
@@ -458,23 +442,8 @@ public class Quest extends ManagedScript
 					continue;
 				}
 				
-				// Identify the state of the quest for the player
-				boolean completed = false;
-				if(stateId.equals("Completed")) completed = true;
-				
-				// Create an object State containing the state of the quest
-				State state = q._states.get(stateId);
-				if (state == null) {
-					_log.finer("Unknown state in quest "+questId+" for player "+player.getName());
-					if (Config.AUTODELETE_INVALID_QUEST_DATA){
-					    invalidQuestData.setInt(1, player.getObjectId());
-                        invalidQuestData.setString(2, questId);
-                        invalidQuestData.executeUpdate();
-					}
-					continue;
-				}
 				// Create a new QuestState for the player that will be added to the player's list of quests
-				new QuestState(q, player, state, completed);
+				new QuestState(q, player, State.getStateId(statename));
 			}
 			rs.close();
             invalidQuestData.close();
@@ -745,7 +714,7 @@ public class Quest extends ManagedScript
 	 * @param qs : QuestState
 	 */
 	public static void createQuestInDb(QuestState qs) {
-		createQuestVarInDb(qs, "<state>", qs.getStateId());
+		createQuestVarInDb(qs, "<state>", State.getStateName(qs.getState()));
 	}
 	
 	/**
@@ -757,9 +726,7 @@ public class Quest extends ManagedScript
 	 * @param qs : QuestState
 	 */
 	public static void updateQuestInDb(QuestState qs) {
-		String val = qs.getStateId();
-		//if (qs.isCompleted())
-		//	val = "*" + val;
+		String val = State.getStateName(qs.getState());
 		updateQuestVarInDb(qs, "<state>", val);
 	}
 	
@@ -949,15 +916,11 @@ public class Quest extends ManagedScript
      * 				condition, or null if no match.  If the var is null, any random party 
      * 				member is returned (i.e. no condition is applied).
      */
-    public L2PcInstance getRandomPartyMemberState(L2PcInstance player, State state)
+    public L2PcInstance getRandomPartyMemberState(L2PcInstance player, byte state)
     {
     	// if no valid player instance is passed, there is nothing to check...
     	if (player == null)
     		return null;
-    	
-    	// for null var condition, return any random party member.
-    	if (state == null) 
-    		return getRandomPartyMember(player);
     	
     	// normal cases...if the player is not in a partym check the player's state
     	QuestState temp = null;
@@ -1106,16 +1069,9 @@ public class Quest extends ManagedScript
         return null;
     }
     
-    public void registerItem(int itemId)
+    public int[] getRegisteredItemIds()
     {
-    	if (_questItemIds == null)
-    		_questItemIds = new FastList<Integer>();
-    	_questItemIds.add(itemId);
-    }
-    
-    public FastList<Integer> getRegisteredItemIds()
-    {
-    	return _questItemIds;
+    	return questItemIds;
     }
 
     /**
