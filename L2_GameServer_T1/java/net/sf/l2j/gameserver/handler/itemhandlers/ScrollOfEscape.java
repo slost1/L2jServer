@@ -51,7 +51,7 @@ public class ScrollOfEscape implements IItemHandler
     								  7117,7118,7119,7120,7121,7122,7123,7124,
     								  7125,7126,7127,7128,7129,7130,7131,7132,
     								  7133,7134,7135,7554,7555,7556,7557,7558,
-    								  7559,7618,7619};
+    								  7559,7618,7619,9716};
 
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.handler.IItemHandler#useItem(net.sf.l2j.gameserver.model.L2PcInstance, net.sf.l2j.gameserver.model.L2ItemInstance)
@@ -259,6 +259,9 @@ public class ScrollOfEscape implements IItemHandler
                 			case 7619 :
                 				_activeChar.teleToLocation(108275,-53785,-2524, true);  // Varka Silenos Village
                 				break;
+                            case 9716 :
+                                _activeChar.teleToLocation(-117251, 46771, 360, true);  // Kamael Village
+                                break;
 					default:
 					     _activeChar.teleToLocation(MapRegionTable.TeleportWhereType.Town);
                 				break;
