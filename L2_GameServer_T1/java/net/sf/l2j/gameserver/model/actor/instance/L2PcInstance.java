@@ -884,6 +884,7 @@ public final class L2PcInstance extends L2PlayableInstance
         initPcStatusUpdateValues();
 
 		_accountName  = accountName;
+        app.setOwner(this);
 		_appearance   = app;
 
 		// Create an AI

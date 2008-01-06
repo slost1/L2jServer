@@ -189,7 +189,7 @@ public class CharInfo extends L2GameServerPacket
 			writeD(_z);
 			writeD(_heading);
 			writeD(_activeChar.getObjectId());
-			writeS(_activeChar.getName());
+			writeS(_activeChar.getAppearance().getVisibleName());
 			writeD(_activeChar.getRace().ordinal());
 			writeD(_activeChar.getAppearance().getSex()? 1 : 0);
 
@@ -311,7 +311,7 @@ public class CharInfo extends L2GameServerPacket
 			}
 			else
 			{
-				writeS(_activeChar.getTitle());
+				writeS(_activeChar.getAppearance().getVisibleTitle());
 			}
 
 			writeD(_activeChar.getClanId());

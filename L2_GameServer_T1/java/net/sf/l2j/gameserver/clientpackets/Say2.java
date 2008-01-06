@@ -115,12 +115,18 @@ public final class Say2 extends L2GameClientPacket
 		}
 
 		L2PcInstance activeChar = getClient().getActiveChar();
-
 		if (activeChar == null)
 		{
 			_log.warning("[Say2.java] Active Character is null.");
 			return;
 		}
+        
+        if (activeChar.isCursedWeaponEquiped() && (_type == TRADE || _type == SHOUT))
+        {
+            SystemMessage sm = new SystemMessage(SystemMessageId.SHOUT_AND_TRADE_CHAT_CANNOT_BE_USED_WHILE_POSSESSING_CURSED_WEAPON);
+            activeChar.sendPacket(sm);
+            return;
+        }
 
 		if (activeChar.isChatBanned())
 		{
@@ -155,9 +161,19 @@ public final class Say2 extends L2GameClientPacket
 
 			_logChat.log(record);
 		}
+        
+        String name;
+        if (_type == ALL)
+        {
+            name = activeChar.getAppearance().getVisibleName();
+        }
+        else
+        {
+            name = activeChar.getName();
+        }
 
-		CreatureSay cs = new CreatureSay(activeChar.getObjectId(), _type, activeChar.getName(), _text);
-
+		CreatureSay cs = new CreatureSay(activeChar.getObjectId(), _type, name, _text);
+        
 		switch (_type)
 		{
 			case TELL:

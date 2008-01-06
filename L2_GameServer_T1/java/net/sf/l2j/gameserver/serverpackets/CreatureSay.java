@@ -42,7 +42,6 @@ public final class CreatureSay extends L2GameServerPacket
 		_textType = messageType;
 		_charName = charName;
 		_text = text;
-		//setLifeTime(0);
 	}
 
 	@Override

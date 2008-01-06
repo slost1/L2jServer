@@ -18,16 +18,23 @@
  */
 package net.sf.l2j.gameserver.model.actor.appearance;
 
+import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+
 public class PcAppearance
 {
     // =========================================================
     // Data Field
+    private L2PcInstance _owner;
     private byte _face;
     private byte _hairColor;
     private byte _hairStyle;
     private boolean _sex; //Female true(1)
 	/** true if  the player is invisible */
 	private boolean _invisible = false;
+    /** The current visisble name of this palyer, not necessarily the real one */
+    private String _visibleName;
+    /** The current visisble title of this palyer, not necessarily the real one */
+    private String _visibleTitle;
 	/** The hexadecimal Color of players name (white is 0xFFFFFF) */
 	private int _nameColor = 0xFFFFFF;	
 	/** The hexadecimal Color of players name (white is 0xFFFFFF) */
@@ -35,12 +42,12 @@ public class PcAppearance
     
     // =========================================================
     // Constructor
-    public PcAppearance(byte Face, byte HColor, byte HStyle, boolean Sex)
+    public PcAppearance(byte face, byte hColor, byte hStyle, boolean sex)
     {
-    	_face = Face;
-    	_hairColor = HColor;
-    	_hairStyle = HStyle;
-    	_sex = Sex;
+    	_face = face;
+    	_hairColor = hColor;
+    	_hairStyle = hStyle;
+    	_sex = sex;
     }
 
     // =========================================================
@@ -48,6 +55,46 @@ public class PcAppearance
 
     // =========================================================
     // Method - Private
+
+    /**
+     * @param visibleName The visibleName to set.
+     */
+    public final void setVisibleName(String visibleName)
+    {
+        _visibleName = visibleName;
+    }
+
+    /**
+     * @return Returns the visibleName.
+     */
+    public final String getVisibleName()
+    {
+        if (_visibleName == null)
+        {
+            return this.getOwner().getName();
+        }
+        return _visibleName;
+    }
+
+    /**
+     * @param visibleTitle The visibleTitle to set.
+     */
+    public final void setVisibleTitle(String visibleTitle)
+    {
+        _visibleTitle = visibleTitle;
+    }
+
+    /**
+     * @return Returns the visibleTitle.
+     */
+    public final String getVisibleTitle()
+    {
+        if (_visibleTitle == null)
+        {
+            return this.getOwner().getTitle();
+        }
+        return _visibleTitle;
+    }
 
     // =========================================================
     // Property - Public
@@ -118,4 +165,20 @@ public class PcAppearance
 	{
 		_titleColor = (red & 0xFF) + ((green & 0xFF) << 8) + ((blue & 0xFF) << 16);
 	}
+
+    /**
+     * @param owner The owner to set.
+     */
+    public void setOwner(L2PcInstance owner)
+    {
+        _owner = owner;
+    }
+
+    /**
+     * @return Returns the owner.
+     */
+    public L2PcInstance getOwner()
+    {
+        return _owner;
+    }
 }

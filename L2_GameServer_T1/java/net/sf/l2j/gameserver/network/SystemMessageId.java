@@ -4221,6 +4221,12 @@ public enum SystemMessageId
      * Message: $s2 was dropped in the $s1 region.
      */
     S2_WAS_DROPPED_IN_THE_S1_REGION(1815),
+    
+    /**
+     * ID: 2085<br>
+     * Message: Shout and trade chatting cannot be used while possessing a cursed weapon.
+     */
+    SHOUT_AND_TRADE_CHAT_CANNOT_BE_USED_WHILE_POSSESSING_CURSED_WEAPON(2085),
 
     /**
      * ID: 1816<br>
