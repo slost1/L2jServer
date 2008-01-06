@@ -631,32 +631,32 @@ public class CharStat
 
     public double getElementAttributeFire()
     {
-        return calcStat(Stats.defenceAttrFire, _activeChar.getTemplate().getAttributeFire(), null, null);
+        return (int) (100 - 100 * calcStat(Stats.FIRE_VULN, _activeChar.getTemplate().baseFireVuln, null, null));
     }
 
     public double getElementAttributeWater()
     {
-        return calcStat(Stats.defenceAttrWater, _activeChar.getTemplate().getAttributeWater(), null, null);
+        return (int) (100 - 100 * calcStat(Stats.WATER_VULN, _activeChar.getTemplate().baseWaterVuln, null, null));
     }
 
     public double getElementAttributeEarth()
     {
-        return calcStat(Stats.defenceAttrEarth, _activeChar.getTemplate().getAttributeEarth(), null, null);
+        return (int) (100 - 100 * calcStat(Stats.EARTH_VULN, _activeChar.getTemplate().baseEarthVuln, null, null));
     }
 
     public double getElementAttributeWind()
     {
-        return calcStat(Stats.defenceAttrWind, _activeChar.getTemplate().getAttributeWind(), null, null);
+        return (int) (100 - 100 * calcStat(Stats.WIND_VULN, _activeChar.getTemplate().baseWindVuln, null, null));
     }
 
     public double getElementAttributeHoly()
     {
-        return calcStat(Stats.defenceAttrHoly, _activeChar.getTemplate().getAttributeHoly(), null, null);
+        return (int) (100 - 100 * calcStat(Stats.HOLY_VULN, _activeChar.getTemplate().baseHolyVuln, null, null));
     }
 
     public double getElementAttributeUnholy()
     {
-        return calcStat(Stats.defenceAttrUnholy, _activeChar.getTemplate().getAttributeUnholy(), null, null);
+        return (int) (100 - 100 * calcStat(Stats.DARK_VULN, _activeChar.getTemplate().baseDarkVuln, null, null));
     }
 
     public int getAttackElement()
@@ -666,6 +666,6 @@ public class CharStat
 
     public double getAttackElementValue()
     {
-        return 0.0D;
+        return 0.0;
     }
 }

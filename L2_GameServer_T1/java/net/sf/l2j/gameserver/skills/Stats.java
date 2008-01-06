@@ -175,12 +175,6 @@ public enum Stats
     SOULSHOT_COUNT 		("soulShotCount"),
     
     //T1 stats
-    defenceAttrFire     ("defenceAttrFire"),
-    defenceAttrWater    ("defenceAttrWater"),
-    defenceAttrEarth    ("defenceAttrEarth"),
-    defenceAttrWind     ("defenceAttrWind"),
-    defenceAttrHoly     ("defenceAttrHoly"),
-    defenceAttrUnholy   ("defenceAttrUnholy"),
     transformId ("transformId")
 	;
 
