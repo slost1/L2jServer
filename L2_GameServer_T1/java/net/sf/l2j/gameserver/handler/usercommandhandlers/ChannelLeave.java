@@ -22,6 +22,7 @@ import net.sf.l2j.gameserver.model.L2CommandChannel;
 import net.sf.l2j.gameserver.model.L2Party;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 
 /**
  *
@@ -49,7 +50,11 @@ public class ChannelLeave implements IUserCommandHandler
 
         		SystemMessage sm = SystemMessage.sendString("Your party has left the CommandChannel.");
         		party.broadcastToPartyMembers(sm);
-        		sm = SystemMessage.sendString(party.getPartyMembers().get(0).getName() +"'s party has left the CommandChannel.");
+        		
+        		//sm = SystemMessage.sendString(party.getPartyMembers().get(0).getName() +"'s party has left the CommandChannel.");
+        		
+        		sm = new SystemMessage(SystemMessageId.S1_PARTY_LEFT_COMMAND_CHANNEL);
+        		sm.addString( party.getPartyMembers().get(0).getName() );
         		channel.broadcastToChannelMembers(sm);
         		return true;
         	}

@@ -21,6 +21,7 @@ import net.sf.l2j.gameserver.handler.IUserCommandHandler;
 import net.sf.l2j.gameserver.model.L2CommandChannel;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 
 /**
  *
@@ -45,7 +46,7 @@ public class ChannelDelete implements IUserCommandHandler
         	{
         		L2CommandChannel channel = activeChar.getParty().getCommandChannel();
 
-        		SystemMessage sm = SystemMessage.sendString("The Command Channel was disbanded.");
+        		SystemMessage sm = new SystemMessage(SystemMessageId.COMMAND_CHANNEL_DISBANDED);
         		channel.broadcastToChannelMembers(sm);
 
         		channel.disbandChannel();

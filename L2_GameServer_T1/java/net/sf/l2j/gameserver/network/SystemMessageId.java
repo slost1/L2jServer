@@ -4813,6 +4813,18 @@ public enum SystemMessageId
     * Message: There is not enough soul.
     */
    THERE_IS_NOT_ENOUGH_SOUL(2195),
+   
+   /**
+    * ID: 1587<br>
+    * Message: $c1's party has left the Command Channel.
+    */
+   S1_PARTY_LEFT_COMMAND_CHANNEL(1587),
+   
+   /**
+    * ID: 1581<br>
+    * Message: The Command Channel has been disbanded.
+    */
+   COMMAND_CHANNEL_DISBANDED(1581),
 	
 	/**
 	 * ID: 2229<br>
