@@ -28,7 +28,6 @@ import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.Announcements;
 import net.sf.l2j.gameserver.GmListTable;
-import net.sf.l2j.gameserver.LoginServerThread;
 import net.sf.l2j.gameserver.Olympiad;
 import net.sf.l2j.gameserver.SevenSigns;
 import net.sf.l2j.gameserver.TaskPriority;
@@ -260,10 +259,6 @@ public class EnterWorld extends L2GameClientPacket
 
         sm = new SystemMessage(SystemMessageId.S1_S2);
         sm.addString(getText("Q29weXJpZ2h0IDIwMDQtMjAwNw=="));
-        sendPacket(sm);
-        sm = new SystemMessage(SystemMessageId.S1_S2);
-        sm.addString(getText("V2VsY29tZSB0byA="));
-        sm.addString(LoginServerThread.getInstance().getServerName());
         sendPacket(sm);
 
         SevenSigns.getInstance().sendCurrentPeriodMsg(activeChar);
