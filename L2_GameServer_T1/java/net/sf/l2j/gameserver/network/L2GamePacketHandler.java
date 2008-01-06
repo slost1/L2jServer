@@ -68,18 +68,21 @@ public final class L2GamePacketHandler extends TCPHeaderHandler<L2GameClient> im
 		switch (state)
 		{
 			case CONNECTED:
-				if (opcode == 0x0e)
-				{
-					msg = new ProtocolVersion();
-				}
-				else if (opcode == 0x2b)
-				{
-					msg = new AuthLogin();
-				}
-				else
-				{
-					printDebug(opcode, buf, state, client);
-				}
+                switch (opcode)
+                {
+                    case 0x00:
+                        _log.warning("Client "+client.toString()+" is trying to connect using Interlude Client");
+                        break;
+                    case 0x0e:
+                        msg = new ProtocolVersion();
+                        break;
+                    case 0x2b:
+                        msg = new AuthLogin();
+                        break;
+                    default:
+                        printDebug(opcode, buf, state, client);
+                        break;
+                }
 				break;
 			case AUTHED:
 				switch (opcode)
@@ -729,6 +732,9 @@ public final class L2GamePacketHandler extends TCPHeaderHandler<L2GameClient> im
                                 break;
                             case 0x21:
                                 msg = new RequestKeyMapping(); 
+                                break;
+                            case 0x22:
+                                // TODO implement me (just disabling warnings for this packet)
                                 break;
                             case 0x24:
                                 msg = new RequestSaveInventoryOrder();
