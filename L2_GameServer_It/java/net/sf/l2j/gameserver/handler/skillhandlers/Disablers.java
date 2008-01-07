@@ -547,6 +547,10 @@ public class Disablers implements ISkillHandler
                     }//end else
                 }// end case
             }//end switch
+            
+            //Possibility of a lethal strike
+            Formulas.getInstance().calcLethalHit(activeChar, target, skill);
+            
         }//end for
 
         // self Effect :]

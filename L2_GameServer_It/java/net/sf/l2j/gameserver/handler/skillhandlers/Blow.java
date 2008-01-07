@@ -24,8 +24,6 @@ import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2Skill.SkillType;
-import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
@@ -33,8 +31,6 @@ import net.sf.l2j.gameserver.skills.Env;
 import net.sf.l2j.gameserver.skills.Formulas;
 import net.sf.l2j.gameserver.skills.funcs.Func;
 import net.sf.l2j.gameserver.templates.L2WeaponType;
-import net.sf.l2j.util.Rnd;
-
 /**
  *
  * @author  Steuf
@@ -147,38 +143,8 @@ public class Blow implements ISkillHandler
 	            activeChar.sendPacket(sm);
 			}
 			//Possibility of a lethal strike
-			if(!target.isRaid()
-					&& !(target instanceof L2DoorInstance)
-					&& !(target instanceof L2NpcInstance && ((L2NpcInstance)target).getNpcId() == 35062))
-			{
-				int chance = Rnd.get(100);
-				//2nd lethal effect activate (cp,hp to 1 or if target is npc then hp to 1)
-				if(skill.getLethalChance2() > 0 && chance < Formulas.getInstance().calcLethal(activeChar, target, skill.getLethalChance2()))
-	            {
-	            	if (target instanceof L2NpcInstance)
-                        target.reduceCurrentHp(target.getCurrentHp()-1, activeChar);
-        			else if (target instanceof L2PcInstance) // If is a active player set his HP and CP to 1
-        			{
-        				L2PcInstance player = (L2PcInstance)target;
-        				if (!player.isInvul()){
-        					player.setCurrentHp(1);
-    						player.setCurrentCp(1);
-        				}
-        			}
-	            	activeChar.sendPacket(new SystemMessage(SystemMessageId.LETHAL_STRIKE));
-	            }
-	            else if(skill.getLethalChance1() > 0 && chance < Formulas.getInstance().calcLethal(activeChar, target, skill.getLethalChance1())){
-            		if (target instanceof L2PcInstance)
-         		   	{
-            			L2PcInstance player = (L2PcInstance)target;
-        				if (!player.isInvul())
-        					player.setCurrentCp(1); // Set CP to 1
-         		   	}
-            		else if (target instanceof L2NpcInstance) // If is a monster remove first damage and after 50% of current hp
-            			target.reduceCurrentHp(target.getCurrentHp()/2, activeChar);
-	            	activeChar.sendPacket(new SystemMessage(SystemMessageId.LETHAL_STRIKE));
-				}
-			}
+			Formulas.getInstance().calcLethalHit(activeChar, target, skill);
+            
             L2Effect effect = activeChar.getFirstEffect(skill.getId());
             //Self Effect
             if (effect != null && effect.isSelfEffect())
