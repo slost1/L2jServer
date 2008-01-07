@@ -31,8 +31,6 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2StaticObjectInstance;
 import net.sf.l2j.gameserver.serverpackets.CharInfo;
 import net.sf.l2j.gameserver.serverpackets.DeleteObject;
-import net.sf.l2j.gameserver.serverpackets.DoorInfo;
-import net.sf.l2j.gameserver.serverpackets.DoorStatusUpdate;
 import net.sf.l2j.gameserver.serverpackets.DropItem;
 import net.sf.l2j.gameserver.serverpackets.GetOnVehicle;
 import net.sf.l2j.gameserver.serverpackets.NpcInfo;

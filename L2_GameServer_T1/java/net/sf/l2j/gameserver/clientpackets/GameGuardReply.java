@@ -23,7 +23,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 import net.sf.l2j.gameserver.network.L2GameClient;
-import net.sf.l2j.util.Util;
 
 /**
  * Format: c dddd
