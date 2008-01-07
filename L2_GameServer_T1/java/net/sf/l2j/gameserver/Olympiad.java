@@ -1513,13 +1513,8 @@ public class Olympiad
 				// check to prevent the using of weapon/shield on strider/wyvern
 				L2ItemInstance wpn = player.getInventory().getPaperdollItem(Inventory.PAPERDOLL_RHAND);
 				if (wpn == null) wpn = player.getInventory().getPaperdollItem(Inventory.PAPERDOLL_LRHAND);
-				if (wpn != null &&
-						(
-								(wpn.getItemId() >= 6611 && wpn.getItemId() <= 6621) ||
-								wpn.getItemId() == 6842
-						)
-					)
-				{
+                if (wpn != null && wpn.isHeroItem())
+                {
 					L2ItemInstance[] unequiped = player.getInventory().unEquipItemInBodySlotAndRecord(wpn.getItem().getBodyPart());
 					InventoryUpdate iu = new InventoryUpdate();
 					for (int i = 0; i < unequiped.length; i++)

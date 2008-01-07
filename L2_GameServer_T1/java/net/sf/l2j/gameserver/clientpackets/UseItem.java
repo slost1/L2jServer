@@ -300,20 +300,14 @@ public final class UseItem extends L2GameClientPacket
                 }
 
                 // Don't allow weapon/shield hero equipment during Olympiads
-                if (activeChar.isInOlympiadMode()
-                		&& (
-                				bodyPart == L2Item.SLOT_LR_HAND
-                				|| bodyPart == L2Item.SLOT_L_HAND
-                				|| bodyPart == L2Item.SLOT_R_HAND
-                			)
-                		&& (
-                				(item.getItemId() >= 6611 && item.getItemId() <= 6621) ||
-                				item.getItemId() == 6842
-                			)
-                	)
+                if (activeChar.isInOlympiadMode() 
+                       && (bodyPart == L2Item.SLOT_LR_HAND || bodyPart == L2Item.SLOT_L_HAND || bodyPart == L2Item.SLOT_R_HAND)
+                       && item.isHeroItem())
                 {
-                	return;
+                    activeChar.sendPacket(new SystemMessage(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION));
+                    return;
                 }
+                
                 if (activeChar.getRace() == Race.Kamael 
                         && ( bodyPart == L2Item.SLOT_CHEST
                              ||bodyPart == L2Item.SLOT_BACK
@@ -327,21 +321,6 @@ public final class UseItem extends L2GameClientPacket
                 {
                     activeChar.sendPacket(new SystemMessage(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION));
                     return;
-                }
-                // Don't allow weapon/shield hero equipment during Olympiads
-                if (activeChar.isInOlympiadMode()
-                		&& (
-                				bodyPart == L2Item.SLOT_LR_HAND
-                				|| bodyPart == L2Item.SLOT_L_HAND
-                				|| bodyPart == L2Item.SLOT_R_HAND
-                			)
-                		&& (
-                				(item.getItemId() >= 6611 && item.getItemId() <= 6621) ||
-                				item.getItemId() == 6842
-                			)
-                	)
-                {
-                	return;
                 }
 
                 // Equip or unEquip

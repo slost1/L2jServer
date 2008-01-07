@@ -153,9 +153,7 @@ public final class SendWareHouseDepositList extends L2GameClientPacket
                 continue;
             }
 
-            int itemId = oldItem.getItemId();
-
-            if ((itemId >= 6611 && itemId <= 6621) || itemId == 6842)
+            if (oldItem.isHeroItem())
                 continue;
 
 			L2ItemInstance newItem = player.getInventory().transferItem("Warehouse", objectId, count, warehouse, player, player.getLastFolkNPC());

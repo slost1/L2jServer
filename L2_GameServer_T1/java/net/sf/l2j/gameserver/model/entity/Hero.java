@@ -64,13 +64,11 @@ public class Hero
     private static final String GET_CLAN_ALLY = "SELECT characters.clanid AS clanid, coalesce(clan_data.ally_Id, 0) AS allyId FROM characters LEFT JOIN clan_data ON clan_data.clan_id = characters.clanid " +
             " WHERE characters.obj_Id = ?";
     private static final String GET_CLAN_NAME = "SELECT clan_name FROM clan_data WHERE clan_id = (SELECT clanid FROM characters WHERE char_name = ?)";
+    // delete hero items
     private static final String DELETE_ITEMS = "DELETE FROM items WHERE item_id IN " +
-            "(6842, 6611, 6612, 6613, 6614, 6615, 6616, 6617, 6618, 6619, 6620, 6621) " +
+            "(6842, 6611, 6612, 6613, 6614, 6615, 6616, 6617, 6618, 6619, 6620, 6621, 9388, 9389, 9390) " +
             "AND owner_id NOT IN (SELECT obj_id FROM characters WHERE accesslevel > 0)";
 
-    private static final int[] _heroItems = {6842, 6611, 6612, 6613, 6614, 6615, 6616,
-                                             6617, 6618, 6619, 6620, 6621
-    };
     private static Map<Integer, StatsSet> _heroes;
     private static Map<Integer, StatsSet> _completeHeroes;
 
@@ -235,7 +233,6 @@ public class Hero
     {
         updateHeroes(true);
 
-        List<int[]> heroItems = Arrays.asList(_heroItems);
         L2ItemInstance[] items;
         InventoryUpdate iu;
 
@@ -295,7 +292,7 @@ public class Hero
                     for(L2ItemInstance item : player.getInventory().getAvailableItems(false))
                     {
                         if (item == null) continue;
-                        if (!heroItems.contains(item.getItemId())) continue;
+                        if (!item.isHeroItem()) continue;
 
                         player.destroyItem("Hero", item, null, true);
                         iu = new InventoryUpdate();
@@ -510,11 +507,6 @@ public class Hero
         {
             try{con.close();}catch(Exception e){e.printStackTrace();}
         }
-    }
-
-    public int[] getHeroItems()
-    {
-        return _heroItems;
     }
 
     private void deleteItemsInDb()

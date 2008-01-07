@@ -109,8 +109,7 @@ public final class RequestCrystallizeItem extends L2GameClientPacket
 				return;
 			}
 
-			int itemId = item.getItemId();
-			if ((itemId >= 6611 && itemId <= 6621) || itemId == 6842)
+			if (item.isHeroItem())
 				return;
 
 			if (_count > item.getCount())

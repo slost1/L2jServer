@@ -539,6 +539,11 @@ public final class L2ItemInstance extends L2Object
     {
         return _item.isConsumable();
     }
+    
+    public boolean isHeroItem()
+    {
+        return ((_itemId >= 6611 && _itemId <= 6621) || (_itemId >= 9388 && _itemId <= 9390) || _itemId == 6842);
+    }
 
     /**
      * Returns if item is available for manipulation

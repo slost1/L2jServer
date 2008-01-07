@@ -989,11 +989,8 @@ public abstract class Inventory extends ItemContainer
             if(!player.isGM())
                 if (!player.isHero())
                 {
-                    int itemId = item.getItemId();
-                    if ((itemId >= 6611 && itemId <= 6621) || itemId == 6842)
-                    {
+                    if (item.isHeroItem())
                         return;
-                    }
                 }
         }
 
@@ -1273,8 +1270,7 @@ public abstract class Inventory extends ItemContainer
 	                if(!player.isGM())
 	                    if (!player.isHero())
 	                    {
-	                        int itemId = item.getItemId();
-	                        if ((itemId >= 6611 && itemId <= 6621) || itemId == 6842)
+	                        if (item.isHeroItem())
 	                            item.setLocation(ItemLocation.INVENTORY);
 	                    }
 	            }
