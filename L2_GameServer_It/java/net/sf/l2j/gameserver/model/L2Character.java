@@ -145,6 +145,7 @@ public abstract class L2Character extends L2Object
 	private boolean _isImobilised                           = false;
 	private boolean _isOverloaded                           = false; // the char is carrying too much
 	private boolean _isParalyzed                            = false;
+    private boolean _isDisarmed                             = false;
 	private boolean _isRiding                               = false; //Is Riding strider?
 	private boolean _isPendingRevive                        = false;
 	private boolean _isRooted                               = false; // Cannot move until root timed out
@@ -1652,6 +1653,9 @@ public abstract class L2Character extends L2Object
 
 	public final boolean isPendingRevive() { return isDead() && _isPendingRevive; }
 	public final void setIsPendingRevive(boolean value) { _isPendingRevive = value; }
+    
+    public final boolean isDisarmed() { return _isDisarmed; }
+    public final void setIsDisarmed(boolean value) { _isDisarmed = value; }
 
 	/**
 	 * Return the L2Summon of the L2Character.<BR><BR>

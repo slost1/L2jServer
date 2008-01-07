@@ -193,6 +193,16 @@ public final class UseItem extends L2GameClientPacket
                 {
                     return;
                 }
+                
+                if (activeChar.isDisarmed()
+                        && (bodyPart == L2Item.SLOT_LR_HAND
+                                || bodyPart == L2Item.SLOT_L_HAND
+                                || bodyPart == L2Item.SLOT_R_HAND))
+                {
+                    activeChar.sendPacket(new SystemMessage(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION));
+                    return;
+                }
+                    
                 /* Since c5 you can equip weapon again
                 // Don't allow weapon/shield equipment if wearing formal wear
                 if (activeChar.isWearingFormalWear()

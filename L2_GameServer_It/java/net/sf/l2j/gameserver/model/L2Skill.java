@@ -144,6 +144,7 @@ public abstract class L2Skill
     	MUTE,
     	PARALYZE,
     	WEAKNESS,
+        DISARM,
 
     	// hp, mp, cp
     	HEAL,
@@ -1033,6 +1034,7 @@ public abstract class L2Skill
             case MAGE_BANE:
             case WARRIOR_BANE:
             case BETRAY:
+            case DISARM:
                 return true;
             default:
                 return false;
@@ -1118,6 +1120,7 @@ public abstract class L2Skill
             case DELUXE_KEY_UNLOCK:
             case SOW:
             case HARVEST:
+            case DISARM:
                 return true;
             default:
                 return false;
