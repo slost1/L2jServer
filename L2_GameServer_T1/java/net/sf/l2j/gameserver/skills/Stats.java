@@ -133,6 +133,7 @@ public enum Stats
 	BLUNT_WPN_VULN 	("bluntWpnVuln"),
 	DAGGER_WPN_VULN	("daggerWpnVuln"),
 	BOW_WPN_VULN 	("bowWpnVuln"),
+	CROSSBOW_WPN_VULN ("crossbowWpnVuln"),
 	POLE_WPN_VULN 	("poleWpnVuln"),
 	ETC_WPN_VULN 	("etcWpnVuln"),
 	FIST_WPN_VULN 	("fistWpnVuln"),

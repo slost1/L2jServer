@@ -30,8 +30,6 @@ import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2Skill.SkillType;
-import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2MonsterInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2RaidBossInstance;
@@ -41,7 +39,6 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Formulas;
 import net.sf.l2j.gameserver.skills.effects.EffectCharge;
 import net.sf.l2j.gameserver.templates.L2WeaponType;
-import net.sf.l2j.util.Rnd;
 
 /**
  * This class ...
@@ -152,94 +149,52 @@ public class Pdam implements ISkillHandler
                 	}
                 }
 
-                 // Success of lethal effect
-                int chance = Rnd.get(100);
-                if(!target.isRaid()
-                		&& chance < skill.getLethalChance1()
-                		&& !(target instanceof L2DoorInstance)
-    					&& !(target instanceof L2NpcInstance && ((L2NpcInstance)target).getNpcId() == 35062))
-    			{
-                	// 1st lethal effect activate (cp to 1 or if target is npc then hp to 50%)
-                	if(skill.getLethalChance2() > 0 && chance >= skill.getLethalChance2())
-                	{
-              		   if (target instanceof L2PcInstance)
-             		   {
-               				L2PcInstance player = (L2PcInstance)target;
-            				if (!player.isInvul())
-            				{
-            					player.setCurrentCp(1); // Set CP to 1
-                           		player.reduceCurrentHp(damage, activeChar);
-            				}
-            		   }
-             		   else if (target instanceof L2MonsterInstance) // If is a monster remove first damage and after 50% of current hp
-             		   {
-             			  target.reduceCurrentHp(damage, activeChar);
-             			  target.reduceCurrentHp(target.getCurrentHp()/2, activeChar);
-             		   }
-                	}
-                	else //2nd lethal effect activate (cp,hp to 1 or if target is npc then hp to 1)
-                	{
-                      	 // If is a monster damage is (CurrentHp - 1) so HP = 1
-                        if (target instanceof L2NpcInstance)
-                            target.reduceCurrentHp(target.getCurrentHp()-1, activeChar);
-            			else if (target instanceof L2PcInstance) // If is a active player set his HP and CP to 1
-            			{
-            				L2PcInstance player = (L2PcInstance)target;
-            				if (!player.isInvul())
-            				{
-            					player.setCurrentHp(1);
-            					player.setCurrentCp(1);
-            				}
-            			}
-                	}
-                    // Lethal Strike was succefful!
-                    activeChar.sendPacket(new SystemMessage(SystemMessageId.LETHAL_STRIKE_SUCCESSFUL));
+                // Possibility of a lethal strike
+                boolean lethal = Formulas.getInstance().calcLethalHit(activeChar, target, skill);
+                
+                // Make damage directly to HP
+                if(!lethal && skill.getDmgDirectlyToHP())
+                {
+                    if(target instanceof L2PcInstance)
+                    {
+                        L2PcInstance player = (L2PcInstance)target;
+                        if (!player.isInvul())
+                        {
+                           if (damage >= player.getCurrentHp())
+                           {
+                               if (player.isInDuel())
+                                   player.setCurrentHp(1);
+                               else
+                               {
+                                   player.setCurrentHp(0);
+                                   if (player.isInOlympiadMode())
+                                   {
+                                       player.abortAttack();
+                                       player.abortCast();
+                                       player.getStatus().stopHpMpRegeneration();
+                                   }
+                                   else
+                                       player.doDie(activeChar);
+                               }
+                           }
+                           else
+                              player.setCurrentHp(player.getCurrentHp() - damage);
+                        }
+
+                        SystemMessage smsg = new SystemMessage(SystemMessageId.S1_GAVE_YOU_S2_DMG);
+                        smsg.addString(activeChar.getName());
+                        smsg.addNumber(damage);
+                        player.sendPacket(smsg);
+
+                    }
+                    else
+                        target.reduceCurrentHp(damage, activeChar);
                 }
                 else
                 {
-                	// Make damage directly to HP
-                	if(skill.getDmgDirectlyToHP())
-                	{
-        				if(target instanceof L2PcInstance)
-        				{
-        					L2PcInstance player = (L2PcInstance)target;
-	                		if (!player.isInvul())
-	        				{
-	                	       if (damage >= player.getCurrentHp())
-	                	       {
-	                	    	   if (player.isInDuel())
-	                	    		   player.setCurrentHp(1);
-	    	        	    	   else
-	    	        	    	   {
-	    	        	    		   player.setCurrentHp(0);
-	    	        	    		   if (player.isInOlympiadMode())
-	    	        	    		   {
-	    	        	    			   player.abortAttack();
-	    	        	    			   player.abortCast();
-	    	        	    			   player.getStatus().stopHpMpRegeneration();
-	    	        	    		   }
-	    	        	    		   else
-	    	        	    			   player.doDie(activeChar);
-	    	        	    	   }
-	                	       }
-	                	       else
-	                		      player.setCurrentHp(player.getCurrentHp() - damage);
-	        				}
-
-	                		SystemMessage smsg = new SystemMessage(SystemMessageId.S1_GAVE_YOU_S2_DMG);
-	                		smsg.addString(activeChar.getName());
-	                		smsg.addNumber(damage);
-	                		player.sendPacket(smsg);
-
-        				}
-        				else
-        					target.reduceCurrentHp(damage, activeChar);
-                	}
-                	else
-                	{
-                		target.reduceCurrentHp(damage, activeChar);
-                	}
+                    target.reduceCurrentHp(damage, activeChar);
                 }
+                
             }
             else // No - damage
             {

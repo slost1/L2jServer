@@ -414,6 +414,34 @@ public final class Formulas
 			}
 		}
 	}
+	
+	static class FuncMAtkCritical extends Func
+	{
+		static final FuncMAtkCritical _fac_instance = new FuncMAtkCritical();
+
+		static Func getInstance()
+		{
+			return _fac_instance;
+		}
+
+		private FuncMAtkCritical()
+		{
+			super(Stats.MCRITICAL_RATE, 0x30, null);
+		}
+
+		public void calc(Env env)
+		{
+			L2Character p = env.player;
+			if(p instanceof L2Summon)
+				env.value = 8;
+			else if (p instanceof L2PcInstance && p.getActiveWeaponInstance() == null)
+				env.value = 8;
+			else
+			{
+				env.value *= WITbonus[p.getWIT()];
+			}
+		}
+	}
 
 	static class FuncMoveSpeed extends Func
 	{
@@ -845,6 +873,7 @@ public final class Formulas
             cha.addStatFunc(FuncPDefMod.getInstance());
 			cha.addStatFunc(FuncMDefMod.getInstance());
 			cha.addStatFunc(FuncAtkCritical.getInstance());
+			cha.addStatFunc(FuncMAtkCritical.getInstance());
 			cha.addStatFunc(FuncAtkAccuracy.getInstance());
 			cha.addStatFunc(FuncAtkEvasion.getInstance());
 			cha.addStatFunc(FuncPAtkSpeed.getInstance());
@@ -870,6 +899,7 @@ public final class Formulas
 			//cha.addStatFunc(FuncMultRegenResting.getInstance(Stats.REGENERATE_HP_RATE));
 			//cha.addStatFunc(FuncMultRegenResting.getInstance(Stats.REGENERATE_MP_RATE));
 			cha.addStatFunc(FuncAtkCritical.getInstance());
+			cha.addStatFunc(FuncMAtkCritical.getInstance());
 			cha.addStatFunc(FuncAtkAccuracy.getInstance());
 			cha.addStatFunc(FuncAtkEvasion.getInstance());
 		}
@@ -1154,6 +1184,9 @@ public final class Formulas
 				case BOW:
 					stat = Stats.BOW_WPN_VULN;
 					break;
+				case CROSSBOW:
+					stat = Stats.CROSSBOW_WPN_VULN;
+					break;
 				case BLUNT:
 				case BIGBLUNT:
 					stat = Stats.BLUNT_WPN_VULN;
@@ -1384,6 +1417,51 @@ public final class Formulas
 	{
 		return activeChar.calcStat(Stats.LETHAL_RATE, (baseLethal*((double)activeChar.getLevel()/target.getLevel())), target, null);
 	}
+    
+    public final boolean calcLethalHit(L2Character activeChar, L2Character target, L2Skill skill)
+    {
+        if (!target.isRaid()
+                && !(target instanceof L2DoorInstance)
+                && !(target instanceof L2NpcInstance && ((L2NpcInstance) target).getNpcId() == 35062))
+        {
+            int chance = Rnd.get(100);
+            // 2nd lethal effect activate (cp,hp to 1 or if target is npc then hp to 1)
+            if (skill.getLethalChance2() > 0 && chance < calcLethal(activeChar, target, skill.getLethalChance2()))
+            {
+                if (target instanceof L2NpcInstance)
+                    target.reduceCurrentHp(target.getCurrentHp() - 1, activeChar);
+                else if (target instanceof L2PcInstance) // If is a active player set his HP and CP to 1
+                {
+                    L2PcInstance player = (L2PcInstance) target;
+                    if (!player.isInvul())
+                    {
+                        player.setCurrentHp(1);
+                        player.setCurrentCp(1);
+                    }
+                }
+                activeChar.sendPacket(new SystemMessage(SystemMessageId.LETHAL_STRIKE));
+            }
+            else if (skill.getLethalChance1() > 0 && chance < calcLethal(activeChar, target, skill.getLethalChance1()))
+            {
+                if (target instanceof L2PcInstance)
+                {
+                    L2PcInstance player = (L2PcInstance) target;
+                    if (!player.isInvul())
+                        player.setCurrentCp(1); // Set CP to 1
+                }
+                else if (target instanceof L2NpcInstance) // If is a monster remove first damage and after 50% of current hp
+                    target.reduceCurrentHp(target.getCurrentHp() / 2, activeChar);
+                activeChar.sendPacket(new SystemMessage(SystemMessageId.LETHAL_STRIKE));
+            }
+            else
+                return false;
+        }
+        else
+            return false;
+        
+        return true;
+    }
+    
 	public final boolean calcMCrit(double mRate)
 	{
 		return mRate > Rnd.get(1000);
