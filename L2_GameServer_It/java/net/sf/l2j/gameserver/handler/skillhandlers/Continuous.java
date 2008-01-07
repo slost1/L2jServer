@@ -111,6 +111,7 @@ public class Continuous implements ISkillHandler
 
 			if (skill.isOffensive())
 			{
+
 				boolean ss = false;
 		        boolean sps = false;
 		        boolean bss = false;
@@ -216,9 +217,6 @@ public class Continuous implements ISkillHandler
         				target.setTarget(activeChar);
     			}
 			}
-            
-        	// Possibility of a lethal strike
-            Formulas.getInstance().calcLethalHit(activeChar, target, skill);
         }
         // self Effect :]
         L2Effect effect = activeChar.getFirstEffect(skill.getId());

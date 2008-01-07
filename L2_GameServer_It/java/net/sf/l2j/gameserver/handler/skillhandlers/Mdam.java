@@ -197,8 +197,6 @@ public class Mdam implements ISkillHandler
 
                 target.reduceCurrentHp(damage, activeChar);
             }
-            // Possibility of a lethal strike
-            Formulas.getInstance().calcLethalHit(activeChar, target, skill);
         }
         // self Effect :]
         L2Effect effect = activeChar.getFirstEffect(skill.getId());
