@@ -1199,10 +1199,8 @@ public final class L2PcInstance extends L2PlayableInstance
 
 		for (QuestState qs : _quests.values())
 		{
-			if (qs.getQuest().getQuestIntId()>=1999)
-				continue;
-
-			if (qs.isCompleted() && !Config.DEVELOPER)
+		    int questId = qs.getQuest().getQuestIntId();
+			if ((questId>999) || (questId<1))
 				continue;
 
 			if (!qs.isStarted() && !Config.DEVELOPER)
