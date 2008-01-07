@@ -386,6 +386,34 @@ public final class Formulas
 			}
 		}
 	}
+	
+	static class FuncMAtkCritical extends Func
+	{
+		static final FuncMAtkCritical _fac_instance = new FuncMAtkCritical();
+
+		static Func getInstance()
+		{
+			return _fac_instance;
+		}
+
+		private FuncMAtkCritical()
+		{
+			super(Stats.MCRITICAL_RATE, 0x30, null);
+		}
+
+		public void calc(Env env)
+		{
+			L2Character p = env.player;
+			if(p instanceof L2Summon)
+				env.value = 8;
+			else if (p instanceof L2PcInstance && p.getActiveWeaponInstance() == null)
+				env.value = 8;
+			else
+			{
+				env.value *= WITbonus[p.getWIT()];
+			}
+		}
+	}
 
 	static class FuncMoveSpeed extends Func
 	{
@@ -816,6 +844,7 @@ public final class Formulas
             cha.addStatFunc(FuncPDefMod.getInstance());
 			cha.addStatFunc(FuncMDefMod.getInstance());
 			cha.addStatFunc(FuncAtkCritical.getInstance());
+			cha.addStatFunc(FuncMAtkCritical.getInstance());
 			cha.addStatFunc(FuncAtkAccuracy.getInstance());
 			cha.addStatFunc(FuncAtkEvasion.getInstance());
 			cha.addStatFunc(FuncPAtkSpeed.getInstance());
@@ -841,6 +870,7 @@ public final class Formulas
 			//cha.addStatFunc(FuncMultRegenResting.getInstance(Stats.REGENERATE_HP_RATE));
 			//cha.addStatFunc(FuncMultRegenResting.getInstance(Stats.REGENERATE_MP_RATE));
 			cha.addStatFunc(FuncAtkCritical.getInstance());
+			cha.addStatFunc(FuncMAtkCritical.getInstance());
 			cha.addStatFunc(FuncAtkAccuracy.getInstance());
 			cha.addStatFunc(FuncAtkEvasion.getInstance());
 		}
