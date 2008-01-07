@@ -100,8 +100,7 @@ public class CharStat
 
 		// Launch the calculation
 		c.calc(env);
-		// avoid some troubles with negative stats (some stats should never be
-		// negative)
+		// avoid some troubles with negative stats (some stats should never be negative)
 		if (env.value <= 0
 				&& ((stat == Stats.MAX_HP) || (stat == Stats.MAX_MP) || (stat == Stats.MAX_CP) || (stat == Stats.MAGIC_DEFENCE)
 						|| (stat == Stats.POWER_DEFENCE) || (stat == Stats.POWER_ATTACK) || (stat == Stats.MAGIC_ATTACK) || (stat == Stats.POWER_ATTACK_SPEED)
