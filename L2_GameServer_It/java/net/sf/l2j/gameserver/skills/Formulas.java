@@ -1155,6 +1155,9 @@ public final class Formulas
 				case BOW:
 					stat = Stats.BOW_WPN_VULN;
 					break;
+				case CROSSBOW:
+					stat = Stats.CROSSBOW_WPN_VULN;
+					break;
 				case BLUNT:
 				case BIGBLUNT:
 					stat = Stats.BLUNT_WPN_VULN;
