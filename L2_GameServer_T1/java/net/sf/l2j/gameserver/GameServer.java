@@ -309,7 +309,6 @@ public class GameServer
 
 		new File(Config.DATAPACK_ROOT, "data/clans").mkdirs();
 		new File(Config.DATAPACK_ROOT, "data/crests").mkdirs();
-        new File("pathnode").mkdirs();
 
         // load script engines
         L2ScriptEngineManager.getInstance();
