@@ -222,8 +222,8 @@ public final class L2PcInstance extends L2PlayableInstance
 	private static final String RESTORE_SKILL_SAVE = "SELECT skill_id,skill_level,effect_count,effect_cur_time, reuse_delay FROM character_skills_save WHERE char_obj_id=? AND class_index=? AND restore_type=? ORDER BY buff_index ASC";
 	private static final String DELETE_SKILL_SAVE = "DELETE FROM character_skills_save WHERE char_obj_id=? AND class_index=?";
 
-    private static final String UPDATE_CHARACTER = "UPDATE characters SET level=?,maxHp=?,curHp=?,maxCp=?,curCp=?,maxMp=?,curMp=?,str=?,con=?,dex=?,_int=?,men=?,wit=?,face=?,hairStyle=?,hairColor=?,heading=?,x=?,y=?,z=?,exp=?,expBeforeDeath=?,sp=?,karma=?,pvpkills=?,pkkills=?,rec_have=?,rec_left=?,clanid=?,maxload=?,race=?,classid=?,deletetime=?,title=?,accesslevel=?,online=?,isin7sdungeon=?,clan_privs=?,wantspeace=?,base_class=?,onlinetime=?,in_jail=?,jail_timer=?,newbie=?,nobless=?,power_grade=?,subpledge=?,last_recom_date=?,lvl_joined_academy=?,apprentice=?,sponsor=?,varka_ketra_ally=?,clan_join_expiry_time=?,clan_create_expiry_time=?,char_name=?,death_penalty_level=? WHERE obj_id=?";
-    private static final String RESTORE_CHARACTER = "SELECT account_name, obj_Id, char_name, level, maxHp, curHp, maxCp, curCp, maxMp, curMp, acc, crit, evasion, mAtk, mDef, mSpd, pAtk, pDef, pSpd, runSpd, walkSpd, str, con, dex, _int, men, wit, face, hairStyle, hairColor, sex, heading, x, y, z, movement_multiplier, attack_speed_multiplier, colRad, colHeight, exp, expBeforeDeath, sp, karma, pvpkills, pkkills, clanid, maxload, race, classid, deletetime, cancraft, title, rec_have, rec_left, accesslevel, online, char_slot, lastAccess, clan_privs, wantspeace, base_class, onlinetime, isin7sdungeon, in_jail, jail_timer, newbie, nobless, power_grade, subpledge, last_recom_date, lvl_joined_academy, apprentice, sponsor, varka_ketra_ally,clan_join_expiry_time,clan_create_expiry_time,death_penalty_level FROM characters WHERE obj_id=?";
+    private static final String UPDATE_CHARACTER = "UPDATE characters SET level=?,maxHp=?,curHp=?,maxCp=?,curCp=?,maxMp=?,curMp=?,face=?,hairStyle=?,hairColor=?,heading=?,x=?,y=?,z=?,exp=?,expBeforeDeath=?,sp=?,karma=?,pvpkills=?,pkkills=?,rec_have=?,rec_left=?,clanid=?,race=?,classid=?,deletetime=?,title=?,accesslevel=?,online=?,isin7sdungeon=?,clan_privs=?,wantspeace=?,base_class=?,onlinetime=?,in_jail=?,jail_timer=?,newbie=?,nobless=?,power_grade=?,subpledge=?,last_recom_date=?,lvl_joined_academy=?,apprentice=?,sponsor=?,varka_ketra_ally=?,clan_join_expiry_time=?,clan_create_expiry_time=?,char_name=?,death_penalty_level=? WHERE obj_id=?";
+    private static final String RESTORE_CHARACTER = "SELECT account_name, obj_Id, char_name, level, maxHp, curHp, maxCp, curCp, maxMp, curMp, face, hairStyle, hairColor, sex, heading, x, y, z, exp, expBeforeDeath, sp, karma, pvpkills, pkkills, clanid, race, classid, deletetime, cancraft, title, rec_have, rec_left, accesslevel, online, char_slot, lastAccess, clan_privs, wantspeace, base_class, onlinetime, isin7sdungeon, in_jail, jail_timer, newbie, nobless, power_grade, subpledge, last_recom_date, lvl_joined_academy, apprentice, sponsor, varka_ketra_ally,clan_join_expiry_time,clan_create_expiry_time,death_penalty_level FROM characters WHERE obj_id=?";
     private static final String RESTORE_CHAR_SUBCLASSES = "SELECT class_id,exp,sp,level,class_index FROM character_subclasses WHERE char_obj_id=? ORDER BY class_index ASC";
     private static final String ADD_CHAR_SUBCLASS = "INSERT INTO character_subclasses (char_obj_id,class_id,exp,sp,level,class_index) VALUES (?,?,?,?,?,?)";
     private static final String UPDATE_CHAR_SUBCLASS = "UPDATE character_subclasses SET exp=?,sp=?,level=?,class_id=? WHERE char_obj_id=? AND class_index =?";
@@ -5746,13 +5746,10 @@ public final class L2PcInstance extends L2PlayableInstance
 			statement = con.prepareStatement(
 			                                 "INSERT INTO characters " +
 			                                 "(account_name,obj_Id,char_name,level,maxHp,curHp,maxCp,curCp,maxMp,curMp," +
-			                                 "acc,crit,evasion,mAtk,mDef,mSpd,pAtk,pDef,pSpd,runSpd,walkSpd," +
-			                                 "str,con,dex,_int,men,wit,face,hairStyle,hairColor,sex," +
-			                                 "movement_multiplier,attack_speed_multiplier,colRad,colHeight," +
-			                                 "exp,sp,karma,pvpkills,pkkills,clanid,maxload,race,classid,deletetime," +
-			                                 "cancraft,title,accesslevel,online,isin7sdungeon,clan_privs,wantspeace," +
-			                                 "base_class,newbie,nobless,power_grade,last_recom_date) " +
-			"values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+			                                 "face,hairStyle,hairColor,sex,exp,sp,karma,pvpkills,pkkills,clanid,race," +
+			                                 "classid,deletetime,cancraft,title,accesslevel,online,isin7sdungeon,clan_privs," +
+			                                 "wantspeace,base_class,newbie,nobless,power_grade,last_recom_date) " +
+											 "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			statement.setString(1, _accountName);
 			statement.setInt(2, getObjectId());
 			statement.setString(3, getName());
@@ -5763,53 +5760,31 @@ public final class L2PcInstance extends L2PlayableInstance
 			statement.setDouble(8, getCurrentCp());
 			statement.setInt(9, getMaxMp());
 			statement.setDouble(10, getCurrentMp());
-			statement.setInt(11, getAccuracy());
-			statement.setInt(12, getCriticalHit(null, null));
-			statement.setInt(13, getEvasionRate(null));
-			statement.setInt(14, getMAtk(null, null));
-			statement.setInt(15, getMDef(null, null));
-			statement.setInt(16, getMAtkSpd());
-			statement.setInt(17, getPAtk(null));
-			statement.setInt(18, getPDef(null));
-			statement.setInt(19, getPAtkSpd());
-			statement.setInt(20, getRunSpeed());
-			statement.setInt(21, getWalkSpeed());
-			statement.setInt(22, getSTR());
-			statement.setInt(23, getCON());
-			statement.setInt(24, getDEX());
-			statement.setInt(25, getINT());
-			statement.setInt(26, getMEN());
-			statement.setInt(27, getWIT());
-			statement.setInt(28, getAppearance().getFace());
-			statement.setInt(29, getAppearance().getHairStyle());
-			statement.setInt(30, getAppearance().getHairColor());
-			statement.setInt(31, getAppearance().getSex()? 1 : 0);
-			statement.setDouble(32, 1/*getMovementMultiplier()*/);
-			statement.setDouble(33, 1/*getAttackSpeedMultiplier()*/);
-			statement.setDouble(34, getTemplate().collisionRadius/*getCollisionRadius()*/);
-			statement.setDouble(35, getTemplate().collisionHeight/*getCollisionHeight()*/);
-			statement.setLong(36, getExp());
-			statement.setInt(37, getSp());
-			statement.setInt(38, getKarma());
-			statement.setInt(39, getPvpKills());
-			statement.setInt(40, getPkKills());
-			statement.setInt(41, getClanId());
-			statement.setInt(42, getMaxLoad());
-			statement.setInt(43, getRace().ordinal());
-			statement.setInt(44, getClassId().getId());
-			statement.setLong(45, getDeleteTimer());
-			statement.setInt(46, hasDwarvenCraft() ? 1 : 0);
-			statement.setString(47, getTitle());
-			statement.setInt(48, getAccessLevel());
-			statement.setInt(49, isOnline());
-            statement.setInt(50, isIn7sDungeon() ? 1 : 0);
-			statement.setInt(51, getClanPrivileges());
-			statement.setInt(52, getWantsPeace());
-			statement.setInt(53, getBaseClass());
-			statement.setInt(54, isNewbie() ? 1 : 0);
-			statement.setInt(55, isNoble() ? 1 :0);
-			statement.setLong(56, 0);
-			statement.setLong(57,System.currentTimeMillis());
+			statement.setInt(11, getAppearance().getFace());
+			statement.setInt(12, getAppearance().getHairStyle());
+			statement.setInt(13, getAppearance().getHairColor());
+			statement.setInt(14, getAppearance().getSex()? 1 : 0);
+			statement.setLong(15, getExp());
+			statement.setInt(16, getSp());
+			statement.setInt(17, getKarma());
+			statement.setInt(18, getPvpKills());
+			statement.setInt(19, getPkKills());
+			statement.setInt(20, getClanId());
+			statement.setInt(21, getRace().ordinal());
+			statement.setInt(22, getClassId().getId());
+			statement.setLong(23, getDeleteTimer());
+			statement.setInt(24, hasDwarvenCraft() ? 1 : 0);
+			statement.setString(25, getTitle());
+			statement.setInt(26, getAccessLevel());
+			statement.setInt(27, isOnline());
+            statement.setInt(28, isIn7sDungeon() ? 1 : 0);
+			statement.setInt(29, getClanPrivileges());
+			statement.setInt(30, getWantsPeace());
+			statement.setInt(31, getBaseClass());
+			statement.setInt(32, isNewbie() ? 1 : 0);
+			statement.setInt(33, isNoble() ? 1 :0);
+			statement.setLong(34, 0);
+			statement.setLong(35,System.currentTimeMillis());
 			statement.executeUpdate();
 			statement.close();
 		}
@@ -6286,68 +6261,55 @@ public final class L2PcInstance extends L2PlayableInstance
 			statement.setDouble(5, getCurrentCp());
 			statement.setInt(6, getMaxMp());
 			statement.setDouble(7, getCurrentMp());
-			statement.setInt(8, getSTR());
-			statement.setInt(9, getCON());
-			statement.setInt(10, getDEX());
-			statement.setInt(11, getINT());
-			statement.setInt(12, getMEN());
-			statement.setInt(13, getWIT());
-			statement.setInt(14, getAppearance().getFace());
-			statement.setInt(15, getAppearance().getHairStyle());
-			statement.setInt(16, getAppearance().getHairColor());
-			statement.setInt(17, getHeading());
-			statement.setInt(18, _observerMode ? _obsX : getX());
-			statement.setInt(19, _observerMode ? _obsY : getY());
-			statement.setInt(20, _observerMode ? _obsZ : getZ());
-			statement.setLong(21, exp);
-			statement.setLong(22, getExpBeforeDeath());
-			statement.setInt(23, sp);
-			statement.setInt(24, getKarma());
-			statement.setInt(25, getPvpKills());
-			statement.setInt(26, getPkKills());
-			statement.setInt(27, getRecomHave());
-			statement.setInt(28, getRecomLeft());
-			statement.setInt(29, getClanId());
-			statement.setInt(30, getMaxLoad());
-			statement.setInt(31, getRace().ordinal());
-
-//			if (!isSubClassActive())
-
-//			else
-//			statement.setInt(30, getBaseTemplate().race.ordinal());
-
-			statement.setInt(32, getClassId().getId());
-			statement.setLong(33, getDeleteTimer());
-			statement.setString(34, getTitle());
-			statement.setInt(35, getAccessLevel());
-			statement.setInt(36, isOnline());
-            statement.setInt(37, isIn7sDungeon() ? 1 : 0);
-			statement.setInt(38, getClanPrivileges());
-			statement.setInt(39, getWantsPeace());
-			statement.setInt(40, getBaseClass());
+			statement.setInt(8, getAppearance().getFace());
+			statement.setInt(9, getAppearance().getHairStyle());
+			statement.setInt(10, getAppearance().getHairColor());
+			statement.setInt(11, getHeading());
+			statement.setInt(12, _observerMode ? _obsX : getX());
+			statement.setInt(13, _observerMode ? _obsY : getY());
+			statement.setInt(14, _observerMode ? _obsZ : getZ());
+			statement.setLong(15, exp);
+			statement.setLong(16, getExpBeforeDeath());
+			statement.setInt(17, sp);
+			statement.setInt(18, getKarma());
+			statement.setInt(19, getPvpKills());
+			statement.setInt(20, getPkKills());
+			statement.setInt(21, getRecomHave());
+			statement.setInt(22, getRecomLeft());
+			statement.setInt(23, getClanId());
+			statement.setInt(24, getRace().ordinal());
+			statement.setInt(25, getClassId().getId());
+			statement.setLong(26, getDeleteTimer());
+			statement.setString(27, getTitle());
+			statement.setInt(28, getAccessLevel());
+			statement.setInt(29, isOnline());
+            statement.setInt(30, isIn7sDungeon() ? 1 : 0);
+			statement.setInt(31, getClanPrivileges());
+			statement.setInt(32, getWantsPeace());
+			statement.setInt(33, getBaseClass());
 
 			long totalOnlineTime = _onlineTime;
 
 			if (_onlineBeginTime > 0)
 				totalOnlineTime += (System.currentTimeMillis()-_onlineBeginTime)/1000;
 
-            statement.setLong(41, totalOnlineTime);
-            statement.setInt(42, isInJail() ? 1 : 0);
-            statement.setLong(43, getJailTimer());
-            statement.setInt(44, isNewbie() ? 1 : 0);
-            statement.setInt(45, isNoble() ? 1 : 0);
-            statement.setLong(46, getPowerGrade());
-            statement.setInt(47, getPledgeType());
-            statement.setLong(48,getLastRecomUpdate());
-            statement.setInt(49,getLvlJoinedAcademy());
-            statement.setLong(50,getApprentice());
-            statement.setLong(51,getSponsor());
-            statement.setInt(52, getAllianceWithVarkaKetra());
-			statement.setLong(53, getClanJoinExpiryTime());
-			statement.setLong(54, getClanCreateExpiryTime());
-			statement.setString(55, getName());
-			statement.setLong(56, getDeathPenaltyBuffLevel());
-            statement.setInt(57, getObjectId());
+            statement.setLong(34, totalOnlineTime);
+            statement.setInt(35, isInJail() ? 1 : 0);
+            statement.setLong(36, getJailTimer());
+            statement.setInt(37, isNewbie() ? 1 : 0);
+            statement.setInt(38, isNoble() ? 1 : 0);
+            statement.setLong(39, getPowerGrade());
+            statement.setInt(40, getPledgeType());
+            statement.setLong(41,getLastRecomUpdate());
+            statement.setInt(42,getLvlJoinedAcademy());
+            statement.setLong(43,getApprentice());
+            statement.setLong(44,getSponsor());
+            statement.setInt(45, getAllianceWithVarkaKetra());
+			statement.setLong(46, getClanJoinExpiryTime());
+			statement.setLong(47, getClanCreateExpiryTime());
+			statement.setString(48, getName());
+			statement.setLong(49, getDeathPenaltyBuffLevel());
+            statement.setInt(50, getObjectId());
 
 			statement.execute();
 			statement.close();
