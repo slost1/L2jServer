@@ -140,6 +140,8 @@ public final class Config
     public static boolean ALT_GAME_SKILL_LEARN;
     /** Alternative auto skill learning */
     public static boolean AUTO_LEARN_SKILLS;
+    /** Alternative auto skill learning for divine inspiration (+4 max buff count) */
+    public static boolean AUTO_LEARN_DIVINE_INSPIRATION;
     /** Cancel attack bow by hit */
     public static boolean ALT_GAME_CANCEL_BOW;
     /** Cancel cast by hit */
@@ -1649,6 +1651,7 @@ public final class Config
                 ALT_BLACKSMITH_USE_RECIPES=Boolean.parseBoolean(altSettings.getProperty("AltBlacksmithUseRecipes", "true"));
                 ALT_GAME_SKILL_LEARN    = Boolean.parseBoolean(altSettings.getProperty("AltGameSkillLearn", "false"));
                 AUTO_LEARN_SKILLS       = Boolean.parseBoolean(altSettings.getProperty("AutoLearnSkills", "false"));
+                AUTO_LEARN_DIVINE_INSPIRATION       = Boolean.parseBoolean(altSettings.getProperty("AutoLearnDivineInspiration", "false"));
                 ALT_GAME_CANCEL_BOW     = altSettings.getProperty("AltGameCancelByHit", "Cast").equalsIgnoreCase("bow") || altSettings.getProperty("AltGameCancelByHit", "Cast").equalsIgnoreCase("all");
                 ALT_GAME_CANCEL_CAST    = altSettings.getProperty("AltGameCancelByHit", "Cast").equalsIgnoreCase("cast") || altSettings.getProperty("AltGameCancelByHit", "Cast").equalsIgnoreCase("all");
                 ALT_GAME_SHIELD_BLOCKS  = Boolean.parseBoolean(altSettings.getProperty("AltShieldBlocks", "false"));
