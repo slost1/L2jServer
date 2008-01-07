@@ -6140,6 +6140,7 @@ public abstract class L2Character extends L2Object
 	public double getPAtkInsects(L2Character target) { return getStat().getPAtkInsects(target); }
 	public double getPAtkMonsters(L2Character target) { return getStat().getPAtkMonsters(target); }
     public double getPAtkPlants(L2Character target) { return getStat().getPAtkPlants(target); }
+    public double getPAtkGiants(L2Character target) { return getStat().getPAtkGiants(target); }
     public int getPAtkSpd() { return getStat().getPAtkSpd(); }
 	public double getPAtkUndead(L2Character target) { return getStat().getPAtkUndead(target); }
 	public double getPDefUndead(L2Character target) { return getStat().getPDefUndead(target); }

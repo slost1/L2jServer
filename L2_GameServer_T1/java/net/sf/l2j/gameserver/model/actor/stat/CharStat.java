@@ -483,6 +483,12 @@ public class CharStat
 		return calcStat(Stats.PATK_PLANTS, 1, target, null);
 	}
 
+   /** Return the PAtk Modifier against giants. */
+   public final double getPAtkGiants(L2Character target)
+   {
+       return calcStat(Stats.PATK_GIANTS, 1, target, null);
+   }
+	
 	/**
 	 * Return the PAtk Speed (base+modifier) of the L2Character in function of
 	 * the Armour Expertise Penalty.
