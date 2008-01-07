@@ -2684,15 +2684,16 @@ public final class L2PcInstance extends L2PlayableInstance
 			su.addAttribute(StatusUpdate.CUR_LOAD, getCurrentLoad());
 			sendPacket(su);
 
+            // If over capacity, drop the item
+            if (!isGM() && !_inventory.validateCapacity(0))
+                dropItem("InvDrop", newitem, null, true);
+
 			// Cursed Weapon
-			if(CursedWeaponsManager.getInstance().isCursed(newitem.getItemId()))
+            else if(CursedWeaponsManager.getInstance().isCursed(newitem.getItemId()))
 			{
 				CursedWeaponsManager.getInstance().activate(this, newitem);
 			}
 
-	    	// If over capacity, trop the item
-	    	if (!isGM() && !_inventory.validateCapacity(0))
-                dropItem("InvDrop", newitem, null, true);
 		}
 	}
 
@@ -2783,13 +2784,14 @@ public final class L2PcInstance extends L2PlayableInstance
 				su.addAttribute(StatusUpdate.CUR_LOAD, getCurrentLoad());
 				sendPacket(su);
 
+                // If over capacity, drop the item
+                if (!isGM() && !_inventory.validateCapacity(0))
+                    dropItem("InvDrop", item, null, true);
+                
 				// Cursed Weapon
-				if(CursedWeaponsManager.getInstance().isCursed(item.getItemId()))
+                else if(CursedWeaponsManager.getInstance().isCursed(item.getItemId()))
 					CursedWeaponsManager.getInstance().activate(this, item);
-
-		    	// If over capacity, drop the item
-		    	if (!isGM() && !_inventory.validateCapacity(0))
-		    		dropItem("InvDrop", item, null, true);
+		    
             }
 		}
 	}
