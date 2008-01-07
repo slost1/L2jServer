@@ -36,8 +36,8 @@ public class SkillSpellbookTable
 
 	public static SkillSpellbookTable getInstance()
 	{
-        if (_instance == null)
-            _instance = new SkillSpellbookTable();
+		if (_instance == null)
+			_instance = new SkillSpellbookTable();
 
 		return _instance;
 	}
@@ -68,23 +68,40 @@ public class SkillSpellbookTable
 		finally
 		{
 			try
-            {
+			{
 				con.close();
 			}
-            catch (Exception e) {}
+			catch (Exception e) {}
 		}
 	}
 
-    public int getBookForSkill(int skillId)
-    {
-        if (!_skillSpellbooks.containsKey(skillId))
-            return -1;
+	public int getBookForSkill(int skillId, int level)
+	{
+		if(skillId == L2Skill.SKILL_DIVINE_INSPIRATION && level != -1)
+		{
+			switch(level)
+			{
+				case 1: return 8618;	// Ancient Book - Divine Inspiration (Modern Language Version)
+				case 2: return 8619;	// Ancient Book - Divine Inspiration (Original Language Version)
+				case 3: return 8620;	// Ancient Book - Divine Inspiration (Manuscript)
+				case 4: return 8621;	// Ancient Book - Divine Inspiration (Original Version)
+				default: return -1;
+			}
+		}
+		
+		if (!_skillSpellbooks.containsKey(skillId))
+			return -1;
+		
+		return _skillSpellbooks.get(skillId);
+	}
 
-        return _skillSpellbooks.get(skillId);
-    }
-
-    public int getBookForSkill(L2Skill skill)
-    {
-        return getBookForSkill(skill.getId());
-    }
+	public int getBookForSkill(L2Skill skill)
+	{
+		return getBookForSkill(skill.getId(), -1);
+	}
+	
+	public int getBookForSkill(L2Skill skill, int level)
+	{
+		return getBookForSkill(skill.getId(), level);
+	}
 }

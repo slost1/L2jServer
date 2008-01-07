@@ -2167,9 +2167,9 @@ public abstract class L2Character extends L2Object
 				}
 			}
 
-			// Remove first Buff if number of buffs > 19
+			// Remove first Buff if number of buffs > getMaxBuffCount()
 			L2Skill tempskill = newEffect.getSkill();
-			if (getBuffCount() > Config.BUFFS_MAX_AMOUNT && !doesStack(tempskill) && ((
+			if (getBuffCount() > getMaxBuffCount() && !doesStack(tempskill) && ((
 				tempskill.getSkillType() == L2Skill.SkillType.BUFF ||
                 tempskill.getSkillType() == L2Skill.SkillType.DEBUFF ||
                 tempskill.getSkillType() == L2Skill.SkillType.REFLECT ||
@@ -6232,6 +6232,15 @@ public abstract class L2Character extends L2Object
 			return true;
 
 		return false;
+	}
+
+	/**
+	 * Check player max buff count
+	 * @return max buff count
+	 */
+	public int getMaxBuffCount()
+	{
+		return Config.BUFFS_MAX_AMOUNT + Math.max(0, getSkillLevel(L2Skill.SKILL_DIVINE_INSPIRATION));
 	}
 
 	/**

@@ -74,6 +74,7 @@ public abstract class L2Skill
     public static final int SKILL_CREATE_COMMON = 1320;
     public static final int SKILL_CREATE_DWARVEN = 172;
     public static final int SKILL_CRYSTALLIZE = 248;
+    public static final int SKILL_DIVINE_INSPIRATION = 1405;
 
     public static final int SKILL_FAKE_INT = 9001;
     public static final int SKILL_FAKE_WIT = 9002;
