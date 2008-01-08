@@ -1275,7 +1275,7 @@ public class L2NpcInstance extends L2Character
         if (qs == null) 
         {
             // no quests found
-            content = "<html><body>You are either not carrying out your quest or don't meet the criteria.</body></html>";
+            content = "<html><body>You are either not on a quest that involves this NPC, or you don't meet this NPC's minimum quest requirements.</body></html>";
         } 
         else 
         {
