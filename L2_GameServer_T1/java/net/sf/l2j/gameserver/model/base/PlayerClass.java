@@ -128,11 +128,11 @@ public enum PlayerClass {
     maleSoulbreaker(Kamael, Fighter, Third),
     femaleSoulbreaker(Kamael, Fighter, Third),
     arbalester(Kamael, Fighter, Third),
-    inspector(Kamael, Fighter, Third),
     doombringer(Kamael, Fighter, Fourth),
     maleSoulhound(Kamael, Fighter, Fourth), 
     femaleSoulhound(Kamael, Fighter, Fourth),
     trickster(Kamael, Fighter, Fourth), 
+    inspector(Kamael, Fighter, Third),
     judicator(Kamael, Fighter, Fourth);
     
     private Race _race;
@@ -192,7 +192,7 @@ public enum PlayerClass {
 
         if (_level == Third)
         {
-            if (_race != Kamael)
+            if (player.getRace() != Kamael)
             {
                 subclasses = EnumSet.copyOf(mainSubclassSet);
 
@@ -218,12 +218,14 @@ public enum PlayerClass {
             }
             else
             {
-                subclasses = EnumSet.of(berserker, maleSoulbreaker, femaleSoulbreaker, arbalester);
+                subclasses = getSet(Kamael,Third);
                 subclasses.remove(this);
                 //Check sex, male can't subclass female and vice versa
                 if (player.getAppearance().getSex())
-                    subclasses.remove(EnumSet.of(maleSoulbreaker));
-                else subclasses.remove(EnumSet.of(femaleSoulbreaker));
+                    subclasses.removeAll(EnumSet.of(maleSoulbreaker));
+                else subclasses.removeAll(EnumSet.of(femaleSoulbreaker));
+                if (player.getTotalSubClasses() < 2)
+                    subclasses.removeAll(EnumSet.of(inspector));            
             }
         }
         return subclasses;
