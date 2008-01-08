@@ -20,7 +20,7 @@ package net.sf.l2j.gameserver.model.actor.stat;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Logger;
+//import java.util.logging.Logger;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
@@ -37,7 +37,7 @@ import net.sf.l2j.gameserver.serverpackets.UserInfo;
 
 public class PcStat extends PlayableStat
 {
-	private static Logger _log = Logger.getLogger(L2PcInstance.class.getName());
+	//private static Logger _log = Logger.getLogger(PcStat.class.getName());
 
     // =========================================================
     // Data Field

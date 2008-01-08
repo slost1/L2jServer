@@ -113,7 +113,7 @@ public class Log
 			return;
 
 
-		System.out.println("Assertion error ["+cmt+"]");
+		_log.warning("Assertion error ["+cmt+"]");
 		Thread.dumpStack();
 	}
 }

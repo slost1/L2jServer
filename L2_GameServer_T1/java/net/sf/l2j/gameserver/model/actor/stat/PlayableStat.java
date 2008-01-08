@@ -17,11 +17,14 @@
  */
 package net.sf.l2j.gameserver.model.actor.stat;
 
+import java.util.logging.Logger;
+
 import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
 import net.sf.l2j.gameserver.model.base.Experience;
 
 public class PlayableStat extends CharStat
 {
+    protected static final Logger _log = Logger.getLogger(PlayableStat.class.getName());
     // =========================================================
     // Data Field
 
@@ -125,7 +128,7 @@ public class PlayableStat extends CharStat
     {
     	if (value < 0)
     	{
-    		System.out.println("wrong usage");
+    		_log.warning("wrong usage");
     		return false;
     	}
     	int currentSp = getSp();

@@ -18,6 +18,7 @@
  */
 package net.sf.l2j.gameserver.clientpackets;
 
+import java.util.logging.Logger;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
@@ -31,6 +32,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
  */
 public final class RequestExEnchantSkillUntrain extends L2GameClientPacket
 {
+    protected static final Logger _log = Logger.getLogger(RequestExEnchantSkillUntrain.class.getName());
 	private int _skillId;
 	private int _skillLvl;
 	
@@ -53,8 +55,8 @@ public final class RequestExEnchantSkillUntrain extends L2GameClientPacket
         if (player == null)
         	return;
 
-        System.out.println("[T1:RequestExEnchantSkillUntrain] skill id?:"+_skillId);
-        System.out.println("[T1:RequestExEnchantSkillUntrain] skill lvl?:"+_skillLvl);
+        _log.info("[T1:RequestExEnchantSkillUntrain] skill id?:"+_skillId);
+        _log.info("[T1:RequestExEnchantSkillUntrain] skill lvl?:"+_skillLvl);
 	}
 
 	/* (non-Javadoc)

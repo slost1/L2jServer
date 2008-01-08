@@ -20,6 +20,7 @@ package net.sf.l2j.gameserver.script.faenor;
 
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.script.ScriptContext;
 import javax.script.ScriptException;
@@ -44,6 +45,7 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
  */
 public class FaenorInterface implements EngineInterface
 {
+    protected static final Logger _log = Logger.getLogger(FaenorInterface.class.getName());
     private static FaenorInterface _instance;
 
     public static FaenorInterface getInstance()
@@ -102,7 +104,8 @@ public class FaenorInterface implements EngineInterface
         L2NpcTemplate npc = npcTable.getTemplate(npcID);
         if (npc == null)
         {
-            if (Config.DEBUG) System.out.print("Npc doesnt Exist");
+            if (Config.DEBUG)
+                _log.warning("Npc doesnt Exist");
             throw new NullPointerException();
         }
         L2DropData drop = new L2DropData();

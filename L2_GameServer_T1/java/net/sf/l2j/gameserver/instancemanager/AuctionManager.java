@@ -81,7 +81,7 @@ public class AuctionManager
     {
         if (_instance == null)
         {
-    		System.out.println("Initializing AuctionManager");
+    		_log.info("Initializing AuctionManager");
         	_instance = new AuctionManager();
         }
         return _instance;
@@ -109,11 +109,11 @@ public class AuctionManager
             while (rs.next())
             	_auctions.add(new Auction(rs.getInt("id")));
             statement.close();
-            System.out.println("Loaded: " + getAuctions().size() + " auction(s)");
+            _log.info("Loaded: " + getAuctions().size() + " auction(s)");
         }
         catch (Exception e)
         {
-            System.out.println("Exception: AuctionManager.load(): " + e.getMessage());
+            _log.warning("Exception: AuctionManager.load(): " + e.getMessage());
             e.printStackTrace();
         }
 

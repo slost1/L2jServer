@@ -18,6 +18,8 @@
  */
 package net.sf.l2j.gameserver.handler.admincommandhandlers;
 
+import java.util.logging.Logger;
+
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
@@ -40,7 +42,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
  * @version $Revision: 1.1.6.3 $ $Date: 2005/04/11 10:06:06 $
  */
 public class AdminBanChat implements IAdminCommandHandler {
-	//private static Logger _log = Logger.getLogger(AdminBan.class.getName());
+	private static Logger _log = Logger.getLogger(AdminBan.class.getName());
 	private static final String[] ADMIN_COMMANDS = {"admin_banchat", "admin_unbanchat"};
 	private static final int REQUIRED_LEVEL = Config.GM_BAN_CHAT;
 
@@ -50,7 +52,7 @@ public class AdminBanChat implements IAdminCommandHandler {
 		{
 			if (!(checkLevel(activeChar.getAccessLevel())))
 			{
-				System.out.println("Not required level.");
+				_log.info("Not required level.");
 				return false;
 			}
 		}

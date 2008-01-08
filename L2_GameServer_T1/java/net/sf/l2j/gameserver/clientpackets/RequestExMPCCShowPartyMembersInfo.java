@@ -17,12 +17,15 @@
  */
 package net.sf.l2j.gameserver.clientpackets;
 
+import java.util.logging.Logger;
+
 /**
  * Format:(ch) h
  * @author  -Wooden-
  */
 public final class RequestExMPCCShowPartyMembersInfo extends L2GameClientPacket
 {
+    protected static final Logger _log = Logger.getLogger(RequestExMPCCShowPartyMembersInfo.class.getName());
 	private static final String _C__D0_26_REQUESTMPCCSHOWPARTYMEMBERINFO = "[C] D0:26 RequestExMPCCShowPartyMembersInfo";
 	private int _unk;
 
@@ -39,7 +42,7 @@ public final class RequestExMPCCShowPartyMembersInfo extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		System.out.println("C6: RequestExMPCCShowPartyMembersInfo. unk: "+_unk);
+		_log.info("C6: RequestExMPCCShowPartyMembersInfo. unk: "+_unk);
 	}
 
 	/**

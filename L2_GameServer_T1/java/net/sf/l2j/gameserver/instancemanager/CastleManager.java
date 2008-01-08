@@ -20,6 +20,7 @@ package net.sf.l2j.gameserver.instancemanager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javolution.util.FastList;
 import net.sf.l2j.L2DatabaseFactory;
@@ -34,13 +35,14 @@ import net.sf.l2j.gameserver.model.entity.Castle;
 
 public class CastleManager
 {
+    protected static final Logger _log = Logger.getLogger(CastleManager.class.getName());
     // =========================================================
     private static CastleManager _instance;
     public static final CastleManager getInstance()
     {
         if (_instance == null)
         {
-    		System.out.println("Initializing CastleManager");
+    		_log.info("Initializing CastleManager");
             _instance = new CastleManager();
             _instance.load();
         }
@@ -106,15 +108,21 @@ public class CastleManager
 
             statement.close();
 
-            System.out.println("Loaded: " + getCastles().size() + " castles");
+            _log.info("Loaded: " + getCastles().size() + " castles");
         }
         catch (Exception e)
         {
-            System.out.println("Exception: loadCastleData(): " + e.getMessage());
+            _log.warning("Exception: loadCastleData(): " + e.getMessage());
             e.printStackTrace();
         }
 
-        finally {try { con.close(); } catch (Exception e) {}}
+        finally {
+                try { 
+                    con.close(); 
+                    } catch (Exception e) {
+                    
+                    }
+                }
     }
 
     // =========================================================
@@ -274,12 +282,16 @@ public class CastleManager
 			}
 			catch (Exception e)
 			{
-				System.out.println("Failed to remove castle circlets offline for player "+member.getName());
+				_log.warning("Failed to remove castle circlets offline for player "+member.getName());
 				e.printStackTrace();
 			}
 			finally
 			{
-				try { con.close(); } catch (Exception e) {}
+				try { 
+				    con.close(); 
+				    } catch (Exception e) {
+				        
+				    }
 			}
 		}
 	}

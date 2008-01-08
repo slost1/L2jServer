@@ -17,19 +17,22 @@
  */
 package net.sf.l2j.gameserver.instancemanager;
 
+import java.util.logging.Logger;
+
 import javolution.util.FastList;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.zone.type.L2ArenaZone;
 
 public class ArenaManager
 {
+    protected static final Logger _log = Logger.getLogger(ArenaManager.class.getName());
     // =========================================================
     private static ArenaManager _instance;
     public static final ArenaManager getInstance()
     {
         if (_instance == null)
         {
-    		System.out.println("Initializing ArenaManager");
+    		_log.info("Initializing ArenaManager");
         	_instance = new ArenaManager();
         }
         return _instance;

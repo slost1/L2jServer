@@ -47,7 +47,7 @@ public class BoatManager
 	{
 		if (_instance == null)
 		{
-    		System.out.println("Initializing BoatManager");
+    		_log.info("Initializing BoatManager");
 			_instance = new BoatManager();
 			_instance.load();
 		}
@@ -94,7 +94,7 @@ public class BoatManager
 				_staticItems.put(boat.getObjectId(), boat);
 				if(Config.DEBUG)
 				{
-				System.out.println("Boat ID : " + boat.getObjectId());
+				_log.info("Boat ID : " + boat.getObjectId());
 				}
 			}
 		}

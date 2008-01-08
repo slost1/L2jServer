@@ -79,7 +79,7 @@ public class L2Territory
 	public void print()
 	{
 		for(Point p : _points)
-			System.out.println("("+p._x+","+p._y+")");
+			_log.info("("+p._x+","+p._y+")");
 	}
 
 	public boolean isIntersect(int x, int y, Point p1, Point p2)

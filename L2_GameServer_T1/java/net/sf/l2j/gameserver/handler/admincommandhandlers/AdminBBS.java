@@ -18,6 +18,8 @@
  */
 package net.sf.l2j.gameserver.handler.admincommandhandlers;
 
+//import java.util.logging.Logger;
+
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.communitybbs.Manager.AdminBBSManager;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
@@ -25,7 +27,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 public class AdminBBS implements IAdminCommandHandler
 {
-	 //private static Logger _log = Logger.getLogger(AdminKick.class.getName());
+	//private static Logger _log = Logger.getLogger(AdminKick.class.getName());
     private static final String[] ADMIN_COMMANDS = {"admin_bbs"};
     private static final int REQUIRED_LEVEL = Config.GM_MIN;
 
@@ -38,7 +40,7 @@ public class AdminBBS implements IAdminCommandHandler
 	        {
 	    		if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
 	            {
-	                //System.out.println("Not required level");
+	                //_log.info("Not required level");
 	                return false;
 	            }
 	        }

@@ -26,6 +26,7 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.logging.Logger;
 
 import javolution.text.TextBuilder;
 import net.sf.l2j.gameserver.clientpackets.Say2;
@@ -48,6 +49,7 @@ import net.sf.l2j.util.EventData;
 
 public class L2Event
 {
+    protected static final Logger _log = Logger.getLogger(L2Event.class.getName());
     public static String eventName = "";
     public static int teamsNumber = 0;
     public static final HashMap<Integer, String> names = new HashMap<Integer, String>();
@@ -161,7 +163,7 @@ public class L2Event
         }
         catch (Exception e)
         {
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 
@@ -204,7 +206,7 @@ public class L2Event
         }
         catch (Exception e)
         {
-            System.out.println(e);
+            e.printStackTrace();
         }
 
     }
@@ -255,7 +257,7 @@ public class L2Event
         }
         catch (Exception e)
         {
-            System.out.println("error when signing in the event:" + e);
+            _log.warning("error when signing in the event:" + e);
         }
     }
 

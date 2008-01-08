@@ -25,6 +25,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 import javolution.text.TextBuilder;
 import javolution.util.FastList;
@@ -35,6 +36,7 @@ import net.sf.l2j.util.Rnd;
 
 public class Status extends Thread
 {
+    protected static final Logger _log = Logger.getLogger(Status.class.getName());
 
     private ServerSocket    statusServerSocket;
 
@@ -105,18 +107,18 @@ public class Status extends Thread
         {
 	        if (_statusPw == null)
 	        {
-	            System.out.println("Server's Telnet Function Has No Password Defined!");
-	            System.out.println("A Password Has Been Automaticly Created!");
+	            _log.info("Server's Telnet Function Has No Password Defined!");
+	            _log.info("A Password Has Been Automaticly Created!");
 	            _statusPw = rndPW(10);
-	            System.out.println("Password Has Been Set To: " + _statusPw);
+	            _log.info("Password Has Been Set To: " + _statusPw);
 	        }
-	        System.out.println("StatusServer Started! - Listening on Port: " + _statusPort);
-	        System.out.println("Password Has Been Set To: " + _statusPw);
+	        _log.info("StatusServer Started! - Listening on Port: " + _statusPort);
+	        _log.info("Password Has Been Set To: " + _statusPw);
         }
         else
         {
-        	System.out.println("StatusServer Started! - Listening on Port: " + _statusPort);
-        	System.out.println("Password Has Been Set To: " + _statusPw);
+        	_log.info("StatusServer Started! - Listening on Port: " + _statusPort);
+        	_log.info("Password Has Been Set To: " + _statusPw);
         }
         statusServerSocket = new ServerSocket(_statusPort);
         _uptime = (int) System.currentTimeMillis();

@@ -42,7 +42,7 @@ public final class AnswerJoinPartyRoom extends L2GameClientPacket
     protected void runImpl()
     {
         // TODO
-        //System.out.println("C5:AnswerJoinPartyRoom: d: "+_requesterID);
+        //_log.info("C5:AnswerJoinPartyRoom: d: "+_requesterID);
     }
 
     /**

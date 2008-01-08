@@ -18,6 +18,8 @@
  */
 package net.sf.l2j.gameserver.clientpackets;
 
+import java.util.logging.Logger;
+
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.L2ClanMember;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
@@ -30,6 +32,7 @@ import net.sf.l2j.gameserver.serverpackets.PledgeReceiveMemberInfo;
  */
 public final class RequestPledgeMemberInfo extends L2GameClientPacket
 {
+    protected static final Logger _log = Logger.getLogger(RequestPledgeMemberInfo.class.getName());
     private static final String _C__D0_1D_REQUESTPLEDGEMEMBERINFO = "[C] D0:1D RequestPledgeMemberInfo";
     @SuppressWarnings("unused")
     private int _unk1;
@@ -48,8 +51,8 @@ public final class RequestPledgeMemberInfo extends L2GameClientPacket
     @Override
 	protected void runImpl()
     {
-        //System.out.println("C5: RequestPledgeMemberInfo d:"+_unk1);
-        //System.out.println("C5: RequestPledgeMemberInfo S:"+_player);
+        //_log.info("C5: RequestPledgeMemberInfo d:"+_unk1);
+        //_log.info("C5: RequestPledgeMemberInfo S:"+_player);
         L2PcInstance activeChar = getClient().getActiveChar();
         if(activeChar == null)
         	return;

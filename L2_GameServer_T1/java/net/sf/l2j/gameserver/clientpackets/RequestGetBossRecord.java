@@ -18,6 +18,8 @@
  */
 package net.sf.l2j.gameserver.clientpackets;
 
+import java.util.logging.Logger;
+
 /**
  * Format: (ch) d
  * @author  -Wooden-
@@ -25,6 +27,7 @@ package net.sf.l2j.gameserver.clientpackets;
  */
 public class RequestGetBossRecord extends L2GameClientPacket
 {
+    protected static final Logger _log = Logger.getLogger(RequestGetBossRecord.class.getName());
     private static final String _C__D0_18_REQUESTGETBOSSRECORD = "[C] D0:18 RequestGetBossRecord";
     private int _bossId;
 
@@ -41,7 +44,7 @@ public class RequestGetBossRecord extends L2GameClientPacket
 	protected void runImpl()
     {
         // TODO
-        System.out.println("C5: RequestGetBossRecord: d: "+_bossId);
+        _log.info("C5: RequestGetBossRecord: d: "+_bossId);
     }
 
     /**

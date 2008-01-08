@@ -34,7 +34,7 @@ public class ConditionElementSeed extends Condition
     public ConditionElementSeed(int[] seeds)
     {
         _requiredSeeds = seeds;
-//        if (Config.DEVELOPER) System.out.println("Required seeds: " + _requiredSeeds[0] + ", " + _requiredSeeds[1] + ", " + _requiredSeeds[2]+ ", " + _requiredSeeds[3]+ ", " + _requiredSeeds[4]);
+//        if (Config.DEVELOPER) _log.info("Required seeds: " + _requiredSeeds[0] + ", " + _requiredSeeds[1] + ", " + _requiredSeeds[2]+ ", " + _requiredSeeds[3]+ ", " + _requiredSeeds[4]);
     }
 
     ConditionElementSeed(int fire, int water, int wind, int various, int any)
@@ -59,7 +59,7 @@ public class ConditionElementSeed extends Condition
             else return false;
         }
 
-//        if (Config.DEVELOPER) System.out.println("Seeds: " + Seeds[0] + ", " + Seeds[1] + ", " + Seeds[2]);
+//        if (Config.DEVELOPER) _log.info("Seeds: " + Seeds[0] + ", " + Seeds[1] + ", " + Seeds[2]);
         if (_requiredSeeds[3] > 0)
         {
             int count = 0;

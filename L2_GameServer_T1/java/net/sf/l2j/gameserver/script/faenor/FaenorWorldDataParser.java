@@ -45,7 +45,8 @@ public class FaenorWorldDataParser extends FaenorParser
     @Override
 	public void parseScript(Node eventNode, ScriptContext context)
     {
-        if (Config.DEBUG) System.out.println("Parsing WorldData");
+        if (Config.DEBUG) 
+            _log.info("Parsing WorldData");
 
         for (Node node = eventNode.getFirstChild(); node != null; node = node.getNextSibling()) {
 
@@ -70,7 +71,7 @@ public class FaenorWorldDataParser extends FaenorParser
 
     private void parsePetData(Node petNode, ScriptContext context)
     {
-        //if (Config.DEBUG) System.out.println("Parsing PetData.");
+        //if (Config.DEBUG) _log.info("Parsing PetData.");
 
         PetData petData = new PetData();
 
@@ -100,7 +101,7 @@ public class FaenorWorldDataParser extends FaenorParser
 
     private void parseStat(Node stat, PetData petData)
     {
-        //if (Config.DEBUG) System.out.println("Parsing Pet Statistic.");
+        //if (Config.DEBUG) _log.info("Parsing Pet Statistic.");
 
         try
         {

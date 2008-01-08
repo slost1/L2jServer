@@ -250,7 +250,7 @@ public abstract class IdFactory
             result.next();
             int size = result.getInt(1);
             int[] tmp_obj_ids = new int[size];
-            // System.out.println("tmp table size: " + tmp_obj_ids.length);
+            // _log.info("tmp table size: " + tmp_obj_ids.length);
             result.close();
 
             result = s.executeQuery("select object_id from temporaryObjectTable ORDER BY object_id");

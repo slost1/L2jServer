@@ -40,7 +40,7 @@ public abstract class L2GameServerPacket extends SendablePacket<L2GameClient>
 	{
 		try
 		{
-            //System.out.println(this.getType());
+            //_log.info(this.getType());
 			writeImpl();
 		}
 		catch (Throwable t)

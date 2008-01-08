@@ -1803,7 +1803,7 @@ public final class Formulas
 		}
 
 		if (Config.DEVELOPER)
-			System.out.println(skill.getName()
+			_log.info(skill.getName()
 				+ ": "
 				+ value
 				+ ", "

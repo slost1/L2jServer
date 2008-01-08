@@ -17,6 +17,8 @@
  */
 package net.sf.l2j.gameserver.model.actor.knownlist;
 
+import java.util.logging.Logger;
+
 import net.sf.l2j.gameserver.MonsterRace;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Object;
@@ -26,6 +28,7 @@ import net.sf.l2j.gameserver.serverpackets.DeleteObject;
 
 public class RaceManagerKnownList extends NpcKnownList
 {
+    protected static final Logger _log = Logger.getLogger(RaceManagerKnownList.class.getName());
     // =========================================================
     // Data Field
 
@@ -62,7 +65,7 @@ public class RaceManagerKnownList extends NpcKnownList
 
         if (object instanceof L2PcInstance)
         {
-            //System.out.println("Sending delete monsrac info.");
+            //_log.info("Sending delete monsrac info.");
             DeleteObject obj = null;
             for (int i=0; i<8; i++)
             {

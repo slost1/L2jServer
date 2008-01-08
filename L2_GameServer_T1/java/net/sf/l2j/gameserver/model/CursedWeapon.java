@@ -303,7 +303,7 @@ public class CursedWeapon
 		_player.addSkill(skill, false);
 
 		if (Config.DEBUG)
-			System.out.println("Player "+_player.getName() +" has been awarded with skill "+skill);
+			_log.info("Player "+_player.getName() +" has been awarded with skill "+skill);
 		_player.sendSkillList();
 	}
 
@@ -423,7 +423,7 @@ public class CursedWeapon
     public void saveData()
     {
     	if (Config.DEBUG)
-            System.out.println("CursedWeapon: Saving data to disk.");
+            _log.info("CursedWeapon: Saving data to disk.");
 
     	Connection con = null;
     	PreparedStatement statement = null;

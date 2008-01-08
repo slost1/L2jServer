@@ -18,6 +18,8 @@
  */
 package net.sf.l2j.gameserver.clientpackets;
 
+import java.util.logging.Logger;
+
 /**
  * Format: (ch) S
  * @author  -Wooden-
@@ -25,6 +27,7 @@ package net.sf.l2j.gameserver.clientpackets;
  */
 public final class RequestPCCafeCouponUse extends L2GameClientPacket
 {
+    protected static final Logger _log = Logger.getLogger(RequestPCCafeCouponUse.class.getName());
     private static final String _C__D0_20_REQUESTPCCAFECOUPONUSE = "[C] D0:20 RequestPCCafeCouponUse";
     private String _str;
 
@@ -42,7 +45,7 @@ public final class RequestPCCafeCouponUse extends L2GameClientPacket
 	protected void runImpl()
     {
         // TODO
-        System.out.println("C5: RequestPCCafeCouponUse: S: "+_str);
+        _log.info("C5: RequestPCCafeCouponUse: S: "+_str);
     }
 
     /**

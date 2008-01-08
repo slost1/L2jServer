@@ -18,6 +18,7 @@
  */
 package net.sf.l2j.gameserver.clientpackets;
 
+import java.util.logging.Logger;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
@@ -31,6 +32,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
  */
 public final class RequestExEnchantSkillSafe extends L2GameClientPacket
 {
+    protected static final Logger _log = Logger.getLogger(RequestExEnchantSkillSafe.class.getName());
 	private int _skillId;
 	private int _skillLvl;
 	
@@ -53,8 +55,8 @@ public final class RequestExEnchantSkillSafe extends L2GameClientPacket
         if (player == null)
         	return;
 
-        System.out.println("[T1:RequestExEnchantSkillSafe] skill id?:"+_skillId);
-        System.out.println("[T1:RequestExEnchantSkillSafe] skill lvl?:"+_skillLvl);
+        _log.info("[T1:RequestExEnchantSkillSafe] skill id?: "+_skillId);
+        _log.info("[T1:RequestExEnchantSkillSafe] skill lvl?: "+_skillLvl);
 	}
 
 	/* (non-Javadoc)

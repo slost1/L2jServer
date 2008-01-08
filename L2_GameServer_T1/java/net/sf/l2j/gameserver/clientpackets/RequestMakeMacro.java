@@ -18,6 +18,8 @@
  */
 package net.sf.l2j.gameserver.clientpackets;
 
+import java.util.logging.Logger;
+
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.model.L2Macro;
 import net.sf.l2j.gameserver.model.L2Macro.L2MacroCmd;
@@ -27,6 +29,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 public final class RequestMakeMacro extends L2GameClientPacket
 {
+    protected static final Logger _log = Logger.getLogger(RequestMakeMacro.class.getName());
 	private L2Macro _macro;
 	private int _commandsLenght = 0;
 
@@ -66,7 +69,9 @@ public final class RequestMakeMacro extends L2GameClientPacket
 		if (_count > MAX_MACRO_LENGTH) _count = MAX_MACRO_LENGTH;
 
 		L2MacroCmd[] commands = new L2MacroCmd[_count];
-        if (Config.DEBUG) System.out.println("Make macro id:"+_id+"\tname:"+_name+"\tdesc:"+_desc+"\tacronym:"+_acronym+"\ticon:"+_icon+"\tcount:"+_count);
+		
+        if (Config.DEBUG) 
+            _log.info("Make macro id:"+_id+"\tname:"+_name+"\tdesc:"+_desc+"\tacronym:"+_acronym+"\ticon:"+_icon+"\tcount:"+_count);
         for (int i = 0; i < _count; i++)
         {
             int entry      = readC();
@@ -76,7 +81,8 @@ public final class RequestMakeMacro extends L2GameClientPacket
             String command = readS();
             _commandsLenght += command.length();
 			commands[i] = new L2MacroCmd(entry, type, d1, d2, command);
-            if (Config.DEBUG) System.out.println("entry:"+entry+"\ttype:"+type+"\td1:"+d1+"\td2:"+d2+"\tcommand:"+command);
+            if (Config.DEBUG)
+                _log.info("entry:"+entry+"\ttype:"+type+"\td1:"+d1+"\td2:"+d2+"\tcommand:"+command);
         }
 		_macro = new L2Macro(_id, _icon, _name, _desc, _acronym, commands);
 	}

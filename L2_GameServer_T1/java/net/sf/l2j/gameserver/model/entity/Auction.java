@@ -170,7 +170,7 @@ public class Auction
         }
         catch (Exception e)
         {
-            System.out.println("Exception: Auction.load(): " + e.getMessage());
+            _log.warning("Exception: Auction.load(): " + e.getMessage());
             e.printStackTrace();
         }
         finally {try { con.close(); } catch (Exception e) {}}
@@ -205,7 +205,7 @@ public class Auction
         }
         catch (Exception e)
         {
-            System.out.println("Exception: Auction.loadBid(): " + e.getMessage());
+            _log.warning("Exception: Auction.loadBid(): " + e.getMessage());
             e.printStackTrace();
         }
         finally {try { con.close(); } catch (Exception e) {}}

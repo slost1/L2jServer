@@ -231,7 +231,7 @@ public class L2LoginServer
 		}
 		else
 		{
-		    System.out.println("Telnet server is currently disabled.");
+		    _log.info("Telnet server is currently disabled.");
 		}
 
 		try

@@ -18,6 +18,8 @@
  */
 package net.sf.l2j.gameserver.model.entity;
 
+import java.util.logging.Logger;
+
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.Announcements;
 import net.sf.l2j.gameserver.ThreadPoolManager;
@@ -27,6 +29,8 @@ import net.sf.l2j.gameserver.ThreadPoolManager;
  */
 public class TvTManager implements Runnable
 {
+    protected static final Logger _log = Logger.getLogger(TvTManager.class.getName());
+    
 	/** The one and only instance of this class<br> */
 	private static TvTManager _instance = null;
 
@@ -38,10 +42,10 @@ public class TvTManager implements Runnable
 		if (Config.TVT_EVENT_ENABLED)
 		{
 			ThreadPoolManager.getInstance().scheduleGeneral(this, 0);
-			System.out.println("TvTEventEngine[TvTManager.TvTManager()]: Started.");
+			_log.info("TvTEventEngine[TvTManager.TvTManager()]: Started.");
 		}
 		else
-			System.out.println("TvTEventEngine[TvTManager.TvTManager()]: Engine is disabled.");
+			_log.info("TvTEventEngine[TvTManager.TvTManager()]: Engine is disabled.");
 	}
 
 	/**
@@ -73,7 +77,7 @@ public class TvTManager implements Runnable
 			if (!TvTEvent.startParticipation())
 			{
 				Announcements.getInstance().announceToAll("TvT Event: Event was canceled.");
-				System.out.println("TvTEventEngine[TvTManager.run()]: Error spawning event npc for participation.");
+				_log.warning("TvTEventEngine[TvTManager.run()]: Error spawning event npc for participation.");
 				continue;
 			}
 			else
@@ -84,7 +88,7 @@ public class TvTManager implements Runnable
 			if (!TvTEvent.startFight())
 			{
 				Announcements.getInstance().announceToAll("TvT Event: Event canceled due to lack of Participation.");
-				System.out.println("TvTEventEngine[TvTManager.run()]: Lack of registration, abort event.");
+				_log.info("TvTEventEngine[TvTManager.run()]: Lack of registration, abort event.");
 				continue;
 			}
 			else

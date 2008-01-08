@@ -48,7 +48,7 @@ public class ItemsAutoDestroy
     {
         if (_instance == null)
         {
-			System.out.println("Initializing ItemsAutoDestroy.");
+			_log.info("Initializing ItemsAutoDestroy.");
             _instance = new ItemsAutoDestroy();
         }
         return _instance;

@@ -20,6 +20,7 @@ package net.sf.l2j.gameserver.datatables;
 
 import java.util.Date;
 import java.util.List;
+//import java.util.logging.Logger;
 
 import javolution.util.FastList;
 import net.sf.l2j.gameserver.script.DateRange;
@@ -114,7 +115,7 @@ public class EventDroplist
 	    for (DateDrop drop : _allNpcDateDrops)
 	    {
 	        Date currentDate = new Date();
-	        //System.out.println("From: "+drop.from+" To: "+drop.to+" Now: "+ currentDate);
+	        //_log.info("From: "+drop.from+" To: "+drop.to+" Now: "+ currentDate);
 	        if (drop.dateRange.isWithinRange(currentDate))
 	        {
 	            list.add(drop);

@@ -97,7 +97,7 @@ public class CursedWeaponsManager
 	private final void load()
 	{
 		if (Config.DEBUG)
-    		System.out.print("  Parsing ... ");
+    		_log.info("  Parsing ... ");
         try
         {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -108,7 +108,7 @@ public class CursedWeaponsManager
             if (!file.exists())
             {
         		if (Config.DEBUG)
-            		System.out.println("NO FILE");
+            		_log.info("NO FILE");
             	return;
             }
 
@@ -168,21 +168,21 @@ public class CursedWeaponsManager
             }
 
         	if (Config.DEBUG)
-        		System.out.println("OK");
+        		_log.info("OK");
         }
         catch (Exception e)
         {
             _log.log(Level.SEVERE, "Error parsing cursed weapons file.", e);
 
             if (Config.DEBUG)
-        		System.out.println("ERROR");
+        		_log.warning("ERROR");
             return ;
         }
 	}
 	private final void restore()
 	{
     	if (Config.DEBUG)
-    		System.out.print("  Restoring ... ");
+    		_log.info("  Restoring ... ");
 		java.sql.Connection con = null;
 		try
 		{
@@ -214,14 +214,14 @@ public class CursedWeaponsManager
 			statement.close();
 
 	    	if (Config.DEBUG)
-	    		System.out.println("OK");
+	    		_log.info("OK");
 		}
 		catch (Exception e)
 		{
 			_log.warning("Could not restore CursedWeapons data: " + e);
 
 	    	if (Config.DEBUG)
-	    		System.out.println("ERROR");
+	    		_log.warning("ERROR");
 			return;
 		}
 		finally
@@ -232,7 +232,7 @@ public class CursedWeaponsManager
 	private final void controlPlayers()
 	{
     	if (Config.DEBUG)
-    		System.out.print("  Checking players ... ");
+    		_log.info("  Checking players ... ");
 
 		java.sql.Connection con = null;
 		try
@@ -311,7 +311,7 @@ public class CursedWeaponsManager
 			_log.warning("Could not check CursedWeapons data: " + e);
 
 	    	if (Config.DEBUG)
-	    		System.out.println("ERROR");
+	    		_log.warning("ERROR");
 			return;
 		}
 		finally
@@ -320,7 +320,7 @@ public class CursedWeaponsManager
 		}
 
     	if (Config.DEBUG)
-    		System.out.println("DONE");
+    		_log.info("DONE");
 	}
 
 

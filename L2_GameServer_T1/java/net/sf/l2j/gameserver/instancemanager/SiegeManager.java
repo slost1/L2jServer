@@ -52,7 +52,7 @@ public class SiegeManager
     {
         if (_instance == null)
         {
-    		System.out.println("Initializing SiegeManager");
+    		_log.info("Initializing SiegeManager");
         	_instance = new SiegeManager();
         	_instance.load();
         }
@@ -146,7 +146,7 @@ public class SiegeManager
         }
         catch (Exception e)
         {
-            System.out.println("Exception: checkIsRegistered(): " + e.getMessage());
+            _log.warning("Exception: checkIsRegistered(): " + e.getMessage());
             e.printStackTrace();
         }
         finally

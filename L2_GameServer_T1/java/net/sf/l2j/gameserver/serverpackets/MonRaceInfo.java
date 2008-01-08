@@ -18,6 +18,8 @@
  */
 package net.sf.l2j.gameserver.serverpackets;
 
+import java.util.logging.Logger;
+
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 
 
@@ -33,6 +35,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
  */
 public class MonRaceInfo extends L2GameServerPacket
 {
+    protected static final Logger _log = Logger.getLogger(MonRaceInfo.class.getName());
     private static final String _S__DD_MonRaceInfo = "[S] e3 MonRaceInfo";
     private int _unknown1;
     private int _unknown2;
@@ -67,7 +70,7 @@ public class MonRaceInfo extends L2GameServerPacket
 
         for (int i=0; i<8; i++)
         {
-            //System.out.println("MOnster "+(i+1)+" npcid "+_monsters[i].getNpcTemplate().getNpcId());
+            //_log.info("MOnster "+(i+1)+" npcid "+_monsters[i].getNpcTemplate().getNpcId());
             writeD(_monsters[i].getObjectId());                         //npcObjectID
             writeD(_monsters[i].getTemplate().npcId+1000000);   //npcID
             writeD(14107);                                              //origin X

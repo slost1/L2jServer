@@ -17,18 +17,21 @@
  */
 package net.sf.l2j.gameserver.instancemanager;
 
+import java.util.logging.Logger;
+
 import javolution.util.FastList;
 import net.sf.l2j.gameserver.model.zone.type.L2FishingZone;
 
 public class FishingZoneManager
 {
+    protected static final Logger _log = Logger.getLogger(FishingZoneManager.class.getName());
 	// =========================================================
 	private static FishingZoneManager _instance;
 	public static final FishingZoneManager getInstance()
 	{
 		if (_instance == null)
 		{
-			System.out.println("Initializing FishingZoneManager");
+			_log.info("Initializing FishingZoneManager");
 			_instance = new FishingZoneManager();
 		}
 		return _instance;

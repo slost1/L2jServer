@@ -20,6 +20,7 @@ package net.sf.l2j.gameserver.instancemanager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javolution.util.FastMap;
 import net.sf.l2j.L2DatabaseFactory;
@@ -33,6 +34,8 @@ import net.sf.l2j.gameserver.model.entity.ClanHall;
  */
 public class ClanHallManager
 {
+    protected static final Logger _log = Logger.getLogger(ClanHallManager.class.getName());
+    
 	private static ClanHallManager _instance;
 
 	private Map<Integer, ClanHall> _clanHall;
@@ -43,7 +46,7 @@ public class ClanHallManager
 	{
 		if (_instance == null)
 		{
-			System.out.println("Initializing ClanHallManager");
+			_log.info("Initializing ClanHallManager");
 			_instance = new ClanHallManager();
 		}
 		return _instance;
@@ -102,16 +105,22 @@ public class ClanHallManager
             	}
             }
             statement.close();
-            System.out.println("Loaded: "+getClanHalls().size() +" clan halls");
-            System.out.println("Loaded: "+getFreeClanHalls().size() +" free clan halls");
+            _log.info("Loaded: "+getClanHalls().size() +" clan halls");
+            _log.info("Loaded: "+getFreeClanHalls().size() +" free clan halls");
             _loaded = true;
         }
         catch (Exception e)
         {
-            System.out.println("Exception: ClanHallManager.load(): " + e.getMessage());
+            _log.warning("Exception: ClanHallManager.load(): " + e.getMessage());
             e.printStackTrace();
         }
-        finally {try { con.close(); } catch (Exception e) {}}
+        finally {
+                try { 
+                    con.close(); 
+                    } catch (Exception e) {
+                        
+                    }
+                }
 	}
 
 	/** Get Map with all FreeClanHalls */

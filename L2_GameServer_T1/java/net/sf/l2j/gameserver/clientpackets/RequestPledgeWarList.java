@@ -18,6 +18,8 @@
  */
 package net.sf.l2j.gameserver.clientpackets;
 
+import java.util.logging.Logger;
+
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.PledgeReceiveWarList;
 
@@ -28,6 +30,7 @@ import net.sf.l2j.gameserver.serverpackets.PledgeReceiveWarList;
  */
 public final class RequestPledgeWarList extends L2GameClientPacket
 {
+    protected static final Logger _log = Logger.getLogger(RequestPledgeWarList.class.getName());
     private static final String _C__D0_1E_REQUESTPLEDGEWARLIST = "[C] D0:1E RequestPledgeWarList";
     @SuppressWarnings("unused")
     private int _unk1;
@@ -47,8 +50,8 @@ public final class RequestPledgeWarList extends L2GameClientPacket
     @Override
 	protected void runImpl()
     {
-        //System.out.println("C5: RequestPledgeWarList d:"+_unk1);
-        //System.out.println("C5: RequestPledgeWarList d:"+_tab);
+        //_log.info("C5: RequestPledgeWarList d:"+_unk1);
+        //_log.info("C5: RequestPledgeWarList d:"+_tab);
         L2PcInstance activeChar = getClient().getActiveChar();
         if(activeChar == null)
         	return;

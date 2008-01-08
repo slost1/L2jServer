@@ -201,7 +201,7 @@ public class AugmentationData
 			if (!file.exists())
 			{
 				if (Config.DEBUG)
-					System.out.println("The augmentation skillmap file is missing.");
+					_log.info("The augmentation skillmap file is missing.");
 				return;
 			}
 
@@ -262,7 +262,7 @@ public class AugmentationData
 				if (!file.exists())
 				{
 					if (Config.DEBUG)
-						System.out.println("The augmentation stat data file "+i+" is missing.");
+						_log.info("The augmentation stat data file "+i+" is missing.");
 					return;
 				}
 

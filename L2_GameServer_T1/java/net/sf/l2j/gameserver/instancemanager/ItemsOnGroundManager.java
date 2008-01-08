@@ -146,9 +146,9 @@ public class ItemsOnGroundManager
             result.close();
             s.close();
             if (count > 0)
-            System.out.println("ItemsOnGroundManager: restored " + count + " items.");
+            _log.info("ItemsOnGroundManager: restored " + count + " items.");
             else
-            	System.out.println("Initializing ItemsOnGroundManager.");
+            	_log.info("Initializing ItemsOnGroundManager.");
             } catch (Exception e) {
                 _log.log(Level.SEVERE,"error while loading ItemsOnGround " + e);
                 e.printStackTrace();

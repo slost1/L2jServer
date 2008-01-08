@@ -501,7 +501,7 @@ public class ClanHall
         }
         catch (Exception e)
         {
-            System.out.println("Exception: updateOwnerInDB(L2Clan clan): " + e.getMessage());
+            _log.warning("Exception: updateOwnerInDB(L2Clan clan): " + e.getMessage());
             e.printStackTrace();
         }
         finally

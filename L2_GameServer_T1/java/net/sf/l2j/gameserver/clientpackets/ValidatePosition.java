@@ -87,8 +87,8 @@ public class ValidatePosition extends L2GameClientPacket
             	int dys = (_y - activeChar._lastClientPosition.y);
             	int dist = (int)Math.sqrt(dxs*dxs + dys*dys);
             	int heading = dist > 0 ? (int)(Math.atan2(-dys/dist, -dxs/dist) * 10430.378350470452724949566316381) + 32768 : 0;
-                System.out.println("Client X:" + _x + ", Y:" + _y + ", Z:" + _z + ", H:" + _heading + ", Dist:" + activeChar.getLastClientDistance(_x, _y, _z));
-                System.out.println("Server X:" + realX + ", Y:" + realY + ", Z:" + realZ + ", H:" + activeChar.getHeading() + ", Dist:" + activeChar.getLastServerDistance(realX, realY, realZ));
+                _log.info("Client X:" + _x + ", Y:" + _y + ", Z:" + _z + ", H:" + _heading + ", Dist:" + activeChar.getLastClientDistance(_x, _y, _z));
+                _log.info("Server X:" + realX + ", Y:" + realY + ", Z:" + realZ + ", H:" + activeChar.getHeading() + ", Dist:" + activeChar.getLastServerDistance(realX, realY, realZ));
             }
         	*/
 
@@ -98,7 +98,9 @@ public class ValidatePosition extends L2GameClientPacket
                     && (!activeChar.isMoving() // character is not moving, take coordinates from client
                     || !activeChar.validateMovementHeading(_heading))) // Heading changed on client = possible obstacle
                 {
-                    if (Config.DEVELOPER) System.out.println(activeChar.getName() + ": Synchronizing position Client --> Server" + (activeChar.isMoving()?" (collision)":" (stay sync)"));
+                    if (Config.DEVELOPER)
+                        _log.info(activeChar.getName() + ": Synchronizing position Client --> Server" + (activeChar.isMoving()?" (collision)":" (stay sync)"));
+                    
                     if (diffSq < 2500) // 50*50 - attack won't work fluently if even small differences are corrected
                     	activeChar.setXYZ(realX, realY, _z);
                     else
@@ -108,7 +110,8 @@ public class ValidatePosition extends L2GameClientPacket
                 else if ((Config.COORD_SYNCHRONIZE & 2) == 2
                         && diffSq > 10000) // more than can be considered to be result of latency
                 {
-                    if (Config.DEVELOPER) System.out.println(activeChar.getName() + ": Synchronizing position Server --> Client");
+                    if (Config.DEVELOPER)
+                        _log.info(activeChar.getName() + ": Synchronizing position Server --> Client");
                     if (activeChar.isInBoat())
                     {
                         sendPacket(new ValidateLocationInVehicle(activeChar));

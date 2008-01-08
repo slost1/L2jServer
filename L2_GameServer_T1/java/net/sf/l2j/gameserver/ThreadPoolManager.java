@@ -26,6 +26,7 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Logger;
 
 import javolution.text.TextBuilder;
 import net.sf.l2j.Config;
@@ -66,6 +67,8 @@ import org.mmocore.network.ReceivablePacket;
  */
 public class ThreadPoolManager
 {
+    protected static final Logger _log = Logger.getLogger(ThreadPoolManager.class.getName());
+    
 	private static ThreadPoolManager _instance;
 	
 	public ScheduledThreadPoolExecutor _effectsScheduledThreadPool;
@@ -306,7 +309,7 @@ public class ThreadPoolManager
 			_ioPacketsThreadPool.shutdown();
 			_generalThreadPool.shutdown();
 			_aiThreadPool.shutdown();
-			System.out.println("All ThreadPools are now stoped");
+			_log.info("All ThreadPools are now stoped");
 
 		}
 		catch (InterruptedException e)

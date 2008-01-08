@@ -117,7 +117,11 @@ public class AdminEventEngine implements IAdminCommandHandler {
                 adminReply.setHtml(replyMSG.toString());
                 activeChar.sendPacket(adminReply);
                 }
-                catch (Exception e) {System.out.println(e);}
+                catch (Exception e) {
+                    
+                    e.printStackTrace();
+                    
+                    }
 
         }
         else if (command.startsWith("admin_event_del"))
@@ -153,7 +157,10 @@ public class AdminEventEngine implements IAdminCommandHandler {
                 p.println(tempBuffer);
                 file.close();
             }
-            catch (Exception e) {System.out.println(e);}
+            catch (Exception e) {
+                e.printStackTrace();
+                }
+            
             tempBuffer = "";
             tempName = "";
             showMainPage(activeChar);
@@ -207,7 +214,9 @@ public class AdminEventEngine implements IAdminCommandHandler {
             destroyEventNpcs();
             npcsDeleted = true;
 
-            } catch(Exception e) {System.out.println(e);}
+            } catch(Exception e) {
+                e.printStackTrace();
+                }
             showEventControl(activeChar);
         }
         else if (command.startsWith("admin_event_control_teleport"))

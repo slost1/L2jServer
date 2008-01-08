@@ -18,6 +18,8 @@
  */
 package net.sf.l2j.gameserver.model.entity;
 
+import java.util.logging.Logger;
+
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.datatables.DoorTable;
 import net.sf.l2j.gameserver.datatables.ItemTable;
@@ -56,6 +58,7 @@ public class TvTEvent
 		REWARDING
 	}
 
+	protected static final Logger _log = Logger.getLogger(TvTEvent.class.getName());
 	/**	The teams of the TvTEvent<br> */
 	private static TvTEventTeam[] _teams = new TvTEventTeam[2]; // event only allow max 2 teams
 	/** The state of the TvTEvent<br> */
@@ -93,7 +96,7 @@ public class TvTEvent
 
 		if (tmpl == null)
 		{
-			System.out.println("TvTEventEngine[TvTEvent.startParticipation()]: L2NpcTemplate is a NullPointer -> Invalid npc id in configs?");
+			_log.warning("TvTEventEngine[TvTEvent.startParticipation()]: L2NpcTemplate is a NullPointer -> Invalid npc id in configs?");
 			return false;
 		}
 
@@ -120,7 +123,7 @@ public class TvTEvent
         }
         catch (Exception e)
         {
-            System.out.println("TvTEventEngine[TvTEvent.startParticipation()]: exception: " + e);
+            _log.warning("TvTEventEngine[TvTEvent.startParticipation()]: exception: " + e);
             return false;
         }
 

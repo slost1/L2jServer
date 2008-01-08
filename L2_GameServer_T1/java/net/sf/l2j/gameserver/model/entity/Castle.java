@@ -465,7 +465,7 @@ public class Castle
         }
         catch (Exception e)
         {
-            System.out.println("Exception: loadCastleData(): " + e.getMessage());
+            _log.warning("Exception: loadCastleData(): " + e.getMessage());
             e.printStackTrace();
         }
         finally {try { con.close(); } catch (Exception e) {}}
@@ -510,7 +510,7 @@ public class Castle
         }
         catch (Exception e)
         {
-            System.out.println("Exception: loadCastleDoor(): " + e.getMessage());
+            _log.warning("Exception: loadCastleDoor(): " + e.getMessage());
             e.printStackTrace();
         }
         finally {try { con.close(); } catch (Exception e) {}}
@@ -536,7 +536,7 @@ public class Castle
         }
         catch (Exception e)
         {
-            System.out.println("Exception: loadCastleDoorUpgrade(): " + e.getMessage());
+            _log.warning("Exception: loadCastleDoorUpgrade(): " + e.getMessage());
             e.printStackTrace();
         }
         finally {try { con.close(); } catch (Exception e) {}}
@@ -555,7 +555,7 @@ public class Castle
         }
         catch (Exception e)
         {
-            System.out.println("Exception: removeDoorUpgrade(): " + e.getMessage());
+            _log.warning("Exception: removeDoorUpgrade(): " + e.getMessage());
             e.printStackTrace();
         }
         finally {try { con.close(); } catch (Exception e) {}}
@@ -577,7 +577,7 @@ public class Castle
         }
         catch (Exception e)
         {
-            System.out.println("Exception: saveDoorUpgrade(int doorId, int hp, int pDef, int mDef): " + e.getMessage());
+            _log.warning("Exception: saveDoorUpgrade(int doorId, int hp, int pDef, int mDef): " + e.getMessage());
             e.printStackTrace();
         }
         finally
@@ -626,7 +626,7 @@ public class Castle
         }
         catch (Exception e)
         {
-            System.out.println("Exception: updateOwnerInDB(L2Clan clan): " + e.getMessage());
+            _log.warning("Exception: updateOwnerInDB(L2Clan clan): " + e.getMessage());
             e.printStackTrace();
         }
         finally

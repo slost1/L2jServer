@@ -22,6 +22,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Calendar;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javolution.util.FastList;
 import net.sf.l2j.L2DatabaseFactory;
@@ -55,6 +56,7 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
 public class Siege
 {
+    protected static final Logger _log = Logger.getLogger(Siege.class.getName());
     // ==========================================================================================
     // Message to add/check
     //  id=17  msg=[Castle siege has begun.] c3_attr1=[SystemMsg_k.17]
@@ -576,7 +578,7 @@ public class Siege
         }
         catch (Exception e)
         {
-            System.out.println("Exception: clearSiegeClan(): " + e.getMessage());
+            _log.warning("Exception: clearSiegeClan(): " + e.getMessage());
             e.printStackTrace();
         }
         finally
@@ -607,7 +609,7 @@ public class Siege
         }
         catch (Exception e)
         {
-            System.out.println("Exception: clearSiegeWaitingClan(): " + e.getMessage());
+            _log.warning("Exception: clearSiegeWaitingClan(): " + e.getMessage());
             e.printStackTrace();
         }
         finally
@@ -821,7 +823,7 @@ public class Siege
     {
         correctSiegeDateTime();
 
-        System.out.println("Siege of " + getCastle().getName() + ": "
+        _log.info("Siege of " + getCastle().getName() + ": "
             + getCastle().getSiegeDate().getTime());
 
         loadSiegeClan();
@@ -999,7 +1001,7 @@ public class Siege
         }
         catch (Exception e)
         {
-            System.out.println("Exception: loadSiegeClan(): " + e.getMessage());
+            _log.warning("Exception: loadSiegeClan(): " + e.getMessage());
             e.printStackTrace();
         }
         finally
@@ -1089,7 +1091,7 @@ public class Siege
         }
         catch (Exception e)
         {
-            System.out.println("Exception: saveSiegeDate(): " + e.getMessage());
+            _log.warning("Exception: saveSiegeDate(): " + e.getMessage());
             e.printStackTrace();
         }
         finally
@@ -1169,7 +1171,7 @@ public class Siege
         }
         catch (Exception e)
         {
-            System.out.println("Exception: saveSiegeClan(L2Clan clan, int typeId, boolean isUpdateRegistration): "
+            _log.warning("Exception: saveSiegeClan(L2Clan clan, int typeId, boolean isUpdateRegistration): "
                 + e.getMessage());
             e.printStackTrace();
         }

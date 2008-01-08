@@ -84,7 +84,7 @@ public class MonsterRace
             {
                 e.printStackTrace();
             }
-            //System.out.println("Monster "+i+" is id: "+(id+random));
+            //_log.info("Monster "+i+" is id: "+(id+random));
         }
         newSpeeds();
     }

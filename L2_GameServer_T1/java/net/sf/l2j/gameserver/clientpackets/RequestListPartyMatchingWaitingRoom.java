@@ -18,6 +18,8 @@
  */
 package net.sf.l2j.gameserver.clientpackets;
 
+import java.util.logging.Logger;
+
 /**
  * Format: (ch)
  * this is just a trigger : no data
@@ -26,6 +28,7 @@ package net.sf.l2j.gameserver.clientpackets;
  */
 public class RequestListPartyMatchingWaitingRoom extends L2GameClientPacket
 {
+    protected static final Logger _log = Logger.getLogger(RequestListPartyMatchingWaitingRoom.class.getName());
     private static final String _C__D0_16_REQUESTLISTPARTYMATCHINGWAITINGROOM = "[C] D0:16 RequestListPartyMatchingWaitingRoom";
 
     @Override
@@ -41,7 +44,7 @@ public class RequestListPartyMatchingWaitingRoom extends L2GameClientPacket
 	protected void runImpl()
     {
         // TODO
-        System.out.println("C5: RequestListPartyMatchingWaitingRoom");
+        _log.info("C5: RequestListPartyMatchingWaitingRoom");
     }
 
     /**

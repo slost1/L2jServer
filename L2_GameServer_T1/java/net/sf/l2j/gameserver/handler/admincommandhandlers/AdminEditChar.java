@@ -192,7 +192,7 @@ public class AdminEditChar implements IAdminCommandHandler
 			catch (StringIndexOutOfBoundsException e)
 			{
 				if (Config.DEVELOPER )
-					System.out.println("Set karma error: "+e);
+					_log.warning("Set karma error: "+e);
 				activeChar.sendMessage("Usage: //setkarma <new_karma_value>");
 			}
 		}

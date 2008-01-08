@@ -18,6 +18,9 @@
  */
 package net.sf.l2j.gameserver.handler.admincommandhandlers;
 
+
+import java.util.logging.Logger;
+
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
 import net.sf.l2j.gameserver.model.GMAudit;
@@ -39,7 +42,7 @@ import net.sf.l2j.gameserver.serverpackets.UserInfo;
  */
 public class AdminEnchant implements IAdminCommandHandler
 {
-   //private static Logger _log = Logger.getLogger(AdminEnchant.class.getName());
+    private static Logger _log = Logger.getLogger(AdminEnchant.class.getName());
     private static final String[] ADMIN_COMMANDS = {"admin_seteh",//6
                                               "admin_setec",//10
                                               "admin_seteg",//9
@@ -113,12 +116,14 @@ public class AdminEnchant implements IAdminCommandHandler
                 }
                 catch (StringIndexOutOfBoundsException e)
                 {
-                    if (Config.DEVELOPER) System.out.println("Set enchant error: " + e);
+                    if (Config.DEVELOPER) 
+                        _log.warning("Set enchant error: " + e);
                     activeChar.sendMessage("Please specify a new enchant value.");
                 }
                 catch (NumberFormatException e)
                 {
-                    if (Config.DEVELOPER) System.out.println("Set enchant error: " + e);
+                    if (Config.DEVELOPER) 
+                        _log.warning("Set enchant error: " + e);
                     activeChar.sendMessage("Please specify a valid new enchant value.");
                 }
             }

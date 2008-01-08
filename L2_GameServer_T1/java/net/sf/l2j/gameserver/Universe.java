@@ -329,7 +329,7 @@ public class Universe implements java.io.Serializable
         {
             e.printStackTrace();
         }
-        System.out.println("Total: " + total);
+        _log.info("Total: " + total);
     }
 
     /**
@@ -425,7 +425,7 @@ public class Universe implements java.io.Serializable
         public void run()
         {
             int size = _coordList.size();
-            //System.out.println("Univere Map has " + _map.size() + " nodes.");
+            //_log.info("Univere Map has " + _map.size() + " nodes.");
             if (size > 100000)
             {
                 flush();
@@ -435,7 +435,7 @@ public class Universe implements java.io.Serializable
 
     public void flush()
     {
-        //System.out.println("Size of dump: "+coordList.size());
+        //_log.info("Size of dump: "+coordList.size());
         List<Coord> oldMap = _coordList;
         _coordList = new LinkedList<Coord>();
         int size = oldMap.size();
@@ -459,7 +459,7 @@ public class Universe implements java.io.Serializable
             FileOutputStream fos = new FileOutputStream("data/universe" + pad + ".fin"); // Save to file
             DataOutputStream data = new DataOutputStream(fos);
             int count = _map.size();
-            //System.out.println("Size of dump: "+count);
+            //_log.info("Size of dump: "+count);
             data.writeInt(count);
 
             if (_map != null)

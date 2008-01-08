@@ -82,7 +82,7 @@ public final class PetitionManager
 	{
 		if (_instance == null)
 		{
-			System.out.println("Initializing PetitionManager");
+			_log.info("Initializing PetitionManager");
 			_instance = new PetitionManager();
 		}
 

@@ -3318,7 +3318,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	public void setProtection(boolean protect)
 	{
 		if (Config.DEVELOPER && (protect || _protectEndTime > 0))
-            System.out.println(getName() + ": Protection " + (protect?"ON " + (GameTimeController.getGameTicks() + Config.PLAYER_SPAWN_PROTECTION * GameTimeController.TICKS_PER_SECOND) :"OFF") + " (currently " + GameTimeController.getGameTicks() + ")");
+            _log.warning(getName() + ": Protection " + (protect?"ON " + (GameTimeController.getGameTicks() + Config.PLAYER_SPAWN_PROTECTION * GameTimeController.TICKS_PER_SECOND) :"OFF") + " (currently " + GameTimeController.getGameTicks() + ")");
 
 		_protectEndTime = protect ? GameTimeController.getGameTicks() + Config.PLAYER_SPAWN_PROTECTION * GameTimeController.TICKS_PER_SECOND : 0;
 	}
@@ -9295,7 +9295,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		double dz = m._zDestination - getZ();
 		int distPassed = (int)getStat().getMoveSpeed() * (gameTicks - m._moveTimestamp) / GameTimeController.TICKS_PER_SECOND;
 		double distFraction = (distPassed) / Math.sqrt(dx*dx + dy*dy + dz*dz);
-//		if (Config.DEVELOPER) System.out.println("Move Ticks:" + (gameTicks - m._moveTimestamp) + ", distPassed:" + distPassed + ", distFraction:" + distFraction);
+//		if (Config.DEVELOPER) _log.warning("Move Ticks:" + (gameTicks - m._moveTimestamp) + ", distPassed:" + distPassed + ", distFraction:" + distFraction);
 		
 		if (distFraction > 1)
 		{

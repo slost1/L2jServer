@@ -1059,7 +1059,7 @@ public class SevenSignsFestival implements SpawnListener
     	PreparedStatement statement = null;
 
     	if (Config.DEBUG)
-            System.out.println("SevenSignsFestival: Saving festival data to disk.");
+            _log.info("SevenSignsFestival: Saving festival data to disk.");
 
         try
         {

@@ -18,6 +18,7 @@
 package net.sf.l2j.loginserver;
 
 import java.nio.ByteBuffer;
+import java.util.logging.Logger;
 
 import net.sf.l2j.loginserver.L2LoginClient.LoginClientState;
 import net.sf.l2j.loginserver.clientpackets.AuthGameGuard;
@@ -35,6 +36,8 @@ import org.mmocore.network.ReceivablePacket;
  */
 public final class L2LoginPacketHandler implements IPacketHandler<L2LoginClient>
 {
+    protected static final Logger _log = Logger.getLogger(L2LoginPacketHandler.class.getName());
+    
 	/**
 	 * @see com.l2jserver.mmocore.network.IPacketHandler#handlePacket(java.nio.ByteBuffer, com.l2jserver.mmocore.interfaces.MMOClient)
 	 */
@@ -87,6 +90,6 @@ public final class L2LoginPacketHandler implements IPacketHandler<L2LoginClient>
 
 	private void debugOpcode(int opcode, LoginClientState state)
 	{
-		System.out.println("Unknown Opcode: "+opcode+" for state: "+state.name());
+		_log.info("Unknown Opcode: "+opcode+" for state: "+state.name());
 	}
 }
