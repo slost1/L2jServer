@@ -5128,6 +5128,7 @@ public abstract class L2Character extends L2Object
 			switch (weapon.getItemType())
 			{
 			case BOW:
+            		case CROSSBOW:
 				atkSpd = getStat().getPAtkSpd();
 				return (int)(1500*345/atkSpd);
 			case DAGGER:
@@ -5158,6 +5159,7 @@ public abstract class L2Character extends L2Object
 		switch (weapon.getItemType())
 		{
 			case BOW:
+            		case CROSSBOW:
 				return (int)(reuse*345/atkSpd);
 			default:
 				return (int)(reuse*312/atkSpd);

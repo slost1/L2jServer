@@ -93,7 +93,7 @@ public final class L2Weapon  extends L2Item
 		_shieldDef       = set.getInteger("shield_def");
 		_shieldDefRate   = set.getDouble("shield_def_rate");
 		_atkSpeed        = set.getInteger("atk_speed");
-		_atkReuse        = set.getInteger("atk_reuse", type==L2WeaponType.BOW ? 1500 : 0);
+		_atkReuse        = set.getInteger("atk_reuse", (type==L2WeaponType.BOW) ? 1500 : (type==L2WeaponType.CROSSBOW) ? 1200 : 0);
 		_mpConsume       = set.getInteger("mp_consume");
 		_mDam            = set.getInteger("m_dam");
 
