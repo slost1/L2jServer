@@ -61,7 +61,7 @@ public class PackageSendableList extends L2GameServerPacket
 			writeH(item.getEnchantLevel());
 			writeH(item.getCustomType2());
 			writeH(0x00);
-            writeD(item.getMana());
+			writeD(item.getObjectId()); // some item identifier later used by client to answer (see RequestPackageSend) not item id nor object id maybe some freight system id??
 			//T1
 			writeD(item.getAttackAttrElement()); //element type 
 			writeD(item.getAttackAttrElementVal()); //element val 
