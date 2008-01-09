@@ -20,7 +20,7 @@ package net.sf.l2j.gameserver.serverpackets;
 
 public class Ride extends L2GameServerPacket
 {
-    private static final String _S__86_Ride = "[S] 8c Ride";
+    private static final String _S__8c_Ride = "[S] 8c Ride";
     public static final int ACTION_MOUNT = 1;
     public static final int ACTION_DISMOUNT = 0;
     private int _id;
@@ -34,15 +34,16 @@ public class Ride extends L2GameServerPacket
         _bRide = action; // 1 for mount ; 2 for dismount
         _rideClassID = rideClassId + 1000000; // npcID
 
-        if (rideClassId == 12526 || //wind strider
-            rideClassId == 12527 || //star strider
-            rideClassId == 12528) //twilight strider
+        switch(rideClassId)
         {
-            _rideType = 1; // 1 for Strider ; 2 for wyvern
-        }
-        else if (rideClassId == 12621) // wyvern
-        {
-            _rideType = 2; // 1 for Strider ; 2 for wyvern
+            case 12526: // Wind
+            case 12527: // Star
+            case 12528: // Twilight
+                _rideType = 1; break;
+            case 12621: // Wyvern
+                _rideType = 2; break;
+            case 16030: // Great Wolf
+                _rideType = 3; break;
         }
     }
 
@@ -74,6 +75,6 @@ public class Ride extends L2GameServerPacket
     @Override
 	public String getType()
     {
-        return _S__86_Ride;
+        return _S__8c_Ride;
     }
 }
