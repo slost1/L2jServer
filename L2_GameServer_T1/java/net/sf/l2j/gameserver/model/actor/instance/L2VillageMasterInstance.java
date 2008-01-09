@@ -18,7 +18,6 @@
  */
 package net.sf.l2j.gameserver.model.actor.instance;
 
-import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.Set;
 
