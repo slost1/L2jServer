@@ -35,6 +35,7 @@ import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.base.Race;
 import net.sf.l2j.gameserver.skills.conditions.Condition;
+import net.sf.l2j.gameserver.skills.conditions.ConditionChangeWeapon;
 import net.sf.l2j.gameserver.skills.conditions.ConditionElementSeed;
 import net.sf.l2j.gameserver.skills.conditions.ConditionForceBuff;
 import net.sf.l2j.gameserver.skills.conditions.ConditionGameChance;
@@ -571,6 +572,11 @@ abstract class DocumentBase
                 int enchant = 0;
                 if (st.hasMoreTokens()) enchant = Integer.parseInt(st.nextToken().trim());
                 cond = joinAnd(cond, new ConditionSlotItemId(slot, id, enchant));
+            }
+            else if ("weaponChange".equalsIgnoreCase(a.getNodeName()))
+            {
+                boolean val = Boolean.valueOf(a.getNodeValue());
+                cond = joinAnd(cond, new ConditionChangeWeapon(val));
             }
         }
         if (cond == null) _log.severe("Unrecognized <using> condition in " + _file);

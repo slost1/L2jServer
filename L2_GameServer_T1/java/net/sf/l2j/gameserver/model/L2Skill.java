@@ -48,6 +48,7 @@ import net.sf.l2j.gameserver.skills.effects.EffectCharge;
 import net.sf.l2j.gameserver.skills.effects.EffectTemplate;
 import net.sf.l2j.gameserver.skills.funcs.Func;
 import net.sf.l2j.gameserver.skills.funcs.FuncTemplate;
+import net.sf.l2j.gameserver.skills.l2skills.L2SkillChangeWeapon;
 import net.sf.l2j.gameserver.skills.l2skills.L2SkillCharge;
 import net.sf.l2j.gameserver.skills.l2skills.L2SkillChargeDmg;
 import net.sf.l2j.gameserver.skills.l2skills.L2SkillChargeEffect;
@@ -231,6 +232,9 @@ public abstract class L2Skill
     	SEED (L2SkillSeed.class),
     	BEAST_FEED,
     	FORCE_BUFF,
+        
+        // Kamael WeaponChange
+        CHANGEWEAPON (L2SkillChangeWeapon.class),
 
         // unimplemented
         NOTDONE;
