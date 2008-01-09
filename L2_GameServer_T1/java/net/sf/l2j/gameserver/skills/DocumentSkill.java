@@ -206,7 +206,7 @@ class DocumentSkill extends DocumentBase {
             _currentSkill.enchsets2[i] = new StatsSet();
             //currentSkill.enchsets2[i] = currentSkill.sets[currentSkill.sets.length-1];
             _currentSkill.enchsets2[i].set("skill_id", _currentSkill.id);
-            _currentSkill.enchsets2[i].set("level",    i+141);
+            _currentSkill.enchsets2[i].set("level",    i+201);
             _currentSkill.enchsets2[i].set("name",     _currentSkill.name);
             //currentSkill.enchsets2[i].set("skillType",     "NOTDONE");
 
