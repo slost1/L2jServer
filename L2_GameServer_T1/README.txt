@@ -1,5 +1,5 @@
  
- NOTE: This short guide is for a L2J Server. http://l2jserver.com
+NOTE: This short guide is for a L2J Server. http://l2jserver.com
 
  If you received this file as a part of a packaged or bundled build:
  
