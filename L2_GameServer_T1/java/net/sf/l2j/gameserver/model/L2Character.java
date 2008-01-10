@@ -5120,51 +5120,53 @@ public abstract class L2Character extends L2Object
 	/**
 	 * Return the Attack Speed of the L2Character (delay (in milliseconds) before next attack).<BR><BR>
 	 */
-	public int calculateTimeBetweenAttacks(L2Character target, L2Weapon weapon)
-	{
-		double atkSpd = 0;
-		if (weapon !=null)
-		{
-			switch (weapon.getItemType())
-			{
-			case BOW:
-            		case CROSSBOW:
-				atkSpd = getStat().getPAtkSpd();
-				return (int)(1500*345/atkSpd);
-			case DAGGER:
-				atkSpd = getStat().getPAtkSpd();
-				//atkSpd /= 1.15;
-				break;
-			default:
-				atkSpd = getStat().getPAtkSpd();
-			}
-		}
-		else
-			atkSpd = getPAtkSpd();
+    public int calculateTimeBetweenAttacks(L2Character target, L2Weapon weapon)
+    {
+        double atkSpd = 0;
+        if (weapon !=null)
+        {
+		    switch (weapon.getItemType())
+		    {
+			    case BOW:
+			        atkSpd = getStat().getPAtkSpd();
+			        return (int)(1500*345/atkSpd);
+			    case CROSSBOW:
+			        atkSpd = getStat().getPAtkSpd();
+			        return (int)(1200*345/atkSpd);
+			    case DAGGER:
+			        atkSpd = getStat().getPAtkSpd();
+			        //atkSpd /= 1.15;
+			        break;
+			    default:
+			        atkSpd = getStat().getPAtkSpd();
+		    }
+        }
+        else
+            atkSpd = getPAtkSpd();
 
-		return Formulas.getInstance().calcPAtkSpd(this, target, atkSpd);
-	}
-	
-	public int calculateReuseTime(L2Character target, L2Weapon weapon)
-	{
-		if (weapon == null) return 0;
-		
-		int reuse = weapon.getAttackReuseDelay();
-		// only bows should continue for now
-		if (reuse == 0) return 0; 
-		// else if (reuse < 10) reuse = 1500;
-		
-		reuse *= getStat().getReuseModifier(target);
-		double atkSpd = getStat().getPAtkSpd();
-		switch (weapon.getItemType())
-		{
-			case BOW:
-            		case CROSSBOW:
-				return (int)(reuse*345/atkSpd);
-			default:
-				return (int)(reuse*312/atkSpd);
-		}
-	}
+        return Formulas.getInstance().calcPAtkSpd(this, target, atkSpd);
+    }
+
+    public int calculateReuseTime(L2Character target, L2Weapon weapon)
+    {
+        if (weapon == null) return 0;
+
+        int reuse = weapon.getAttackReuseDelay();
+        // only bows should continue for now
+        if (reuse == 0) return 0; 
+        // else if (reuse < 10) reuse = 1500;
+
+        reuse *= getStat().getReuseModifier(target);
+        double atkSpd = getStat().getPAtkSpd();
+        switch (weapon.getItemType())
+        {
+            case BOW:
+            case CROSSBOW:
+                return (int)(reuse*345/atkSpd);
+            default:
+                return (int)(reuse*312/atkSpd);
+        }
+    }
 	
 	/**
 	 * Return True if the L2Character use a dual weapon.<BR><BR>
