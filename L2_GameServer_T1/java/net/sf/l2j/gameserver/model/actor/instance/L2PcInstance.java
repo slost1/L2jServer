@@ -4200,6 +4200,11 @@ public final class L2PcInstance extends L2PlayableInstance
 		return getInventory().getPaperdollItem(Inventory.PAPERDOLL_CHEST);
 	}
 
+    public L2ItemInstance getLegsArmorInstance()
+    {
+        return getInventory().getPaperdollItem(Inventory.PAPERDOLL_LEGS);
+    }
+
 	public L2Armor getActiveChestArmorItem()
 	{
 		L2ItemInstance armor = getChestArmorInstance();
@@ -4210,11 +4215,23 @@ public final class L2PcInstance extends L2PlayableInstance
 		return (L2Armor) armor.getItem();
 	}
 
+    public L2Armor getActiveLegsArmorItem()
+    {
+        L2ItemInstance legs = getLegsArmorInstance();
+
+        if (legs == null)
+            return null;
+
+        return (L2Armor) legs.getItem();
+    }
+
 	public boolean isWearingHeavyArmor()
 	{
 		L2ItemInstance armor = getChestArmorInstance();
+        L2ItemInstance legs = getLegsArmorInstance();
 
-		if ((L2ArmorType)armor.getItemType() == L2ArmorType.HEAVY)
+		if (((L2ArmorType)armor.getItemType() == L2ArmorType.HEAVY) && ((L2ArmorType)legs.getItemType() == L2ArmorType.HEAVY)
+                ||(getInventory().getPaperdollItem(Inventory.PAPERDOLL_CHEST).getItem().getBodyPart() == L2Item.SLOT_FULL_ARMOR)&&(L2ArmorType)armor.getItemType() == L2ArmorType.HEAVY)
 			return true;
 
 		return false;
@@ -4222,9 +4239,11 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	public boolean isWearingLightArmor()
 	{
-		L2ItemInstance armor = getChestArmorInstance();
+        L2ItemInstance armor = getChestArmorInstance();
+        L2ItemInstance legs = getLegsArmorInstance();
 
-		if ((L2ArmorType)armor.getItemType() == L2ArmorType.LIGHT)
+        if (((L2ArmorType)armor.getItemType() == L2ArmorType.LIGHT) && ((L2ArmorType)legs.getItemType() == L2ArmorType.LIGHT)
+                ||(getInventory().getPaperdollItem(Inventory.PAPERDOLL_CHEST).getItem().getBodyPart() == L2Item.SLOT_FULL_ARMOR)&&(L2ArmorType)armor.getItemType() == L2ArmorType.LIGHT)
 			return true;
 
 		return false;
@@ -4232,9 +4251,11 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	public boolean isWearingMagicArmor()
 	{
-		L2ItemInstance armor = getChestArmorInstance();
+        L2ItemInstance armor = getChestArmorInstance();
+        L2ItemInstance legs = getLegsArmorInstance();
 
-		if ((L2ArmorType)armor.getItemType() == L2ArmorType.MAGIC)
+        if (((L2ArmorType)armor.getItemType() == L2ArmorType.MAGIC) && ((L2ArmorType)legs.getItemType() == L2ArmorType.MAGIC)
+                ||(getInventory().getPaperdollItem(Inventory.PAPERDOLL_CHEST).getItem().getBodyPart() == L2Item.SLOT_FULL_ARMOR)&&(L2ArmorType)armor.getItemType() == L2ArmorType.MAGIC)
 			return true;
 
 		return false;
