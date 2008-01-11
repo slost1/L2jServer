@@ -109,6 +109,7 @@ public class FuncEnchant extends Func
                             env.value += 4 * enchant + 8 * overenchant;
                             break;
                     }
+                    break;
                 case L2Item.CRYSTAL_B:
                     switch(type)
                     {
@@ -129,6 +130,7 @@ public class FuncEnchant extends Func
                             env.value += 3 * enchant + 6 * overenchant;
                             break;
                     }
+                    break;
                 case L2Item.CRYSTAL_C:
                     switch(type)
                     {
@@ -149,6 +151,7 @@ public class FuncEnchant extends Func
                             env.value += 3 * enchant + 6 * overenchant;
                             break;
                     }
+                    break;
                 case L2Item.CRYSTAL_D:
                     switch(type)
                     {
@@ -170,6 +173,7 @@ public class FuncEnchant extends Func
                             env.value += 2 * enchant + 4 * overenchant;
                             break;
                     }
+                    break;
                 case L2Item.CRYSTAL_S:
                     switch(type)
                     {
@@ -190,6 +194,7 @@ public class FuncEnchant extends Func
                             env.value += 4 * enchant + 10 * overenchant;
                             break;
                     }
+                    break;
                 }
             }
         return;
