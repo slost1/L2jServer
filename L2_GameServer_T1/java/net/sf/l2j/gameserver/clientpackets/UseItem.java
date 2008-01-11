@@ -220,16 +220,7 @@ public final class UseItem extends L2GameClientPacket
 			// Items that cannot be used
 			if (itemId == 57)
                 return;
-
-            L2Weapon weaponType = activeChar.getActiveWeaponItem();
-			if ((weaponType.getItemType() == L2WeaponType.RAPIER
-               ||weaponType.getItemType() == L2WeaponType.CROSSBOW
-               ||weaponType.getItemType() == L2WeaponType.ANCIENT_SWORD)
-               && activeChar.getRace() != Race.Kamael)
-            {
-                activeChar.sendPacket(new SystemMessage(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION));
-                return;
-            }
+            
             if (activeChar.isFishing() && (itemId < 6535 || itemId > 6540))
             {
                 // You cannot do anything else while fishing
@@ -273,68 +264,75 @@ public final class UseItem extends L2GameClientPacket
 					return;
 				}
 
-				int bodyPart = item.getItem().getBodyPart();
-                // Prevent player to remove the weapon on special conditions
-                if ((activeChar.isAttackingNow() || activeChar.isCastingNow() || activeChar.isMounted())
-                        && (bodyPart == L2Item.SLOT_LR_HAND
-                            || bodyPart == L2Item.SLOT_L_HAND
-                            || bodyPart == L2Item.SLOT_R_HAND))
+                switch (item.getItem().getBodyPart())
                 {
-                    return;
+                    case L2Item.SLOT_LR_HAND:
+                    case L2Item.SLOT_L_HAND:
+                    case L2Item.SLOT_R_HAND:
+                    {
+                        // Prevent player to remove the weapon on special conditions
+                        if ((activeChar.isAttackingNow() || activeChar.isCastingNow() || activeChar.isMounted()))
+                                return;
+                        
+                        
+                        if (activeChar.isDisarmed())
+                        {
+                            activeChar.sendPacket(new SystemMessage(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION));
+                            return;
+                        }
+                        
+                        // Don't allow weapon/shield equipment if a cursed weapon is equiped
+                        if (activeChar.isCursedWeaponEquiped())
+                        {
+                            return;
+                        }
+                        
+                        // Don't allow weapon/shield hero equipment during Olympiads
+                        if (activeChar.isInOlympiadMode() && item.isHeroItem())
+                        {
+                            activeChar.sendPacket(new SystemMessage(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION));
+                            return;
+                        }
+                        
+                        // Don't allow other Race to Wear Kamael exclusive Weapons.
+                        if (!item.isEquipped() && activeChar.getRace() != Race.Kamael)
+                        {
+                            if (item.getItem() instanceof L2Weapon)
+                            {
+                                L2Weapon wpn = (L2Weapon)item.getItem();
+                                switch (wpn.getItemType())
+                                {
+                                    case RAPIER:
+                                    case CROSSBOW:
+                                    case ANCIENT_SWORD:
+                                        activeChar.sendPacket(new SystemMessage(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION));
+                                        return;
+                                }
+                            }
+                        }
+                        break;
+                    }
+                    case L2Item.SLOT_CHEST:
+                    case L2Item.SLOT_BACK:
+                    case L2Item.SLOT_GLOVES:
+                    case L2Item.SLOT_FEET:
+                    case L2Item.SLOT_HEAD:
+                    case L2Item.SLOT_FULL_ARMOR:
+                    case L2Item.SLOT_LEGS:
+                    {
+                        if (activeChar.getRace() == Race.Kamael &&
+                                (item.getItem().getItemType() == L2ArmorType.HEAVY
+                                        ||item.getItem().getItemType() == L2ArmorType.MAGIC))
+                        {
+                            activeChar.sendPacket(new SystemMessage(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION));
+                            return;
+                        }
+                        break;
+                    }
                 }
                 
-                if (activeChar.isDisarmed()
-                        && (bodyPart == L2Item.SLOT_LR_HAND
-                                || bodyPart == L2Item.SLOT_L_HAND
-                                || bodyPart == L2Item.SLOT_R_HAND))
+                if (activeChar.isCursedWeaponEquiped() && itemId == 6408) // Don't allow to put formal wear
                 {
-                    activeChar.sendPacket(new SystemMessage(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION));
-                    return;
-                }
-                    
-                /* Since c5 you can equip weapon again
-                // Don't allow weapon/shield equipment if wearing formal wear
-                if (activeChar.isWearingFormalWear()
-                	&& (bodyPart == L2Item.SLOT_LR_HAND
-                            || bodyPart == L2Item.SLOT_L_HAND
-                            || bodyPart == L2Item.SLOT_R_HAND))
-                {
-        				SystemMessage sm = new SystemMessage(SystemMessageId.CANNOT_USE_ITEMS_SKILLS_WITH_FORMALWEAR);
-        				activeChar.sendPacket(sm);
-                        return;
-                } */
-
-                // Don't allow weapon/shield equipment if a cursed weapon is equiped
-                if (activeChar.isCursedWeaponEquiped()
-                		&& ((bodyPart == L2Item.SLOT_LR_HAND
-                				|| bodyPart == L2Item.SLOT_L_HAND
-                				|| bodyPart == L2Item.SLOT_R_HAND)
-                		|| itemId == 6408)) // Don't allow to put formal wear
-                {
-                	return;
-                }
-
-                // Don't allow weapon/shield hero equipment during Olympiads
-                if (activeChar.isInOlympiadMode() 
-                       && (bodyPart == L2Item.SLOT_LR_HAND || bodyPart == L2Item.SLOT_L_HAND || bodyPart == L2Item.SLOT_R_HAND)
-                       && item.isHeroItem())
-                {
-                    activeChar.sendPacket(new SystemMessage(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION));
-                    return;
-                }
-                
-                if (activeChar.getRace() == Race.Kamael 
-                        && ( bodyPart == L2Item.SLOT_CHEST
-                             ||bodyPart == L2Item.SLOT_BACK
-                             ||bodyPart == L2Item.SLOT_GLOVES
-                             ||bodyPart == L2Item.SLOT_FEET
-                             ||bodyPart == L2Item.SLOT_HEAD
-                             ||bodyPart == L2Item.SLOT_FULL_ARMOR
-                             ||bodyPart == L2Item.SLOT_LEGS)
-                        && (item.getItem().getItemType() == L2ArmorType.HEAVY
-                          ||item.getItem().getItemType() == L2ArmorType.MAGIC))
-                {
-                    activeChar.sendPacket(new SystemMessage(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION));
                     return;
                 }
 
