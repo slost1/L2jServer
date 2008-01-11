@@ -163,7 +163,7 @@ public class L2FolkInstance extends L2NpcInstance
 
             return;
         }
-        if(player.getClassId().getId() < 88)
+        if(player.getClassId().getId() < 88 ||(player.getClassId().getId() >= 123 && player.getClassId().getId() < 132 )||player.getClassId().getId() == 135)
         {
         	NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
             TextBuilder sb = new TextBuilder();

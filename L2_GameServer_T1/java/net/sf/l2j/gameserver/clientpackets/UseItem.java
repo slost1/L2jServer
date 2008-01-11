@@ -215,6 +215,15 @@ public final class UseItem extends L2GameClientPacket
 			if (itemId == 57)
                 return;
 
+            L2Weapon weaponType = activeChar.getActiveWeaponItem();
+			if ((weaponType.getItemType() == L2WeaponType.RAPIER
+               ||weaponType.getItemType() == L2WeaponType.CROSSBOW
+               ||weaponType.getItemType() == L2WeaponType.ANCIENT_SWORD)
+               && activeChar.getRace() != Race.Kamael)
+            {
+                activeChar.sendPacket(new SystemMessage(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION));
+                return;
+            }
             if (activeChar.isFishing() && (itemId < 6535 || itemId > 6540))
             {
                 // You cannot do anything else while fishing

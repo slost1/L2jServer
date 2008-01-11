@@ -88,7 +88,7 @@ public final class RequestExEnchantSkill extends L2GameClientPacket
         if (player.getSkillLevel(_skillId) >= _skillLvl)// already knows the skill with this level
             return;
 
-        if (player.getClassId().getId() < 88) // requires to have 3rd class quest completed
+        if (player.getClassId().getId() < 88 ||(player.getClassId().getId() >= 123 && player.getClassId().getId() < 132 )||player.getClassId().getId() == 135) // requires to have 3rd class quest completed
     		return;
 
         if (player.getLevel() < 76) return;
@@ -127,7 +127,7 @@ public final class RequestExEnchantSkill extends L2GameClientPacket
         {
         	if (player.getExp() >= _requiredExp)
         	{
-        		if (Config.ES_SP_BOOK_NEEDED && (_skillLvl == 101 || _skillLvl == 141)) // only first lvl requires book
+        		if (Config.ES_SP_BOOK_NEEDED && (_skillLvl == 101 || _skillLvl == 201 || _skillLvl == 301 || _skillLvl == 401 || _skillLvl == 501)) // only first lvl requires book
             	{
             		int spbId = 6622;
 
