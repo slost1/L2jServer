@@ -525,6 +525,18 @@ public class PcInventory extends Inventory
             	paperdoll[slot][0] = invdata.getInt("object_id");
             	paperdoll[slot][1] = invdata.getInt("item_id");
 				paperdoll[slot][2] = invdata.getInt("enchant_level");
+                if (slot == Inventory.PAPERDOLL_LRHAND)
+                {
+                    paperdoll[Inventory.PAPERDOLL_RHAND][0] = invdata.getInt("object_id");
+                    paperdoll[Inventory.PAPERDOLL_RHAND][1] = invdata.getInt("item_id");
+                    paperdoll[Inventory.PAPERDOLL_RHAND][2] = invdata.getInt("enchant_level");
+                }
+                else if (slot == Inventory.PAPERDOLL_HAIRALL)
+                {
+                    paperdoll[Inventory.PAPERDOLL_HAIR][0] = invdata.getInt("object_id");
+                    paperdoll[Inventory.PAPERDOLL_HAIR][1] = invdata.getInt("item_id");
+                    paperdoll[Inventory.PAPERDOLL_HAIR][2] = invdata.getInt("enchant_level");
+                }
             }
 
             invdata.close();
