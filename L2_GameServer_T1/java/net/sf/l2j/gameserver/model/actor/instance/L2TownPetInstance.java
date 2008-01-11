@@ -81,8 +81,8 @@ public class L2TownPetInstance extends L2NpcInstance
     {
         public void run()
         {
-            randomX = spawnX + Rnd.get(1,80);
-            randomY = spawnY + Rnd.get(1,80);
+            randomX = spawnX + Rnd.get(50,100);
+            randomY = spawnY + Rnd.get(50,100);
 
             getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(randomX,randomY,getZ(),0));
         }
