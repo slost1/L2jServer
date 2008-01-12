@@ -36,7 +36,7 @@ package net.sf.l2j.gameserver.serverpackets;
  */
 public class AllyCrest extends L2GameServerPacket
 {
-	private static final String _S__C7_ALLYCREST = "[S] af AllyCrest";
+	private static final String _S__AF_ALLYCREST = "[S] af AllyCrest";
 	private int _crestId;
 	private int _crestSize;
 	private byte[] _data;
@@ -51,7 +51,7 @@ public class AllyCrest extends L2GameServerPacket
 	@Override
 	protected final void writeImpl()
 	{
-		writeC(0xae);
+		writeC(0xaf);
 		writeD(_crestId);
 		writeD(_crestSize);
 		writeB(_data);
@@ -63,6 +63,6 @@ public class AllyCrest extends L2GameServerPacket
 	@Override
 	public String getType()
 	{
-		return _S__C7_ALLYCREST;
+		return _S__AF_ALLYCREST;
 	}
 }
