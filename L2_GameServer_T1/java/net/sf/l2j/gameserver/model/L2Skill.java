@@ -232,6 +232,7 @@ public abstract class L2Skill
     	SEED (L2SkillSeed.class),
     	BEAST_FEED,
     	FORCE_BUFF,
+       CHARGESOUL,
         
         // Kamael WeaponChange
         CHANGEWEAPON (L2SkillChangeWeapon.class),

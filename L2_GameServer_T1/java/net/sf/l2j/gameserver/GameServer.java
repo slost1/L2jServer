@@ -177,6 +177,7 @@ import net.sf.l2j.gameserver.handler.skillhandlers.Recall;
 import net.sf.l2j.gameserver.handler.skillhandlers.Resurrect;
 import net.sf.l2j.gameserver.handler.skillhandlers.SiegeFlag;
 import net.sf.l2j.gameserver.handler.skillhandlers.Signets;
+import net.sf.l2j.gameserver.handler.skillhandlers.Soul;
 import net.sf.l2j.gameserver.handler.skillhandlers.Sow;
 import net.sf.l2j.gameserver.handler.skillhandlers.Spoil;
 import net.sf.l2j.gameserver.handler.skillhandlers.StrSiegeAssault;
@@ -528,6 +529,7 @@ public class GameServer
         _skillHandler.registerSkillHandler(new BeastFeed());
         _skillHandler.registerSkillHandler(new DeluxeKey());
         _skillHandler.registerSkillHandler(new Sow());
+        _skillHandler.registerSkillHandler(new Soul());
         _skillHandler.registerSkillHandler(new Harvest());
         _skillHandler.registerSkillHandler(new Signets());
         _skillHandler.registerSkillHandler(new GetPlayer());

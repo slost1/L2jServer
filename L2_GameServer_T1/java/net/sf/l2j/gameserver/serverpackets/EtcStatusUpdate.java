@@ -57,7 +57,7 @@ public class EtcStatusUpdate extends L2GameServerPacket
 		writeD(Math.min(_activeChar.getExpertisePenalty(),1)); // 1 = grade penalty 
 		writeD(_activeChar.getCharmOfCourage() ? 1 : 0); // 1 = charm of courage (no xp loss in siege..)
 		writeD(_activeChar.getDeathPenaltyBuffLevel()); // 1-15 death penalty, lvl (combat ability decreased due to death)
-        writeD(_activeChar.getAbsorbedSouls());
+        	writeD(_activeChar.getSouls());
         
 	}
 

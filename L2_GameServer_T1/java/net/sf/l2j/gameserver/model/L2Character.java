@@ -5578,7 +5578,7 @@ public abstract class L2Character extends L2Object
             {
                 if (this instanceof L2PcInstance)
                 {
-                    ((L2PcInstance)this).decreaseAbsorbedSouls(skill.getSoulConsumeCount());
+                    ((L2PcInstance)this).decreaseSouls(skill.getSoulConsumeCount());
                     sendPacket(new EtcStatusUpdate((L2PcInstance)this));
                 }
             }
