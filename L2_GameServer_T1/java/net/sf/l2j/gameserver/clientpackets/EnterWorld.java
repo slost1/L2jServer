@@ -37,6 +37,7 @@ import net.sf.l2j.gameserver.datatables.MapRegionTable;
 import net.sf.l2j.gameserver.handler.AdminCommandHandler;
 import net.sf.l2j.gameserver.instancemanager.ClanHallManager;
 import net.sf.l2j.gameserver.instancemanager.CoupleManager;
+import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
 import net.sf.l2j.gameserver.instancemanager.DimensionalRiftManager;
 import net.sf.l2j.gameserver.instancemanager.PetitionManager;
 import net.sf.l2j.gameserver.instancemanager.SiegeManager;
@@ -192,6 +193,11 @@ public class EnterWorld extends L2GameClientPacket
         {
             engage(activeChar);
             notifyPartner(activeChar,activeChar.getPartnerId());
+        }
+        
+        if(activeChar.isCursedWeaponEquiped()) 
+        { 
+            CursedWeaponsManager.getInstance().getCursedWeapon(activeChar.getCursedWeaponEquipedId()).giveSkill(); 
         }
 
         if (activeChar.getAllEffects() != null)

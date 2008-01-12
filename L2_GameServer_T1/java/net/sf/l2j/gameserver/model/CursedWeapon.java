@@ -28,6 +28,7 @@ import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
+import net.sf.l2j.gameserver.instancemanager.TransformationManager;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.Earthquake;
@@ -45,8 +46,11 @@ public class CursedWeapon
 {
 	private static final Logger _log = Logger.getLogger(CursedWeaponsManager.class.getName());
 
+	// _name is the name of the cursed weapon associated with its ID.
 	private final String _name;
+	// _itemId is the Item ID of the cursed weapon.
 	private final int _itemId;
+	// _skillId is the skills ID.
 	private final int _skillId;
 	private final int _skillMaxLevel;
 	private int _dropRate;
@@ -55,8 +59,9 @@ public class CursedWeapon
 	private int _disapearChance;
 	private int _stageKills;
 
-
+	// this should be false unless if the cursed weapon is dropped, in that case it would be true.
 	private boolean _isDropped = false;
+	// this sets the cursed weapon status to true only if a player has the cursed weapon, otherwise this should be false.
 	private boolean _isActivated = false;
 	private ScheduledFuture<?> _removeTask;
 
@@ -267,7 +272,7 @@ public class CursedWeapon
 			//_player.getInventory().dropItem("DieDrop", item, _player, null);
 			//_player.getInventory().getItemByItemId(_itemId).dropMe(_player, _player.getX(), _player.getY(), _player.getZ());
 		}
-
+        _item = null;
 		_isDropped = true;
 		SystemMessage sm = new SystemMessage(SystemMessageId.S2_WAS_DROPPED_IN_THE_S1_REGION);
 		if (player != null)
@@ -305,6 +310,15 @@ public class CursedWeapon
 		if (Config.DEBUG)
 			_log.info("Player "+_player.getName() +" has been awarded with skill "+skill);
 		_player.sendSkillList();
+		
+		// Do the transformation
+	    if (_itemId == 8689)
+	    {
+	        TransformationManager.getInstance().transformPlayer(302, _player, Long.MAX_VALUE);
+	    } else if (_itemId == 8190)
+	    {
+	        TransformationManager.getInstance().transformPlayer(301, _player, Long.MAX_VALUE);
+	    }
 	}
 
 	public void removeSkill()
@@ -313,6 +327,7 @@ public class CursedWeapon
 		_player.removeSkill(SkillTable.getInstance().getInfo(3630, 1), false);
 		_player.removeSkill(SkillTable.getInstance().getInfo(3631, 1), false);
 		_player.sendSkillList();
+		_player.untransform();
 	}
 
 

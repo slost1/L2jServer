@@ -27,6 +27,7 @@ import net.sf.l2j.gameserver.model.Inventory;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Summon;
 import net.sf.l2j.gameserver.model.L2Transformation;
+import net.sf.l2j.gameserver.model.actor.appearance.PcAppearance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
@@ -59,6 +60,7 @@ public class CharInfo extends L2GameServerPacket
 
 	private static final String _S__03_CHARINFO = "[S] 31 CharInfo";
 	private L2PcInstance _activeChar;
+	private PcAppearance _appearance;
 	private Inventory _inv;
 	private int _x, _y, _z, _heading;
 	private int _mAtkSpd, _pAtkSpd;
@@ -85,6 +87,10 @@ public class CharInfo extends L2GameServerPacket
     	_walkSpd        = (int)(_activeChar.getWalkSpeed()/_moveMultiplier);    	
         _flRunSpd = _flyRunSpd = _runSpd = _flWalkSpd = _flyWalkSpd = _walkSpd;
     	_maxCp = _activeChar.getMaxCp();
+    }
+    public CharInfo(PcAppearance appearance)
+    {
+        _appearance = appearance;
     }
 
 	@Override
@@ -147,7 +153,7 @@ public class CharInfo extends L2GameServerPacket
 					writeC(_activeChar.getAppearance().getInvisible()? 1 : 0); // invisible ?? 0=false  1=true   2=summoned (only works if model has a summon animation)
 				}
 
-				writeS(_activeChar.getName());
+				writeS(_appearance.getVisibleName());
 
 				if (gmSeeInvis)
 				{
@@ -155,7 +161,7 @@ public class CharInfo extends L2GameServerPacket
 				}
 				else
 				{
-					writeS(_activeChar.getTitle());
+					writeS(_appearance.getVisibleTitle());
 				}
 
 				writeD(0);

@@ -51,6 +51,7 @@ public class CharSelectInfoPackage
     private int _karma=0;
     private int _pkKills=0;
     private int _augmentationId=0;
+    private int _transformId = 0;
 
 
     /**
@@ -255,13 +256,20 @@ public class CharSelectInfoPackage
     {
     	return _augmentationId;
     }
-
     public void setPkKills(int PkKills)
     {
         _pkKills = PkKills;
-    }
+    } 
     public int getPkKills()
     {
         return _pkKills;
+    }
+    public int getTransformId() 
+    { 
+        return _transformId; 
+    } 
+    public void setTransformId(int id) 
+    { 
+        _transformId = id; 
     }
 }

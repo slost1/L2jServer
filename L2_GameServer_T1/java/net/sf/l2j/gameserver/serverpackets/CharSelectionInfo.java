@@ -40,14 +40,11 @@ public class CharSelectionInfo extends L2GameServerPacket
 {
     // d SdSddddddddddffddddddddddddddddddddddddddddddddddddddddddddddffd
     private static final String _S__1F_CHARSELECTINFO = "[S] 09 CharSelectInfo";
-    
     private static Logger _log = Logger.getLogger(CharSelectionInfo.class.getName());
-    
-    private String _loginName;
-    
+    private String _loginName; 
     private int _sessionId, _activeId;
-    
     private CharSelectInfoPackage[] _characterPackages;
+    
     
     /**
      * @param _characters
@@ -193,7 +190,7 @@ public class CharSelectionInfo extends L2GameServerPacket
             writeH(charInfoPackage.getAugmentationId());
             writeH(0x00); // this is for augmentation too
             
-            writeD(0x00); // Used to display Transformations (0x01 = Crystal Puma)
+            writeD(charInfoPackage.getTransformId()); // Used to display Transformations
         }
     }
     
@@ -324,6 +321,17 @@ public class CharSelectionInfo extends L2GameServerPacket
         int weaponObjId = charInfopackage.getPaperdollObjectId(Inventory.PAPERDOLL_LRHAND);
         if (weaponObjId < 1)
             weaponObjId = charInfopackage.getPaperdollObjectId(Inventory.PAPERDOLL_RHAND);
+        
+        // cursed weapon check
+        int weaponId = charInfopackage.getPaperdollItemId(Inventory.PAPERDOLL_LRHAND);
+        if (weaponId < 1)
+            weaponId = charInfopackage.getPaperdollItemId(Inventory.PAPERDOLL_RHAND);
+        if(weaponId == 8190)
+            charInfopackage.setTransformId(301);
+        else if(weaponId == 8689)
+            charInfopackage.setTransformId(302);
+        else
+            charInfopackage.setTransformId(0);
         
         if (weaponObjId > 0)
         {
