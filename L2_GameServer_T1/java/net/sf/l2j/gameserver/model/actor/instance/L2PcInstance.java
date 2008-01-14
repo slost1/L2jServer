@@ -1,20 +1,16 @@
 /*
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2, or (at your option)
- * any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
- * 02111-1307, USA.
- *
- * http://www.gnu.org/copyleft/gpl.html
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package net.sf.l2j.gameserver.model.actor.instance;
 
@@ -4228,37 +4224,58 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	public boolean isWearingHeavyArmor()
 	{
-		L2ItemInstance armor = getChestArmorInstance();
-        L2ItemInstance legs = getLegsArmorInstance();
-
-		if (((L2ArmorType)armor.getItemType() == L2ArmorType.HEAVY) && ((L2ArmorType)legs.getItemType() == L2ArmorType.HEAVY)
-                ||(getInventory().getPaperdollItem(Inventory.PAPERDOLL_CHEST).getItem().getBodyPart() == L2Item.SLOT_FULL_ARMOR)&&(L2ArmorType)armor.getItemType() == L2ArmorType.HEAVY)
-			return true;
-
+        if ((getChestArmorInstance() != null) && getLegsArmorInstance() != null)
+        {
+            L2ItemInstance legs = getLegsArmorInstance();
+            L2ItemInstance armor = getChestArmorInstance();
+            if ((L2ArmorType)legs.getItemType() == L2ArmorType.HEAVY && ((L2ArmorType)armor.getItemType() == L2ArmorType.HEAVY))
+            return true;
+        }
+	    if (getChestArmorInstance() != null)
+	    {
+	        L2ItemInstance armor = getChestArmorInstance();
+	        
+	        if ((getInventory().getPaperdollItem(Inventory.PAPERDOLL_CHEST).getItem().getBodyPart() == L2Item.SLOT_FULL_ARMOR && (L2ArmorType)armor.getItemType() == L2ArmorType.HEAVY))
+	        return true;
+	    }
 		return false;
 	}
 
 	public boolean isWearingLightArmor()
 	{
-        L2ItemInstance armor = getChestArmorInstance();
-        L2ItemInstance legs = getLegsArmorInstance();
-
-        if (((L2ArmorType)armor.getItemType() == L2ArmorType.LIGHT) && ((L2ArmorType)legs.getItemType() == L2ArmorType.LIGHT)
-                ||(getInventory().getPaperdollItem(Inventory.PAPERDOLL_CHEST).getItem().getBodyPart() == L2Item.SLOT_FULL_ARMOR)&&(L2ArmorType)armor.getItemType() == L2ArmorType.LIGHT)
-			return true;
-
+        if ((getChestArmorInstance() != null) && getLegsArmorInstance() != null)
+        {
+            L2ItemInstance legs = getLegsArmorInstance();
+            L2ItemInstance armor = getChestArmorInstance();
+            if ((L2ArmorType)legs.getItemType() == L2ArmorType.LIGHT && ((L2ArmorType)armor.getItemType() == L2ArmorType.LIGHT))
+            return true;
+        }
+        if (getChestArmorInstance() != null)
+        {
+            L2ItemInstance armor = getChestArmorInstance();
+            
+            if ((getInventory().getPaperdollItem(Inventory.PAPERDOLL_CHEST).getItem().getBodyPart() == L2Item.SLOT_FULL_ARMOR && (L2ArmorType)armor.getItemType() == L2ArmorType.LIGHT))
+            return true;
+        }
 		return false;
 	}
 
 	public boolean isWearingMagicArmor()
 	{
-        L2ItemInstance armor = getChestArmorInstance();
-        L2ItemInstance legs = getLegsArmorInstance();
-
-        if (((L2ArmorType)armor.getItemType() == L2ArmorType.MAGIC) && ((L2ArmorType)legs.getItemType() == L2ArmorType.MAGIC)
-                ||(getInventory().getPaperdollItem(Inventory.PAPERDOLL_CHEST).getItem().getBodyPart() == L2Item.SLOT_FULL_ARMOR)&&(L2ArmorType)armor.getItemType() == L2ArmorType.MAGIC)
-			return true;
-
+        if ((getChestArmorInstance() != null) && getLegsArmorInstance() != null)
+        {
+            L2ItemInstance legs = getLegsArmorInstance();
+            L2ItemInstance armor = getChestArmorInstance();
+            if ((L2ArmorType)legs.getItemType() == L2ArmorType.MAGIC && ((L2ArmorType)armor.getItemType() == L2ArmorType.MAGIC))
+            return true;
+        }
+        if (getChestArmorInstance() != null)
+        {
+            L2ItemInstance armor = getChestArmorInstance();
+            
+            if ((getInventory().getPaperdollItem(Inventory.PAPERDOLL_CHEST).getItem().getBodyPart() == L2Item.SLOT_FULL_ARMOR && (L2ArmorType)armor.getItemType() == L2ArmorType.MAGIC))
+            return true;
+        }
 		return false;
 	}
 
