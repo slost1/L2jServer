@@ -66,10 +66,11 @@ public class CursedWeapon
 	private long _endTime = 0;
 
 	private int _playerId = 0;
-	private L2PcInstance _player = null;
+	protected L2PcInstance _player = null;
 	private L2ItemInstance _item = null;
 	private int _playerKarma = 0;
 	private int _playerPkKills = 0;
+    	protected int transformationId = 0;
 
 	// =========================================================
 	// Constructor
@@ -307,15 +308,30 @@ public class CursedWeapon
 		if (Config.DEBUG)
 			_log.info("Player "+_player.getName() +" has been awarded with skill "+skill);
 		_player.sendSkillList();
-		
-		// Do the transformation
-	    if (_itemId == 8689)
-	    {
-	        TransformationManager.getInstance().transformPlayer(302, _player, Long.MAX_VALUE);
-	    } else if (_itemId == 8190)
-	    {
-	        TransformationManager.getInstance().transformPlayer(301, _player, Long.MAX_VALUE);
-	    }
+        
+        if (_itemId == 8689)
+        {
+            transformationId = 302;
+        }
+        else if (_itemId == 8190)
+        {
+            transformationId = 301;
+        }
+        
+        if (_player.isTransformed())
+        {
+            _player.untransform();
+            
+            ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
+            {
+                public void run()
+                {
+                    TransformationManager.getInstance().transformPlayer(transformationId, _player, Long.MAX_VALUE);
+                }
+            }, 500);
+        }
+        else
+            TransformationManager.getInstance().transformPlayer(transformationId, _player, Long.MAX_VALUE);
 	}
 
 	public void removeSkill()
@@ -376,7 +392,7 @@ public class CursedWeapon
 				return;
 			}
 		}
-			
+        
 		_isActivated = true;
 
 		// Player holding it data
@@ -418,7 +434,7 @@ public class CursedWeapon
 			_player.sendPacket(iu);
 		}
 		else _player.sendPacket(new ItemList(_player, false));
-
+        
 		// Refresh player stats
 		_player.broadcastUserInfo();
 

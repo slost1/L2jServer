@@ -229,6 +229,7 @@ public abstract class L2Skill
     	BEAST_FEED,
     	FORCE_BUFF,
        CHARGESOUL,
+       TRANSFORM,
         
         // Kamael WeaponChange
         CHANGEWEAPON (L2SkillChangeWeapon.class),
@@ -459,6 +460,9 @@ public abstract class L2Skill
     private final int _numSouls;
     private final int _expNeeded;
     private final int _critChance;
+    
+    private final int _transformId;
+    private final int _transformDuration;
 
     private final boolean _isHeroSkill; // If true the skill is a Hero Skill
 
@@ -549,6 +553,9 @@ public abstract class L2Skill
         _soulConsume = set.getInteger("soulConsumeCount", 0);
         _expNeeded = set.getInteger("expNeeded", 0);
         _critChance = set.getInteger("critChance", 0);
+        
+        _transformId = set.getInteger("transformId", 0);
+        _transformDuration = set.getInteger("transformDuration", 0);
 
         _isHeroSkill = HeroSkillTable.isHeroSkill(_id);
 
@@ -1085,6 +1092,16 @@ public abstract class L2Skill
     public final int getCritChance()
     {
         return _critChance;
+    }
+    
+    public final int getTransformId()
+    {
+        return _transformId;
+    }
+    
+    public final int getTransformDuration()
+    {
+        return _transformDuration;
     }
 
     public final int getBaseCritRate()

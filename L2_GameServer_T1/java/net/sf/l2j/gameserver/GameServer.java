@@ -181,6 +181,7 @@ import net.sf.l2j.gameserver.handler.skillhandlers.SummonFriend;
 import net.sf.l2j.gameserver.handler.skillhandlers.SummonTreasureKey;
 import net.sf.l2j.gameserver.handler.skillhandlers.Sweep;
 import net.sf.l2j.gameserver.handler.skillhandlers.TakeCastle;
+import net.sf.l2j.gameserver.handler.skillhandlers.Transformation;
 import net.sf.l2j.gameserver.handler.skillhandlers.Unlock;
 import net.sf.l2j.gameserver.handler.usercommandhandlers.ChannelDelete;
 import net.sf.l2j.gameserver.handler.usercommandhandlers.ChannelLeave;
@@ -529,6 +530,7 @@ public class GameServer
         _skillHandler.registerSkillHandler(new Harvest());
         _skillHandler.registerSkillHandler(new Signets());
         _skillHandler.registerSkillHandler(new GetPlayer());
+        _skillHandler.registerSkillHandler(new Transformation());
         _log.config("SkillHandler: Loaded " + _skillHandler.size() + " handlers.");
 
 		_adminCommandHandler = AdminCommandHandler.getInstance();
