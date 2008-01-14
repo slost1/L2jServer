@@ -37,6 +37,7 @@ public class ClanHallManager
 
 	private Map<Integer, ClanHall> _clanHall;
 	private Map<Integer, ClanHall> _freeClanHall;
+    private Map<Integer, ClanHall> _allClanHalls;
 	private boolean _loaded = false;
 
 	public static ClanHallManager getInstance()
@@ -58,6 +59,7 @@ public class ClanHallManager
 	{
 		_clanHall = new FastMap<Integer, ClanHall>();
 		_freeClanHall = new FastMap<Integer, ClanHall>();
+		_allClanHalls = new FastMap<Integer, ClanHall>();
 		load();
 	}
 
@@ -76,7 +78,10 @@ public class ClanHallManager
        java.sql.Connection con = null;
         try
         {
-        	int id;
+            int id,ownerId,lease,grade = 0;
+            String Name,Desc,Location;
+            long paidUntil = 0;
+            boolean paid = false;
             PreparedStatement statement;
             ResultSet rs;
             con = L2DatabaseFactory.getInstance().getConnection();
@@ -85,21 +90,35 @@ public class ClanHallManager
             while (rs.next())
             {
             	id = rs.getInt("id");
-            	if(rs.getInt("ownerId") == 0)
-            		_freeClanHall.put(id,new ClanHall(id,rs.getString("name"),rs.getInt("ownerId"),rs.getInt("lease"),rs.getString("desc"),rs.getString("location"),0,rs.getInt("Grade"),rs.getBoolean("paid")));
-            	else{
+                Name = rs.getString("name");
+                ownerId = rs.getInt("ownerId");
+                lease = rs.getInt("lease");
+                Desc = rs.getString("desc");
+                Location = rs.getString("location");
+                paidUntil = rs.getLong("paidUntil");
+                grade = rs.getInt("Grade");
+                paid = rs.getBoolean("paid");
+                
+            	if(ownerId == 0)
+                {
+                    _freeClanHall.put(id,new ClanHall(id,Name,ownerId,lease,Desc,Location,paidUntil,grade,paid));
+                }
+            	else
+                {
             		if(ClanTable.getInstance().getClan(rs.getInt("ownerId")) != null)
             		{
-            			_clanHall.put(id,new ClanHall(id,rs.getString("name"),rs.getInt("ownerId"),rs.getInt("lease"),rs.getString("desc"),rs.getString("location"),rs.getLong("paidUntil"),rs.getInt("Grade"),rs.getBoolean("paid")));
+            			_clanHall.put(id,new ClanHall(id,Name,ownerId,lease,Desc,Location,paidUntil,grade,paid));
             			ClanTable.getInstance().getClan(rs.getInt("ownerId")).setHasHideout(id);
-            		}else
+            		}
+                    else
             		{
-            			_freeClanHall.put(id,new ClanHall(id,rs.getString("name"),rs.getInt("ownerId"),rs.getInt("lease"),rs.getString("desc"),rs.getString("location"),rs.getLong("paidUntil"),rs.getInt("Grade"),rs.getBoolean("paid")));
+            			_freeClanHall.put(id,new ClanHall(id,Name,ownerId,lease,Desc,Location,paidUntil,grade,paid));
             			_freeClanHall.get(id).free();
             			AuctionManager.getInstance().initNPC(id);
             		}
-
             	}
+                _allClanHalls.put(id,new ClanHall(id,Name,ownerId,lease,Desc,Location,paidUntil,grade,paid));
+                
             }
             statement.close();
             _log.info("Loaded: "+getClanHalls().size() +" clan halls");
@@ -111,13 +130,15 @@ public class ClanHallManager
             _log.warning("Exception: ClanHallManager.load(): " + e.getMessage());
             e.printStackTrace();
         }
-        finally {
-                try { 
-                    con.close(); 
-                    } catch (Exception e) {
-                        
-                    }
-                }
+        finally
+        {
+            try
+            { 
+                con.close(); 
+            } catch (Exception e)
+            {        
+            }
+        }
 	}
 
 	/** Get Map with all FreeClanHalls */
@@ -126,11 +147,17 @@ public class ClanHallManager
 		return _freeClanHall;
 	}
 
-	/** Get Map with all ClanHalls */
+	/** Get Map with all ClanHalls that have owner*/
 	public final Map<Integer, ClanHall> getClanHalls()
 	{
 		return _clanHall;
 	}
+    
+    /** Get Map with all ClanHalls*/ 
+    public final Map<Integer, ClanHall> getAllClanHalls() 
+    { 
+        return _allClanHalls; 
+    }
 
 	/** Check is free ClanHall */
 	public final boolean isFree(int chId)
