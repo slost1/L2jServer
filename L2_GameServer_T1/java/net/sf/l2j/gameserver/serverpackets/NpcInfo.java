@@ -173,6 +173,8 @@ public final class NpcInfo extends L2GameServerPacket
 		writeF(_collisionHeight);
 		writeD(0x00);  // C4
 		writeD(0x00);  // C6
+		writeD(0x00);
+		writeD(0x00);
 	}
 
 	/* (non-Javadoc)

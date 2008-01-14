@@ -55,6 +55,7 @@ public class MyTargetSelected extends L2GameServerPacket
 		writeC(0xb9);
 		writeD(_objectId);
 		writeH(_color);
+		writeD(0x00);
 	}
 
 	/* (non-Javadoc)
