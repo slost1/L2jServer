@@ -16,6 +16,7 @@ package net.sf.l2j.gameserver.serverpackets;
 
 import java.util.Map;
 
+import net.sf.l2j.gameserver.datatables.ClanTable;
 import net.sf.l2j.gameserver.instancemanager.ClanHallManager;
 import net.sf.l2j.gameserver.model.entity.ClanHall;
 
@@ -43,14 +44,14 @@ public class ExShowAgitInfo extends L2GameServerPacket
     {
         writeC(0xfe);
         writeH(0x16);
-        Map<Integer, ClanHall> clannhalls = ClanHallManager.getInstance().getClanHalls();
+        Map<Integer, ClanHall> clannhalls = ClanHallManager.getInstance().getAllClanHalls();
         writeD(clannhalls.size());
         for (ClanHall ch : clannhalls.values())
         {
             writeD(ch.getId());
-            writeS(""); // owner clan name
-            writeS(""); // leader name
-            writeD(ch.getGrade());
+            writeS(ch.getOwnerId() <= 0 ? "" : ClanTable.getInstance().getClan(ch.getOwnerId()).getName()); // owner clan name
+            writeS(ch.getOwnerId() <= 0 ? "" : ClanTable.getInstance().getClan(ch.getOwnerId()).getLeader().getName()); // leader name
+            writeD(ch.getGrade()> 0 ? 0x00 : 0x01); // 0 - auction  1 - war clanhall  2 - ETC (rainbow spring clanhall)
         }
     }
     

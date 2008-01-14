@@ -77,6 +77,7 @@ public final class MagicSkillUse extends L2GameServerPacket
 		writeD(_y);
 		writeD(_z);
 		writeH(0x00); // unknown loop but not AoE
+		writeH(0x00);
 		//for()
 		//{
 			writeH(0x00);

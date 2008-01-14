@@ -37,6 +37,7 @@ public class ClanHallManager
 
 	private Map<Integer, ClanHall> _clanHall;
 	private Map<Integer, ClanHall> _freeClanHall;
+    private Map<Integer, ClanHall> _allClanHalls;
 	private boolean _loaded = false;
 
 	public static ClanHallManager getInstance()
@@ -85,6 +86,7 @@ public class ClanHallManager
             while (rs.next())
             {
             	id = rs.getInt("id");
+                _allClanHalls.put(id,new ClanHall(id,rs.getString("name"),rs.getInt("ownerId"),rs.getInt("lease"),rs.getString("desc"),rs.getString("location"),0,rs.getInt("Grade"),rs.getBoolean("paid")));
             	if(rs.getInt("ownerId") == 0)
             		_freeClanHall.put(id,new ClanHall(id,rs.getString("name"),rs.getInt("ownerId"),rs.getInt("lease"),rs.getString("desc"),rs.getString("location"),0,rs.getInt("Grade"),rs.getBoolean("paid")));
             	else{
@@ -126,12 +128,17 @@ public class ClanHallManager
 		return _freeClanHall;
 	}
 
-	/** Get Map with all ClanHalls */
+	/** Get Map with all ClanHalls that have owner*/
 	public final Map<Integer, ClanHall> getClanHalls()
 	{
 		return _clanHall;
 	}
 
+    /** Get Map with all ClanHalls*/
+    public final Map<Integer, ClanHall> getAllClanHalls()
+    {
+        return _allClanHalls;
+    }
 	/** Check is free ClanHall */
 	public final boolean isFree(int chId)
 	{

@@ -172,6 +172,8 @@ public final class L2GamePacketHandler extends TCPHeaderHandler<L2GameClient> im
 					case 0x11:
 						msg = new EnterWorld();
 						break;
+					case 0x12:
+					    break;
                     case 0x14:
                         msg = new RequestItemList();
                         break;
