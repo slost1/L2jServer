@@ -291,18 +291,37 @@ public final class UseItem extends L2GameClientPacket
                         }
                         
                         // Don't allow other Race to Wear Kamael exclusive Weapons.
-                        if (!item.isEquipped() && activeChar.getRace() != Race.Kamael)
+                        if (!item.isEquipped() && item.getItem() instanceof L2Weapon && !activeChar.isGM())
                         {
-                            if (item.getItem() instanceof L2Weapon)
+                            L2Weapon wpn = (L2Weapon)item.getItem();
+                            
+                            switch (activeChar.getRace())
                             {
-                                L2Weapon wpn = (L2Weapon)item.getItem();
-                                switch (wpn.getItemType())
+                                case Kamael:
                                 {
-                                    case RAPIER:
-                                    case CROSSBOW:
-                                    case ANCIENT_SWORD:
-                                        activeChar.sendPacket(new SystemMessage(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION));
-                                        return;
+                                    switch (wpn.getItemType())
+                                    {
+                                        case NONE:
+                                            activeChar.sendPacket(new SystemMessage(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION));
+                                            return;
+                                    }
+                                    break;
+                                }
+                                case Human:
+                                case Dwarf:
+                                case Elf:
+                                case DarkElf:
+                                case Orc:
+                                {
+                                    switch (wpn.getItemType())
+                                    {
+                                        case RAPIER:
+                                        case CROSSBOW:
+                                        case ANCIENT_SWORD:
+                                            activeChar.sendPacket(new SystemMessage(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION));
+                                            return;
+                                    }
+                                    break;
                                 }
                             }
                         }
