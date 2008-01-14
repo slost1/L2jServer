@@ -100,9 +100,9 @@ public class PledgeShowMemberListAll extends L2GameServerPacket
 	{
 		writeC(0x5a);
 
-		writeD(mainOrSubpledge); //c5 main clan 0 or any subpledge 1?
+		writeD(mainOrSubpledge);
 		writeD(_clan.getClanId());
-		writeD(_pledgeType); //c5 - possibly pledge type?
+		writeD(_pledgeType);
 		writeS(_clan.getName());
 		writeS(_clan.getLeaderName());
 
@@ -110,11 +110,12 @@ public class PledgeShowMemberListAll extends L2GameServerPacket
 		writeD(_clan.getLevel());
 		writeD(_clan.getHasCastle());
 		writeD(_clan.getHasHideout());
-		writeD(_clan.getRank()); // not confirmed
-		writeD(_clan.getReputationScore()); //was activechar lvl
+		writeD(0x00); // getHasFortress
+		writeD(_clan.getRank());
+		writeD(_clan.getReputationScore());
 		writeD(0); //0
 		writeD(0); //0
-        writeD(0);
+		writeD(0);
 		writeD(_clan.getAllyId());
 		writeS(_clan.getAllyName());
 		writeD(_clan.getAllyCrestId());
