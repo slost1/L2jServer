@@ -37,24 +37,20 @@ public class Spoil implements ISkillHandler
     //private static Logger _log = Logger.getLogger(Spoil.class.getName());
 	private static final SkillType[] SKILL_IDS = {SkillType.SPOIL};
 
-    public void useSkill(L2Character activeChar, L2Skill skill, @SuppressWarnings("unused") L2Object[] targets)
+    public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
     {
         if (!(activeChar instanceof L2PcInstance))
 			return;
 
-		L2Object[] targetList = skill.getTargetList(activeChar);
-
-        if (targetList == null)
-        {
+        if (targets == null)
             return;
-        }
 
-		for (int index = 0; index < targetList.length; index++)
+              for (int index = 0; index < targets.length; index++)
 		{
-			if (!(targetList[index] instanceof L2MonsterInstance))
+                     if (!(targets[index] instanceof L2MonsterInstance))
 				continue;
 
-			L2MonsterInstance target = (L2MonsterInstance) targetList[index];
+                     L2MonsterInstance target = (L2MonsterInstance) targets[index];
 
 			if (target.isSpoil()) {
 				activeChar.sendPacket(new SystemMessage(SystemMessageId.ALREDAY_SPOILED));
@@ -65,7 +61,7 @@ public class Spoil implements ISkillHandler
 			boolean spoil = false;
 			if ( target.isDead() == false ) 
 			{
-				spoil = Formulas.getInstance().calcMagicSuccess(activeChar, (L2Character)targetList[index], skill);
+                            spoil = Formulas.getInstance().calcMagicSuccess(activeChar, (L2Character)targets[index], skill);
 				
 				if (spoil)
 				{
