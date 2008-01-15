@@ -169,7 +169,10 @@ public class L2PetInstance extends L2Summon
     	L2PetInstance pet = restore(control, template, owner);
     	// add the pet instance to world
     	if (pet != null)
+    	{
+    		pet.setTitle(owner.getName());
     		L2World.getInstance().addPet(owner.getObjectId(), pet);
+    	}
 
     	return pet;
 	}
