@@ -109,13 +109,17 @@ public class Status extends Thread
 	            _statusPw = rndPW(10);
 	            _log.info("Password Has Been Set To: " + _statusPw);
 	        }
-	        _log.info("StatusServer Started! - Listening on Port: " + _statusPort);
-	        _log.info("Password Has Been Set To: " + _statusPw);
+	        _log.info("Telnet StatusServer started successfully, listening on Port: " + _statusPort);
         }
         else
         {
-        	_log.info("StatusServer Started! - Listening on Port: " + _statusPort);
-        	_log.info("Password Has Been Set To: " + _statusPw);
+            if (_statusPw != null)
+            {
+                _log.info("Telnet StatusServer started successfully, listening on Port: " + _statusPort);
+            }
+            else 
+            _log.info("StatusServer Started! - Listening on Port: " + _statusPort);
+            _log.info("Password Has Been Set To: " + _statusPw);
         }
         statusServerSocket = new ServerSocket(_statusPort);
         _uptime = (int) System.currentTimeMillis();
