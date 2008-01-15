@@ -102,7 +102,9 @@ public final class L2NpcTemplate extends L2CharTemplate
     	SIEGEWEAPON, 
     	DEFENDINGARMY, 
     	MERCENARIE, 
-    	UNKNOWN 
+    	UNKNOWN,
+    	KAMAEL,
+    	NONE
 	}
     	
 	private final StatsSet _npcStatsSet;
@@ -421,16 +423,22 @@ public final class L2NpcTemplate extends L2CharTemplate
 			case 23:
 				race = L2NpcTemplate.Race.MERCENARIE;
 				break;
+			case 24:
+			    race = L2NpcTemplate.Race.UNKNOWN;
+			    break;
+			case 25:
+			    race = L2NpcTemplate.Race.KAMAEL;
+			    break;
 			default:
-				race = L2NpcTemplate.Race.UNKNOWN;
-				break;
+			    race = L2NpcTemplate.Race.NONE;
+			    break;
 		}
 	}
 	
 	public L2NpcTemplate.Race getRace()
 	{
 		if (race == null)
-			race = L2NpcTemplate.Race.UNKNOWN;
+			race = L2NpcTemplate.Race.NONE;
 		
 		return race;
 	}
