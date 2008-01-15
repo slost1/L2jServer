@@ -25,12 +25,12 @@ import net.sf.l2j.gameserver.model.L2ItemInstance;
  */
 public class ItemFilter implements Filter
 {
-	private String _excludeProcess;
-	private String _excludeItemType;
+//	private String _excludeProcess;
+//	private String _excludeItemType;
 
 //	This is example how to exclude consuming of shots and arrows from logging
-//	private String _excludeProcess = "Consume";
-//	private String _excludeItemType = "Arrow, Shot";
+	private String _excludeProcess = "Consume";
+	private String _excludeItemType = "Arrow, Shot";
 
 	public boolean isLoggable(LogRecord record)
 	{
