@@ -400,7 +400,8 @@ public class CastleManorManager {
 				int slots = 0;
 				for (CropProcure crop : c.getCropProcure(PERIOD_NEXT)) {
 					if (crop.getStartAmount() > 0) {
-						slots++;
+						if (cwh.getItemByItemId(L2Manor.getInstance().getMatureCrop(crop.getId())) == null)
+							slots++;
 					}
 				}
 				if (!cwh.validateCapacity(slots)) {
