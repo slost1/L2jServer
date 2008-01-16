@@ -1428,7 +1428,16 @@ public abstract class L2Character extends L2Object
 		_castInterruptTime = -2 + GameTimeController.getGameTicks() + hitTime / GameTimeController.MILLIS_IN_TICK;
 
 		// Init the reuse time of the skill
-		int reuseDelay = (int)(skill.getReuseDelay() * getStat().getMReuseRate(skill));
+		int reuseDelay;
+		
+		if(skill.isMagic())
+		{
+			reuseDelay = (int)(skill.getReuseDelay() * getStat().getMReuseRate(skill));
+		}
+		else
+		{
+			reuseDelay = (int)(skill.getReuseDelay() * getStat().getPReuseRate(skill));
+		}
         reuseDelay *= 333.0 / (skill.isMagic() ? getMAtkSpd() : getPAtkSpd());
 
 		// Send a Server->Client packet MagicSkillUser with target, displayId, level, skillTime, reuseDelay
@@ -5152,7 +5161,7 @@ public abstract class L2Character extends L2Object
         if (reuse == 0) return 0; 
         // else if (reuse < 10) reuse = 1500;
 
-        reuse *= getStat().getReuseModifier(target);
+		reuse *= getStat().getWeaponReuseModifier(target);
         double atkSpd = getStat().getPAtkSpd();
         switch (weapon.getItemType())
         {

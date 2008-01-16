@@ -439,6 +439,15 @@ public class CharStat
 		return calcStat(Stats.MAGIC_REUSE_RATE, _activeChar.getTemplate().baseMReuseRate, null, skill);
 	}
 
+	/** Return the PReuse rate (base+modifier) of the L2Character. */
+	public final double getPReuseRate(L2Skill skill)
+	{
+		if (_activeChar == null)
+			return 1;
+		
+		return calcStat(Stats.P_REUSE, _activeChar.getTemplate().baseMReuseRate, null, skill);
+	}
+
 	/** Return the PAtk (base+modifier) of the L2Character. */
 	public int getPAtk(L2Character target)
 	{
@@ -529,8 +538,8 @@ public class CharStat
 		return (int) calcStat(Stats.POWER_ATTACK_RANGE, _activeChar.getTemplate().baseAtkRange, null, null);
 	}
 
-	/** Return the Skill/Spell reuse modifier. */
-	public final double getReuseModifier(L2Character target)
+	/** Return the weapon reuse modifier */
+	public final double getWeaponReuseModifier(L2Character target)
 	{
 		return calcStat(Stats.ATK_REUSE, 1, target, null);
 	}
