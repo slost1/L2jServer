@@ -92,6 +92,7 @@ public final class L2BossInstance extends L2MonsterInstance
                     getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
                     teleToLocation(43577,15985,-4396, false);
                     setTeleported(true);
+                    setCanReturnToSpawnPoint(false);
                 }
                 break;
             default:

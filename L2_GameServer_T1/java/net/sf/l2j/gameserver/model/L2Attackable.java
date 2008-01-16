@@ -248,6 +248,10 @@ public class L2Attackable extends L2NpcInstance
     public final boolean isReturningToSpawnPoint() { return _isReturningToSpawnPoint; }
 	public final void setisReturningToSpawnPoint(boolean value) { _isReturningToSpawnPoint = value; }
 
+	private boolean _canReturnToSpawnPoint              = true;
+    public final boolean canReturnToSpawnPoint() { return _canReturnToSpawnPoint; }
+	public final void setCanReturnToSpawnPoint(boolean value) { _canReturnToSpawnPoint = value; }
+	
     /** Table containing all Items that a Dwarf can Sweep on this L2Attackable */
     private RewardItem[] _sweepItems;
 
