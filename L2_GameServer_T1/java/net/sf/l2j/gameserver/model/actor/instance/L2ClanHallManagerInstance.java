@@ -746,7 +746,7 @@ public class L2ClanHallManagerInstance extends L2MerchantInstance
     private void doTeleport(L2PcInstance player, int val)
     {
        if(Config.DEBUG)
-    	   player.sendMessage("doTeleport(L2PcInstance player, int val) is called");
+    	   _log.warning("doTeleport(L2PcInstance player, int val) is called");
         L2TeleportLocation list = TeleportLocationTable.getInstance().getTemplate(val);
         if (list != null)
         {
