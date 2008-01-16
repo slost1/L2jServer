@@ -126,6 +126,10 @@ public final class L2ClassMasterInstance extends L2FolkInstance
 					}
 				}
 			}
+            else if (level >= 76 && Config.ALLOW_CLASS_MASTERS && (classId.getId() >= 123 && classId.getId() < 132 )||classId.getId() == 135) // this is for Kamael Race 3rd Transfer
+            {
+                showChatWindow(player, classId.getId());
+            }
 			else
 			{
 				NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
