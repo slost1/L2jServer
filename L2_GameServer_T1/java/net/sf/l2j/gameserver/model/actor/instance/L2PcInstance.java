@@ -8955,6 +8955,10 @@ public final class L2PcInstance extends L2PlayableInstance
         //_macroses.sendUpdate();
         _shortCuts.restore();
         sendPacket(new ShortCutInit(this));
+        
+        // Method untransform() already check if player is transformed
+        untransform();
+            
 
         broadcastPacket(new SocialAction(getObjectId(), 15));
 
