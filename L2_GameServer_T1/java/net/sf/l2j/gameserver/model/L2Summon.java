@@ -578,6 +578,8 @@ public abstract class L2Summon extends L2PlayableInstance
 			// PARTY, AURA, SELF should be cast even if no target has been found
 			case TARGET_PARTY:
 			case TARGET_AURA:
+			case TARGET_FRONT_AURA:
+			case TARGET_BEHIND_AURA:
 			case TARGET_SELF:
 				target = this;
 				break;
@@ -674,6 +676,8 @@ public abstract class L2Summon extends L2PlayableInstance
 				// Check if a Forced ATTACK is in progress on non-attackable target
 				if (!target.isAutoAttackable(this) && !forceUse &&
 					skill.getTargetType() != SkillTargetType.TARGET_AURA &&
+					skill.getTargetType() != SkillTargetType.TARGET_FRONT_AURA &&
+					skill.getTargetType() != SkillTargetType.TARGET_BEHIND_AURA &&
 					skill.getTargetType() != SkillTargetType.TARGET_CLAN &&
 					skill.getTargetType() != SkillTargetType.TARGET_ALLY &&
 					skill.getTargetType() != SkillTargetType.TARGET_PARTY &&

@@ -7312,6 +7312,8 @@ public final class L2PcInstance extends L2PlayableInstance
         {
             // Target the player if skill type is AURA, PARTY, CLAN or SELF
             case TARGET_AURA:
+	    case TARGET_FRONT_AURA:
+	    case TARGET_BEHIND_AURA:
             case TARGET_PARTY:
             case TARGET_ALLY:
             case TARGET_CLAN:
@@ -7511,6 +7513,8 @@ public final class L2PcInstance extends L2PlayableInstance
 			// Check if a Forced ATTACK is in progress on non-attackable target
 			if (!target.isAutoAttackable(this) && !forceUse &&
 					sklTargetType != SkillTargetType.TARGET_AURA &&
+					sklTargetType != SkillTargetType.TARGET_FRONT_AURA &&
+					sklTargetType != SkillTargetType.TARGET_BEHIND_AURA &&
 					sklTargetType != SkillTargetType.TARGET_CLAN &&
 					sklTargetType != SkillTargetType.TARGET_ALLY &&
 					sklTargetType != SkillTargetType.TARGET_PARTY &&
@@ -7544,6 +7548,8 @@ public final class L2PcInstance extends L2PlayableInstance
 			if ((target instanceof L2MonsterInstance) && !forceUse
                     && (sklTargetType != SkillTargetType.TARGET_PET)
                     && (sklTargetType != SkillTargetType.TARGET_AURA)
+		    && (sklTargetType != SkillTargetType.TARGET_FRONT_AURA)
+		    && (sklTargetType != SkillTargetType.TARGET_BEHIND_AURA)
                     && (sklTargetType != SkillTargetType.TARGET_CLAN)
                     && (sklTargetType != SkillTargetType.TARGET_SELF)
                     && (sklTargetType != SkillTargetType.TARGET_PARTY)
@@ -7621,6 +7627,8 @@ public final class L2PcInstance extends L2PlayableInstance
 			case TARGET_ALLY:   // For such skills, checkPvpSkill() is called from L2Skill.getTargetList()
 			case TARGET_CLAN:   // For such skills, checkPvpSkill() is called from L2Skill.getTargetList()
 			case TARGET_AURA:
+			case TARGET_FRONT_AURA:
+			case TARGET_BEHIND_AURA:
 			case TARGET_SELF:
 				break;
 			default:
