@@ -36,6 +36,7 @@ import net.sf.l2j.gameserver.model.L2Spawn;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.entity.DimensionalRift;
+import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 import net.sf.l2j.gameserver.util.Util;
@@ -59,7 +60,10 @@ public class DimensionalRiftManager
     public static DimensionalRiftManager getInstance()
     {
         if(_instance == null)
+        {
             _instance = new DimensionalRiftManager();
+            new Quest(635, "RiftQuest", "Dummy Quest shown in players' questlist when inside the rift");
+        }
 
         return _instance;
     }
