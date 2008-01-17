@@ -24,10 +24,12 @@ import java.util.logging.Logger;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
+import net.sf.l2j.gameserver.GeoData;
 import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.datatables.ItemTable;
 import net.sf.l2j.gameserver.instancemanager.ItemsOnGroundManager;
+import net.sf.l2j.gameserver.model.Location;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.knownlist.NullKnownList;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -1044,6 +1046,14 @@ public final class L2ItemInstance extends L2Object
     public final void dropMe(L2Character dropper, int x, int y, int z)
     {
         if (Config.ASSERT) assert getPosition().getWorldRegion() == null;
+
+	if (Config.GEODATA > 0)
+	{
+		Location dropDest = GeoData.getInstance().moveCheck(dropper.getX(), dropper.getY(), dropper.getZ(), x, y, z);
+		x = dropDest.getX();
+		y = dropDest.getY();
+		z = dropDest.getZ();
+	}
 
         synchronized (this)
         {
