@@ -219,26 +219,40 @@ public class Quest extends ManagedScript
      */
     public void startQuestTimer(String name, long time, L2NpcInstance npc, L2PcInstance player)
     {
+        startQuestTimer(name, time, npc, player, false);
+    }
+    
+    /**
+     * Add a timer to the quest, if it doesn't exist already.  If the timer is repeatable,
+     * it will auto-fire automatically, at a fixed rate, until explicitly canceled.
+     * @param name: name of the timer (also passed back as "event" in onAdvEvent)
+     * @param time: time in ms for when to fire the timer
+     * @param npc:  npc associated with this timer (can be null)
+     * @param player: player associated with this timer (can be null)
+     * @param repeatable: indicates if the timer is repeatable or one-time.
+     */
+    public void startQuestTimer(String name, long time, L2NpcInstance npc, L2PcInstance player, boolean repeating)
+    {
         // Add quest timer if timer doesn't already exist
-    	FastList<QuestTimer> timers = getQuestTimers(name);
-    	// no timer exists with the same name, at all 
+        FastList<QuestTimer> timers = getQuestTimers(name);
+        // no timer exists with the same name, at all 
         if (timers == null)
         {
-        	timers = new FastList<QuestTimer>();
+            timers = new FastList<QuestTimer>();
             timers.add(new QuestTimer(this, name, time, npc, player));
-        	_allEventTimers.put(name, timers);
+            _allEventTimers.put(name, timers);
         }
         // a timer with this name exists, but may not be for the same set of npc and player
         else
         {
-        	// if there exists a timer with this name, allow the timer only if the [npc, player] set is unique
-        	// nulls act as wildcards
-        	if(getQuestTimer(name, npc, player)==null)
-        		timers.add(new QuestTimer(this, name, time, npc, player));
+            // if there exists a timer with this name, allow the timer only if the [npc, player] set is unique
+            // nulls act as wildcards
+            if(getQuestTimer(name, npc, player)==null)
+                timers.add(new QuestTimer(this, name, time, npc, player, repeating));
         }
         // ignore the startQuestTimer in all other cases (timer is already started)
     }
-    
+
     public QuestTimer getQuestTimer(String name, L2NpcInstance npc, L2PcInstance player)
     {
     	if (_allEventTimers.get(name)==null)
