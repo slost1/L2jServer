@@ -239,7 +239,7 @@ public class Quest extends ManagedScript
         if (timers == null)
         {
             timers = new FastList<QuestTimer>();
-            timers.add(new QuestTimer(this, name, time, npc, player));
+            timers.add(new QuestTimer(this, name, time, npc, player, repeating));
             _allEventTimers.put(name, timers);
         }
         // a timer with this name exists, but may not be for the same set of npc and player

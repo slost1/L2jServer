@@ -661,12 +661,21 @@ public final class QuestState
      */
     public void startQuestTimer(String name, long time)
     {
-    	getQuest().startQuestTimer(name, time, null, getPlayer());
+        getQuest().startQuestTimer(name, time, null, getPlayer(), false);
     }
 
     public void startQuestTimer(String name, long time, L2NpcInstance npc)
     {
-    	getQuest().startQuestTimer(name, time, npc, getPlayer());
+        getQuest().startQuestTimer(name, time, npc, getPlayer(), false);
+    }
+    public void startRepeatingQuestTimer(String name, long time)
+    {
+        getQuest().startQuestTimer(name, time, null, getPlayer(), true);
+    }
+
+    public void startRepeatingQuestTimer(String name, long time, L2NpcInstance npc)
+    {
+        getQuest().startQuestTimer(name, time, npc, getPlayer(), true);
     }
 
     /**
