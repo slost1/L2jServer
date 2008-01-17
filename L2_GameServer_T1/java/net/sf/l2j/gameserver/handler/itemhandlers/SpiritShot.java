@@ -68,7 +68,8 @@ public class SpiritShot implements IItemHandler
     		(weaponGrade == L2Item.CRYSTAL_C && itemId != 2511) ||
     		(weaponGrade == L2Item.CRYSTAL_B && itemId != 2512) ||
     		(weaponGrade == L2Item.CRYSTAL_A && itemId != 2513) ||
-    		(weaponGrade == L2Item.CRYSTAL_S && itemId != 2514))
+    		(weaponGrade == L2Item.CRYSTAL_S && itemId != 2514) ||
+    		(weaponGrade == L2Item.CRYSTAL_S80 && itemId != 2514))
 		{
             if(!activeChar.getAutoSoulShot().containsKey(itemId))
                 activeChar.sendPacket(new SystemMessage(SystemMessageId.SPIRITSHOTS_GRADE_MISMATCH));

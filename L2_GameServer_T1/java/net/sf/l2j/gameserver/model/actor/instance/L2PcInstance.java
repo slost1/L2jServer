@@ -243,16 +243,17 @@ public final class L2PcInstance extends L2PlayableInstance
 	public static final int STORE_PRIVATE_MANUFACTURE = 5;
 	public static final int STORE_PRIVATE_PACKAGE_SELL = 8;
 
-	/** The table containing all minimum level needed for each Expertise (None, D, C, B, A, S)*/
-	private static final int[] EXPERTISE_LEVELS =
-	{
-	 SkillTreeTable.getInstance().getExpertiseLevel(0), //NONE
-	 SkillTreeTable.getInstance().getExpertiseLevel(1), //D
-	 SkillTreeTable.getInstance().getExpertiseLevel(2), //C
-	 SkillTreeTable.getInstance().getExpertiseLevel(3), //B
-	 SkillTreeTable.getInstance().getExpertiseLevel(4), //A
-	 SkillTreeTable.getInstance().getExpertiseLevel(5), //S
-	};
+	/** The table containing all minimum level needed for each Expertise (None, D, C, B, A, S, S80)*/
+    private static final int[] EXPERTISE_LEVELS =
+    {
+	    SkillTreeTable.getInstance().getExpertiseLevel(0), //NONE
+	    SkillTreeTable.getInstance().getExpertiseLevel(1), //D
+	    SkillTreeTable.getInstance().getExpertiseLevel(2), //C
+	    SkillTreeTable.getInstance().getExpertiseLevel(3), //B
+	    SkillTreeTable.getInstance().getExpertiseLevel(4), //A
+	    SkillTreeTable.getInstance().getExpertiseLevel(5), //S
+	    SkillTreeTable.getInstance().getExpertiseLevel(6), //S80
+    };
 
 	private static final int[] COMMON_CRAFT_LEVELS =
 	{

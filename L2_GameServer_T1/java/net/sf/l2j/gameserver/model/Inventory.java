@@ -1204,7 +1204,8 @@ public abstract class Inventory extends ItemContainer
 		case L2Item.CRYSTAL_C:      arrowsId = 1342; break; // Fine steel arrow
 		case L2Item.CRYSTAL_B:      arrowsId = 1343; break; // Silver arrow
 		case L2Item.CRYSTAL_A:      arrowsId = 1344; break; // Mithril arrow
-		case L2Item.CRYSTAL_S:      arrowsId = 1345; break; // Shining arrow
+		case L2Item.CRYSTAL_S:
+		case L2Item.CRYSTAL_S80:    arrowsId = 1345; break; // Shining arrow
 		}
 
 		// Get the L2ItemInstance corresponding to the item identifier and return it
@@ -1228,7 +1229,8 @@ public abstract class Inventory extends ItemContainer
         case L2Item.CRYSTAL_C:      boltsId = 9634; break; // Steel Bolt
         case L2Item.CRYSTAL_B:      boltsId = 9635; break; // Silver Bolt
         case L2Item.CRYSTAL_A:      boltsId = 9636; break; // Mithril Bolt
-        case L2Item.CRYSTAL_S:      boltsId = 9637; break; // Shining Bolt
+        case L2Item.CRYSTAL_S:
+        case L2Item.CRYSTAL_S80:    boltsId = 9637; break; // Shining Bolt
         }
 
         // Get the L2ItemInstance corresponding to the item identifier and return it

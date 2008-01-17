@@ -96,6 +96,7 @@ public final class RequestConfirmGemStone extends L2GameClientPacket
 				}
 				break;
 			case L2Item.CRYSTAL_S:
+			case L2Item.CRYSTAL_S80:
 				if (_gemstoneCount != 25 || gemstoneItemId != 2131)
 				{
 					activeChar.sendPacket(new SystemMessage(SystemMessageId.GEMSTONE_QUANTITY_IS_INCORRECT));

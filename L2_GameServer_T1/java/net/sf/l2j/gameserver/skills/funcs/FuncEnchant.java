@@ -60,6 +60,7 @@ public class FuncEnchant extends Func
             switch (item.getItem().getCrystalType())
             {
                 case L2Item.CRYSTAL_S:
+                case L2Item.CRYSTAL_S80:
                     env.value += 4 * enchant + 8 * overenchant;
                     break;
                 case L2Item.CRYSTAL_A:
@@ -171,6 +172,7 @@ public class FuncEnchant extends Func
                     }
                     break;
                 case L2Item.CRYSTAL_S:
+                case L2Item.CRYSTAL_S80:
                     switch(type)
                     {
                         case BOW:

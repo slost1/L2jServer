@@ -66,7 +66,8 @@ public class SoulShots implements IItemHandler
 			(weaponGrade == L2Item.CRYSTAL_C && itemId != 1464) ||
 			(weaponGrade == L2Item.CRYSTAL_B && itemId != 1465) ||
 			(weaponGrade == L2Item.CRYSTAL_A && itemId != 1466) ||
-			(weaponGrade == L2Item.CRYSTAL_S && itemId != 1467))
+			(weaponGrade == L2Item.CRYSTAL_S && itemId != 1467) ||
+			(weaponGrade == L2Item.CRYSTAL_S80 && itemId != 1467))
 		{
             if(!activeChar.getAutoSoulShot().containsKey(itemId))
                 activeChar.sendPacket(new SystemMessage(SystemMessageId.SOULSHOTS_GRADE_MISMATCH));

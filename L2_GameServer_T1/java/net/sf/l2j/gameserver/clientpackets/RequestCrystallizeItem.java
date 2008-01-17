@@ -131,58 +131,56 @@ public final class RequestCrystallizeItem extends L2GameClientPacket
 			return;
 		}
 
-		// Check if the char can crystallize C items and return if false;
-		if (itemToRemove.getItem().getCrystalType() == L2Item.CRYSTAL_C
-				&& skillLevel <= 1)
-		{
-			SystemMessage sm = new SystemMessage(
-					SystemMessageId.CRYSTALLIZE_LEVEL_TOO_LOW);
-			activeChar.sendPacket(sm);
-			sm = null;
-			ActionFailed af = new ActionFailed();
-			activeChar.sendPacket(af);
-			return;
-		}
+        // Check if the char can crystallize items and return if false;
+        boolean canCrystallize = true;
 
-		// Check if the user can crystallize B items and return if false;
-		if (itemToRemove.getItem().getCrystalType() == L2Item.CRYSTAL_B
-				&& skillLevel <= 2)
-		{
-			SystemMessage sm = new SystemMessage(
-					SystemMessageId.CRYSTALLIZE_LEVEL_TOO_LOW);
-			activeChar.sendPacket(sm);
-			sm = null;
-			ActionFailed af = new ActionFailed();
-			activeChar.sendPacket(af);
-			return;
-		}
-
-		// Check if the user can crystallize A items and return if false;
-		if (itemToRemove.getItem().getCrystalType() == L2Item.CRYSTAL_A
-				&& skillLevel <= 3)
-		{
-			SystemMessage sm = new SystemMessage(
-					SystemMessageId.CRYSTALLIZE_LEVEL_TOO_LOW);
-			activeChar.sendPacket(sm);
-			sm = null;
-			ActionFailed af = new ActionFailed();
-			activeChar.sendPacket(af);
-			return;
-		}
-
-		// Check if the user can crystallize S items and return if false;
-		if (itemToRemove.getItem().getCrystalType() == L2Item.CRYSTAL_S
-				&& skillLevel <= 4)
-		{
-			SystemMessage sm = new SystemMessage(
-					SystemMessageId.CRYSTALLIZE_LEVEL_TOO_LOW);
-			activeChar.sendPacket(sm);
-			sm = null;
-			ActionFailed af = new ActionFailed();
-			activeChar.sendPacket(af);
-			return;
-		}
-
+        switch (itemToRemove.getItem().getCrystalType())
+        {
+            case L2Item.CRYSTAL_C:
+            {
+                if (skillLevel <= 1)
+                {
+                    canCrystallize = false;
+                }
+                break;
+            }
+            case L2Item.CRYSTAL_B:
+            {
+                if (skillLevel <= 2)
+                {
+                    canCrystallize = false;
+                }
+                break;
+            }
+            case L2Item.CRYSTAL_A:
+            {
+                if (skillLevel <= 3)
+                {
+                    canCrystallize = false;
+                }
+                break;
+            }
+            case L2Item.CRYSTAL_S:
+            case L2Item.CRYSTAL_S80:
+            {
+                if (skillLevel <= 4)
+                {
+                    canCrystallize = false;
+                }
+                break;
+            }
+        }
+        
+        if (!canCrystallize)
+        {
+            SystemMessage sm = new SystemMessage(SystemMessageId.CRYSTALLIZE_LEVEL_TOO_LOW);
+            activeChar.sendPacket(sm);
+            sm = null;
+            ActionFailed af = new ActionFailed();
+            activeChar.sendPacket(af);
+            return;
+        }
+        
 		activeChar.setInCrystallize(true);
 
 		// unequip if needed

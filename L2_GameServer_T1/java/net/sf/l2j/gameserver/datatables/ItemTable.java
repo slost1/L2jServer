@@ -98,6 +98,7 @@ public class ItemTable
         _materials.put("cobweb",            L2Item.MATERIAL_COBWEB);  
         _materials.put("seed",              L2Item.MATERIAL_SEED);  
 
+        _crystalTypes.put("s80",            L2Item.CRYSTAL_S80);
         _crystalTypes.put("s",              L2Item.CRYSTAL_S);  
         _crystalTypes.put("a",              L2Item.CRYSTAL_A);  
         _crystalTypes.put("b",              L2Item.CRYSTAL_B);  
