@@ -406,41 +406,44 @@ public class RegionBBSManager extends BaseBBSManager
 	        htmlCode.append(trClose);
 	        htmlCode.append("</table>");
 
-	        htmlCode.append("<table border=0>");
-	        htmlCode.append("<tr><td><table border=0>");
-
-	        int cell = 0;
-	        for (L2PcInstance player : getOnlinePlayers(page))
+            int cell = 0;
+	        if (Config.BBS_SHOW_PLAYERLIST)
 	        {
-	            cell++;
-
-	            if (cell == 1) htmlCode.append(trOpen);
-
-	            htmlCode.append("<td align=left valign=top FIXWIDTH=110><a action=\"bypass _bbsloc;playerinfo;"
-	                + player.getName() + "\">");
-
-	            if (player.isGM()) htmlCode.append("<font color=\"LEVEL\">" + player.getName()
-	                + "</font>");
-	            else htmlCode.append(player.getName());
-
-	            htmlCode.append("</a></td>");
-
-	            if (cell < Config.NAME_PER_ROW_COMMUNITYBOARD) htmlCode.append(colSpacer);
-
-	            if (cell == Config.NAME_PER_ROW_COMMUNITYBOARD)
-	            {
-	                cell = 0;
-	                htmlCode.append(trClose);
-	            }
-	        }
-	        if (cell > 0 && cell < Config.NAME_PER_ROW_COMMUNITYBOARD) htmlCode.append(trClose);
-	        htmlCode.append("</table><br></td></tr>");
-
-	        htmlCode.append(trOpen);
-	        htmlCode.append("<td><img src=\"sek.cbui355\" width=600 height=1><br></td>");
-	        htmlCode.append(trClose);
-
-	        htmlCode.append("</table>");
+    	        htmlCode.append("<table border=0>");
+    	        htmlCode.append("<tr><td><table border=0>");
+    
+    	        for (L2PcInstance player : getOnlinePlayers(page))
+    	        {
+    	            cell++;
+    
+    	            if (cell == 1) htmlCode.append(trOpen);
+    
+    	            htmlCode.append("<td align=left valign=top FIXWIDTH=110><a action=\"bypass _bbsloc;playerinfo;"
+    	                + player.getName() + "\">");
+    
+    	            if (player.isGM()) htmlCode.append("<font color=\"LEVEL\">" + player.getName()
+    	                + "</font>");
+    	            else htmlCode.append(player.getName());
+    
+    	            htmlCode.append("</a></td>");
+    
+    	            if (cell < Config.NAME_PER_ROW_COMMUNITYBOARD) htmlCode.append(colSpacer);
+    
+    	            if (cell == Config.NAME_PER_ROW_COMMUNITYBOARD)
+    	            {
+    	                cell = 0;
+    	                htmlCode.append(trClose);
+    	            }
+    	        }
+    	        if (cell > 0 && cell < Config.NAME_PER_ROW_COMMUNITYBOARD) htmlCode.append(trClose);
+    	        htmlCode.append("</table><br></td></tr>");
+    
+    	        htmlCode.append(trOpen);
+    	        htmlCode.append("<td><img src=\"sek.cbui355\" width=600 height=1><br></td>");
+    	        htmlCode.append(trClose);
+    
+    	        htmlCode.append("</table>");
+			}
 
 	        if (getOnlineCount("gm") > Config.NAME_PAGE_SIZE_COMMUNITYBOARD)
 	        {
@@ -514,45 +517,48 @@ public class RegionBBSManager extends BaseBBSManager
 	        htmlCode.append(trClose);
 	        htmlCode.append("</table>");
 
-	        htmlCode.append("<table border=0>");
-	        htmlCode.append("<tr><td><table border=0>");
-
-	        cell = 0;
-	        for (L2PcInstance player : getOnlinePlayers(page))
+	        if (Config.BBS_SHOW_PLAYERLIST) 
 	        {
-	            if ((player == null) || (player.getAppearance().getInvisible()))
-	                continue;                           // Go to next
-
-	            cell++;
-
-	            if (cell == 1) htmlCode.append(trOpen);
-
-	            htmlCode.append("<td align=left valign=top FIXWIDTH=110><a action=\"bypass _bbsloc;playerinfo;"
-	                + player.getName() + "\">");
-
-	            if (player.isGM()) htmlCode.append("<font color=\"LEVEL\">" + player.getName()
-	                + "</font>");
-	            else htmlCode.append(player.getName());
-
-	            htmlCode.append("</a></td>");
-
-	            if (cell < Config.NAME_PER_ROW_COMMUNITYBOARD) htmlCode.append(colSpacer);
-
-	            if (cell == Config.NAME_PER_ROW_COMMUNITYBOARD)
-	            {
-	                cell = 0;
-	                htmlCode.append(trClose);
-	            }
-	        }
-	        if (cell > 0 && cell < Config.NAME_PER_ROW_COMMUNITYBOARD) htmlCode.append(trClose);
-	        htmlCode.append("</table><br></td></tr>");
-
-	        htmlCode.append(trOpen);
-	        htmlCode.append("<td><img src=\"sek.cbui355\" width=600 height=1><br></td>");
-	        htmlCode.append(trClose);
-
-	        htmlCode.append("</table>");
-
+    	        htmlCode.append("<table border=0>");
+    	        htmlCode.append("<tr><td><table border=0>");
+    
+    	        cell = 0;
+    	        for (L2PcInstance player : getOnlinePlayers(page))
+    	        {
+    	            if ((player == null) || (player.getAppearance().getInvisible()))
+    	                continue;                           // Go to next
+    
+    	            cell++;
+    
+    	            if (cell == 1) htmlCode.append(trOpen);
+    
+    	            htmlCode.append("<td align=left valign=top FIXWIDTH=110><a action=\"bypass _bbsloc;playerinfo;"
+    	                + player.getName() + "\">");
+    
+    	            if (player.isGM()) htmlCode.append("<font color=\"LEVEL\">" + player.getName()
+    	                + "</font>");
+    	            else htmlCode.append(player.getName());
+    
+    	            htmlCode.append("</a></td>");
+    
+    	            if (cell < Config.NAME_PER_ROW_COMMUNITYBOARD) htmlCode.append(colSpacer);
+    
+    	            if (cell == Config.NAME_PER_ROW_COMMUNITYBOARD)
+    	            {
+    	                cell = 0;
+    	                htmlCode.append(trClose);
+    	            }
+    	        }
+    	        if (cell > 0 && cell < Config.NAME_PER_ROW_COMMUNITYBOARD) htmlCode.append(trClose);
+    	        htmlCode.append("</table><br></td></tr>");
+    
+    	        htmlCode.append(trOpen);
+    	        htmlCode.append("<td><img src=\"sek.cbui355\" width=600 height=1><br></td>");
+    	        htmlCode.append(trClose);
+    
+    	        htmlCode.append("</table>");
+			}
+	        
 	        if (getOnlineCount("pl") > Config.NAME_PAGE_SIZE_COMMUNITYBOARD)
 	        {
 		        htmlCode.append("<table border=0 width=600>");
