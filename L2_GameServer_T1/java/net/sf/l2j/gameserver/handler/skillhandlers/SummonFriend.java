@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -17,6 +17,7 @@ package net.sf.l2j.gameserver.handler.skillhandlers;
 import javolution.util.FastList;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.handler.ISkillHandler;
+import net.sf.l2j.gameserver.instancemanager.BossZoneManager;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
@@ -25,6 +26,7 @@ import net.sf.l2j.gameserver.model.L2Skill.SkillType;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2RaidBossInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
+import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.util.Util;
 /**
@@ -52,6 +54,13 @@ public class SummonFriend implements ISkillHandler
        	{
        		activePlayer.sendPacket(new SystemMessage(SystemMessageId.YOU_CANNOT_SUMMON_IN_COMBAT));
         	return;
+        }
+
+        if (BossZoneManager.getInstance().getZone(activePlayer) != null && !activePlayer.isGM())
+        {
+            activePlayer.sendMessage("You may not use Summon Friend Skill inside a Boss Zone.");
+            activePlayer.sendPacket(new ActionFailed());
+            return;
         }
 
         // check for summoner not in raid areas
@@ -120,6 +129,13 @@ public class SummonFriend implements ISkillHandler
                     	SystemMessage sm = new SystemMessage(SystemMessageId.S1_IS_ENGAGED_IN_COMBAT_AND_CANNOT_BE_SUMMONED);
                     	sm.addString(targetChar.getName());
                     	activeChar.sendPacket(sm);
+                    	continue;
+                    }
+
+                    // Check for the the target's Inside Boss Zone
+                    if (BossZoneManager.getInstance().getZone(targetChar) != null && !targetChar.isGM())
+                    {
+                    	SystemMessage sm = new SystemMessage(SystemMessageId.CANOT_USE_SUMMON_SKILL_ON_SELECTED_TARGET);
                     	continue;
                     }
 

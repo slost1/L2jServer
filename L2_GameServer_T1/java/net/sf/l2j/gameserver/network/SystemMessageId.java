@@ -55,6 +55,12 @@ public enum SystemMessageId
     * Message: $s1 does not exist
     */
     S1_DOES_NOT_EXIST(6),
+
+    /**
+     * ID: 6<br>
+     * Message: Cant use this time inside Boss Zones
+     */
+    CANOT_USE_SCROLL_OF_ESCAPE_INSIDE_BOSS_ZONE(7),
     
     /**
     * ID: 8<br>
@@ -73,6 +79,12 @@ public enum SystemMessageId
     * Message: $s1 is working with another clan.
     */
     S1_WORKING_WITH_ANOTHER_CLAN(10),
+
+    /**
+     * ID: 11<br>
+     * Message: Cant Summon target Inside Boss Zone
+     */
+    CANOT_USE_SUMMON_SKILL_ON_SELECTED_TARGET(11),
     
     /**
     * ID: 13<br>
