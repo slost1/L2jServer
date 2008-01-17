@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -26,6 +26,7 @@ import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.handler.IVoicedCommandHandler;
+import net.sf.l2j.gameserver.instancemanager.BossZoneManager;
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
 import net.sf.l2j.gameserver.instancemanager.CoupleManager;
 import net.sf.l2j.gameserver.model.L2Skill;
@@ -234,6 +235,11 @@ public class Wedding implements IVoicedCommandHandler
             activeChar.sendMessage("You're not married.");
             return false;
         }
+        if (BossZoneManager.getInstance().getZone(activeChar) != null)
+        {
+            activeChar.sendMessage("You are inside a Boss Zone.");
+            return false;
+        }
 
         if(activeChar.getPartnerId()==0)
         {
@@ -252,6 +258,11 @@ public class Wedding implements IVoicedCommandHandler
         else if(partner.isInJail())
         {
             activeChar.sendMessage("Your partner is in Jail.");
+            return false;
+        }
+        else if (BossZoneManager.getInstance().getZone(partner) != null)
+        {
+            activeChar.sendMessage("Your partner is inside a Boss Zone.");
             return false;
         }
         else if(partner.isInOlympiadMode())
