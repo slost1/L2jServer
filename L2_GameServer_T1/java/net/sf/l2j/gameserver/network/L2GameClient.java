@@ -89,7 +89,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 		_connectionStartTime = System.currentTimeMillis();
 		crypt = new GameCrypt();
 		_autoSaveInDB = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(
-   				new AutoSaveTask(), 300000L, 900000L
+   				new AutoSaveTask(), 300000L, (Config.CHAR_STORE_INTERVAL*60000L)
    				);
 	}
 

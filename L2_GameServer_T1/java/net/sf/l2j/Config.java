@@ -532,6 +532,9 @@ public final class Config
     public static String  PROTECTED_ITEMS;
     /** List of items that will not be destroyed */
     public static List<Integer> LIST_PROTECTED_ITEMS = new FastList<Integer>();
+    
+    /** Interval that the gameserver will update and store character information */
+    public static int CHAR_STORE_INTERVAL;
 
     /** Auto destroy nonequipable items dropped by players */
     public static boolean     DESTROY_DROPPED_PLAYER_ITEM;
@@ -1257,6 +1260,9 @@ public final class Config
                 for (String id : PROTECTED_ITEMS.split(",")) {
                     LIST_PROTECTED_ITEMS.add(Integer.parseInt(id));
                 }
+                
+                CHAR_STORE_INTERVAL        = Integer.parseInt(optionsSettings.getProperty("CharacterDataStoreInterval", "15"));
+                
                 DESTROY_DROPPED_PLAYER_ITEM        = Boolean.valueOf(optionsSettings.getProperty("DestroyPlayerDroppedItem", "false"));
                 DESTROY_EQUIPABLE_PLAYER_ITEM    = Boolean.valueOf(optionsSettings.getProperty("DestroyEquipableItem", "false"));
                 SAVE_DROPPED_ITEM                = Boolean.valueOf(optionsSettings.getProperty("SaveDroppedItem", "false"));
