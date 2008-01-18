@@ -427,7 +427,7 @@ public class LoginController
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
 
-			String stmt = "UPDATE accounts SET access_level=? WHERE login=?";
+			String stmt = "UPDATE accounts SET accessLevel=? WHERE login=?";
 			statement = con.prepareStatement(stmt);
 			statement.setInt(1, banLevel);
 			statement.setString(2, account);
@@ -459,7 +459,7 @@ public class LoginController
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
-			statement = con.prepareStatement("SELECT access_level FROM accounts WHERE login=?");
+			statement = con.prepareStatement("SELECT accessLevel FROM accounts WHERE login=?");
 			statement.setString(1, user);
 			ResultSet rset = statement.executeQuery();
 			if (rset.next())
@@ -539,13 +539,13 @@ public class LoginController
 			int lastServer = 1;
 
 			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("SELECT password, access_level, lastServer FROM accounts WHERE login=?");
+			PreparedStatement statement = con.prepareStatement("SELECT password, accessLevel, lastServer FROM accounts WHERE login=?");
 			statement.setString(1, user);
 			ResultSet rset = statement.executeQuery();
 			if (rset.next())
 			{
 				expected = Base64.decode(rset.getString("password"));
-				access = rset.getInt("access_level");
+				access = rset.getInt("accessLevel");
 				lastServer = rset.getInt("lastServer");
 				if (lastServer <= 0) lastServer = 1; // minServerId is 1 in Interlude
 				if (Config.DEBUG) _log.fine("account exists");
@@ -560,7 +560,7 @@ public class LoginController
 				{
 					if ((user.length() >= 2) && (user.length() <= 14))
 					{
-						statement = con.prepareStatement("INSERT INTO accounts (login,password,lastactive,access_level,lastIP) values(?,?,?,?,?)");
+						statement = con.prepareStatement("INSERT INTO accounts (login,password,lastactive,accessLevel,lastIP) values(?,?,?,?,?)");
 						statement.setString(1, user);
 						statement.setString(2, Base64.encodeBytes(hash));
 						statement.setLong(3, System.currentTimeMillis());
@@ -668,7 +668,7 @@ public class LoginController
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("SELECT access_level FROM accounts WHERE login=?");
+			PreparedStatement statement = con.prepareStatement("SELECT accessLevel FROM accounts WHERE login=?");
 			statement.setString(1, user);
 			ResultSet rset = statement.executeQuery();
 			if (rset.next())

@@ -114,11 +114,11 @@ public class SQLAccountManager
 		int count = 0;
 		java.sql.Connection con = null;
 		con = L2DatabaseFactory.getInstance().getConnection();
-		PreparedStatement statement = con.prepareStatement("SELECT login, access_level FROM accounts ORDER BY login ASC");
+		PreparedStatement statement = con.prepareStatement("SELECT login, accessLevel FROM accounts ORDER BY login ASC");
 		ResultSet rset = statement.executeQuery();
         while (rset.next())
         {
-			System.out.println(rset.getString("login")	+ " -> " + rset.getInt("access_level"));
+			System.out.println(rset.getString("login")	+ " -> " + rset.getInt("accessLevel"));
 			count++;
         }
 		rset.close();
@@ -137,7 +137,7 @@ public class SQLAccountManager
 		// Add to Base
 		java.sql.Connection con = null;
 		con = L2DatabaseFactory.getInstance().getConnection();
-		PreparedStatement statement = con.prepareStatement("REPLACE	accounts (login, password, access_level) VALUES (?,?,?)");
+		PreparedStatement statement = con.prepareStatement("REPLACE	accounts (login, password, accessLevel) VALUES (?,?,?)");
 		statement.setString(1, account);
 		statement.setString(2, Base64.encodeBytes(newpass));
 		statement.setString(3, level);
@@ -162,7 +162,7 @@ public class SQLAccountManager
 			// Exist
 
 			// Update
-			statement = con.prepareStatement("UPDATE accounts SET access_level=? WHERE login=?;");
+			statement = con.prepareStatement("UPDATE accounts SET accessLevel=? WHERE login=?;");
 			statement.setEscapeProcessing(true);
 			statement.setString(1, level);
 			statement.setString(2, account);

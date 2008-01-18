@@ -1,16 +1,20 @@
 /*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+ * 02111-1307, USA.
+ *
+ * http://www.gnu.org/copyleft/gpl.html
  */
 package net.sf.l2j.gameserver.clientpackets;
 
@@ -24,6 +28,7 @@ import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.Announcements;
 import net.sf.l2j.gameserver.GmListTable;
+import net.sf.l2j.gameserver.LoginServerThread;
 import net.sf.l2j.gameserver.Olympiad;
 import net.sf.l2j.gameserver.SevenSigns;
 import net.sf.l2j.gameserver.TaskPriority;
@@ -33,7 +38,6 @@ import net.sf.l2j.gameserver.datatables.MapRegionTable;
 import net.sf.l2j.gameserver.handler.AdminCommandHandler;
 import net.sf.l2j.gameserver.instancemanager.ClanHallManager;
 import net.sf.l2j.gameserver.instancemanager.CoupleManager;
-import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
 import net.sf.l2j.gameserver.instancemanager.DimensionalRiftManager;
 import net.sf.l2j.gameserver.instancemanager.PetitionManager;
 import net.sf.l2j.gameserver.instancemanager.SiegeManager;
@@ -190,11 +194,6 @@ public class EnterWorld extends L2GameClientPacket
             engage(activeChar);
             notifyPartner(activeChar,activeChar.getPartnerId());
         }
-        
-        if(activeChar.isCursedWeaponEquiped()) 
-        { 
-            CursedWeaponsManager.getInstance().getCursedWeapon(activeChar.getCursedWeaponEquipedId()).giveSkill(); 
-        }
 
         if (activeChar.getAllEffects() != null)
         {
@@ -236,11 +235,11 @@ public class EnterWorld extends L2GameClientPacket
         sendPacket(sm);
 
         sm = new SystemMessage(SystemMessageId.S1_S2);
-        sm.addString(getText("V2VsY29tZSB0byBhIEwySiBTZXJ2ZXIsIGZvdW5kZWQgYnkgTDJDaGVmLg=="));
+        sm.addString(getText("VGhpcyBzZXJ2ZXIgdXNlcyBMMkosIGEgcHJvamVjdCBmb3VuZGVkIGJ5IEwyQ2hlZg==\n"));
 
         sendPacket(sm);
         sm = new SystemMessage(SystemMessageId.S1_S2);
-        sm.addString(getText("RGV2ZWxvcGVkIGJ5IHRoZSBMMkogRGV2IFRlYW0gYXQgbDJqc2VydmVyLmNvbS4="));
+        sm.addString(getText("YW5kIGRldmVsb3BlZCBieSB0aGUgTDJKIERldiBUZWFtIGF0IGwyanNlcnZlci5jb20=\n"));
 
         sendPacket(sm);
 
@@ -260,7 +259,11 @@ public class EnterWorld extends L2GameClientPacket
         sm = null;
 
         sm = new SystemMessage(SystemMessageId.S1_S2);
-        sm.addString(getText("Q29weXJpZ2h0IDIwMDQtMjAwNw=="));
+        sm.addString(getText("Q29weXJpZ2h0IDIwMDQtMjAwOA==\n"));
+        sendPacket(sm);
+        sm = new SystemMessage(SystemMessageId.S1_S2);
+        sm.addString(LoginServerThread.getInstance().getServerName());
+        sm.addString(getText("V2VsY29tZSB0byA="));
         sendPacket(sm);
 
         SevenSigns.getInstance().sendCurrentPeriodMsg(activeChar);

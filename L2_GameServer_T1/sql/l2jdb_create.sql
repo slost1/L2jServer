@@ -5,8 +5,8 @@ CREATE TABLE accounts (
   login varchar(45) ,
   password varchar(45) ,
   lastactive decimal(20) ,
-  access_level decimal(11) ,
-  lastIP varchar(16),
+  accessLevel tinyint ,
+  lastIP char(15),
   PRIMARY KEY  (login)
 );
 
