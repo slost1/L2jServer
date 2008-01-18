@@ -480,7 +480,9 @@ public abstract class L2Character extends L2Object
 		setTarget(null);
 
 		// Remove from world regions zones
-		getWorldRegion().removeFromZones(this);
+		if (getWorldRegion() != null)
+		    getWorldRegion().removeFromZones(this);
+		
 
 		getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
 
