@@ -2169,9 +2169,9 @@ public enum SystemMessageId
 
         /**
         * ID: 797<br>
-        * Message: You may create up to 24 macros.
+        * Message: You may create up to 48 macros.
         */
-        YOU_MAY_CREATE_UP_TO_24_MACROS(797),
+        YOU_MAY_CREATE_UP_TO_48_MACROS(797),
 
 
     /**

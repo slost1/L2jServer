@@ -95,10 +95,10 @@ public final class RequestMakeMacro extends L2GameClientPacket
 			player.sendPacket(new SystemMessage(SystemMessageId.INVALID_MACRO));
 			return;
 		}
-		if (player.getMacroses().getAllMacroses().length > 24)
+		if (player.getMacroses().getAllMacroses().length > 48)
 		{
-			//You may create up to 24 macros.
-			player.sendPacket(new SystemMessage(SystemMessageId.YOU_MAY_CREATE_UP_TO_24_MACROS));
+			//You may create up to 48 macros.
+			player.sendPacket(new SystemMessage(SystemMessageId.YOU_MAY_CREATE_UP_TO_48_MACROS));
 			return;
 		}
 		if (_macro.name.length() == 0)
