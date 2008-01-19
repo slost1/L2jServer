@@ -36,7 +36,7 @@ public class BlessedSpiritShot implements IItemHandler
 {
 	// all the items ids that this handler knowns
 	private static final int[] ITEM_IDS  = { 3947, 3948, 3949, 3950, 3951, 3952 };
-	private static final int[] SKILL_IDS = { 2061, 2160, 2161, 2162, 2163, 2164 };
+	private static final int[] SKILL_IDS = { 2061, 2160, 2161, 2162, 2163, 2164, 2164 };
 
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.handler.IItemHandler#useItem(net.sf.l2j.gameserver.model.L2PcInstance, net.sf.l2j.gameserver.model.L2ItemInstance)
