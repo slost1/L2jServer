@@ -22,6 +22,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ExAutoSoulShot;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
+import net.sf.l2j.gameserver.templates.L2Item;
 
 /**
  * This class ...
@@ -83,27 +84,29 @@ public final class RequestAutoSoulShot extends L2GameClientPacket
 	                        activeChar.rechargeAutoSoulShot(true, true, true);
 	                    }
 	                    else {
-	                    	if (activeChar.getActiveWeaponItem() != activeChar.getFistsWeaponItem()
-	                    			&& item.getItem().getCrystalType() == activeChar.getActiveWeaponItem().getCrystalType())
+	                    	if (activeChar.getActiveWeaponItem() != activeChar.getFistsWeaponItem())
 	                    	{
-	                    		if (_itemId>=3947 && _itemId<=3952 && activeChar.isInOlympiadMode()){
-	                    			SystemMessage sm = new SystemMessage(SystemMessageId.THIS_ITEM_IS_NOT_AVAILABLE_FOR_THE_OLYMPIAD_EVENT);
-	                    			sm.addString(item.getItemName());
-	                    			activeChar.sendPacket(sm);
-	                    			sm = null;
-	                    		}else{
-	                    			activeChar.addAutoSoulShot(_itemId);
-	                    			ExAutoSoulShot atk = new ExAutoSoulShot(_itemId, _type);
-	                    			activeChar.sendPacket(atk);
+	                    	    if (item.getItem().getCrystalType() == activeChar.getActiveWeaponItem().getCrystalType() || 
+	                    	            (item.getItem().getCrystalType() == L2Item.CRYSTAL_S && activeChar.getActiveWeaponItem().getCrystalType() == L2Item.CRYSTAL_S80))
+	                    	        
+	                    	        if (_itemId>=3947 && _itemId<=3952 && activeChar.isInOlympiadMode()){
+	                    	            SystemMessage sm = new SystemMessage(SystemMessageId.THIS_ITEM_IS_NOT_AVAILABLE_FOR_THE_OLYMPIAD_EVENT);
+	                    	            sm.addString(item.getItemName());
+	                    	            activeChar.sendPacket(sm);
+	                    	            sm = null;
+	                    	        }else{
+	                    	            activeChar.addAutoSoulShot(_itemId);
+	                    	            ExAutoSoulShot atk = new ExAutoSoulShot(_itemId, _type);
+	                    	            activeChar.sendPacket(atk);
 
-	                    			// start the auto soulshot use
-	                    			SystemMessage sm = new SystemMessage(SystemMessageId.USE_OF_S1_WILL_BE_AUTO);
-	                    			sm.addString(item.getItemName());
-	                    			activeChar.sendPacket(sm);
-	                    			sm = null;
+	                    	            // start the auto soulshot use
+	                    	            SystemMessage sm = new SystemMessage(SystemMessageId.USE_OF_S1_WILL_BE_AUTO);
+	                    	            sm.addString(item.getItemName());
+	                    	            activeChar.sendPacket(sm);
+	                    	            sm = null;
 
-	                    			activeChar.rechargeAutoSoulShot(true, true, false);
-	                    		}
+	                    	            activeChar.rechargeAutoSoulShot(true, true, false);
+	                    	        }
 	                    	}
 	                    	else {
 	                    		if ((_itemId >= 2509 && _itemId <= 2514) || (_itemId >= 3947 && _itemId <= 3952) || _itemId == 5790)

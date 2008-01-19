@@ -36,7 +36,7 @@ public class SpiritShot implements IItemHandler
 {
 	// All the item IDs that this handler knows.
 	private static final int[] ITEM_IDS = { 5790, 2509, 2510, 2511, 2512, 2513, 2514 };
-	private static final int[] SKILL_IDS = { 2061, 2155, 2156, 2157, 2158, 2159 };
+	private static final int[] SKILL_IDS = { 2061, 2155, 2156, 2157, 2158, 2159, 2159 };
 
 	/* (non-Javadoc)
  	* @see net.sf.l2j.gameserver.handler.IItemHandler#useItem(net.sf.l2j.gameserver.model.L2PcInstance, net.sf.l2j.gameserver.model.L2ItemInstance)
