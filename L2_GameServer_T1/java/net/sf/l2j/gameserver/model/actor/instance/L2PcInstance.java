@@ -10615,7 +10615,6 @@ public final class L2PcInstance extends L2PlayableInstance
 	@Override
 	public void addTimeStamp(int s, int r)
 	{
-        System.err.println("Cast: S: "+s+" R: "+r);
 		_reuseTimeStamps.put(s, new TimeStamp(s, r));
 	}
 
@@ -10626,7 +10625,6 @@ public final class L2PcInstance extends L2PlayableInstance
 	 */
 	private void addTimeStamp(TimeStamp ts)
 	{
-        System.err.println("Restore: S: "+ts.getSkill()+" R: "+ts.getReuse());
 		_reuseTimeStamps.put(ts.getSkill(), ts);
 	}
 
