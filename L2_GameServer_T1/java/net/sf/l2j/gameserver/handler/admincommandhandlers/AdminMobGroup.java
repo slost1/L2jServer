@@ -41,7 +41,7 @@ public class AdminMobGroup implements IAdminCommandHandler
 		"admin_mobgroup_spawn", "admin_mobgroup_unspawn", "admin_mobgroup_kill",
 		"admin_mobgroup_idle", "admin_mobgroup_attack", "admin_mobgroup_rnd",
 		"admin_mobgroup_return", "admin_mobgroup_follow", "admin_mobgroup_casting",
-		"admin_mobgroup_nomove" , "admin_mobgroup_attackgrp", "admin_mobgroup_invul", "admin_mobinst"};
+		"admin_mobgroup_nomove" , "admin_mobgroup_attackgrp", "admin_mobgroup_invul"};
 
 	private static final int REQUIRED_LEVEL = Config.GM_MIN;
 
@@ -53,11 +53,6 @@ public class AdminMobGroup implements IAdminCommandHandler
 
 		GMAudit.auditGMAction(activeChar.getName(), command, "", "");
 		if (command.equals("admin_mobmenu"))
-		{
-			showMainPage(activeChar,command);
-			return true;
-		}
-		else if (command.equals("admin_mobinst"))
 		{
 			showMainPage(activeChar,command);
 			return true;
@@ -111,8 +106,6 @@ public class AdminMobGroup implements IAdminCommandHandler
 	private void showMainPage(L2PcInstance activeChar, String command)
 	{
 		String filename = "mobgroup.htm";
-		if (command.contains("mobinst"))
-			filename = "mobgrouphelp.htm";
 		AdminHelpPage.showHelpPage(activeChar, filename);
 	}
 
