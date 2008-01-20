@@ -26,16 +26,19 @@ public class RequestPledgeExtendedInfo extends L2GameClientPacket
     @SuppressWarnings("unused")
     private String _name;
 
-	protected void readImpl()
+	@Override
+    protected void readImpl()
     {
     	_name = readS();
     }
 
+    @Override
     protected void runImpl()
     {
         // TODO this
     }
 
+    @Override
     public String getType()
     {
         return "[C] 0x67 RequestPledgeExtendedInfo";

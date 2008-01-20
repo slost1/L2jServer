@@ -425,7 +425,8 @@ public final class Formulas
 			super(Stats.MCRITICAL_RATE, 0x30, null);
 		}
 
-		public void calc(Env env)
+		@Override
+        public void calc(Env env)
 		{
 			L2Character p = env.player;
 			if(p instanceof L2Summon)

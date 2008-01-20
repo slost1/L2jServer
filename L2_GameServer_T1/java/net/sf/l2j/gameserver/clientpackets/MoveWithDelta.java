@@ -31,6 +31,7 @@ public class MoveWithDelta extends L2GameClientPacket
 	@SuppressWarnings("unused")
     private int _dz;
 
+    @Override
     protected void readImpl()
     {
     	_dx = readD();
@@ -38,11 +39,13 @@ public class MoveWithDelta extends L2GameClientPacket
     	_dz = readD();
     }
 
+    @Override
     protected void runImpl()
     {
         // TODO this
     }
 
+    @Override
     public String getType()
     {
         return "[C] 0x41 MoveWithDelta";

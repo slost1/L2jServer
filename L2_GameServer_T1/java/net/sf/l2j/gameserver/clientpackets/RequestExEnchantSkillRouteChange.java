@@ -33,7 +33,8 @@ public final class RequestExEnchantSkillRouteChange extends L2GameClientPacket
 	private int _skillLvl;
 	
 	
-	protected void readImpl()
+	@Override
+    protected void readImpl()
 	{
 		_skillId = readD();
 		_skillLvl = readD(); 

@@ -230,7 +230,8 @@ public final class CharacterCreate extends L2GameClientPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
-	public String getType()
+	@Override
+    public String getType()
 	{
 		return _C__0B_CHARACTERCREATE;
 	}

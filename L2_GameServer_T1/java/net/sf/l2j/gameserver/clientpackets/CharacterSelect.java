@@ -46,7 +46,8 @@ public class CharacterSelect extends L2GameClientPacket
 	@SuppressWarnings("unused")
 	private int _unk4;	// new in C4
 
-	protected void readImpl()
+	@Override
+    protected void readImpl()
 	{
 		_charSlot = readD();
 		_unk1 = readH();
@@ -55,7 +56,8 @@ public class CharacterSelect extends L2GameClientPacket
 		_unk4 = readD();
 	}
 
-	protected void runImpl()
+	@Override
+    protected void runImpl()
 	{
 		// if there is a playback.dat file in the current directory, it will
 		// be sent to the client instead of any regular packets
@@ -203,7 +205,8 @@ public class CharacterSelect extends L2GameClientPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
-	public String getType()
+	@Override
+    public String getType()
 	{
 		return _C__0D_CHARACTERSELECT;
 	}	

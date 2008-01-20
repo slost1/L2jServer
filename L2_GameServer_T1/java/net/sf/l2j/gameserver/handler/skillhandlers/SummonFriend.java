@@ -135,7 +135,7 @@ public class SummonFriend implements ISkillHandler
                     // Check for the the target's Inside Boss Zone
                     if (BossZoneManager.getInstance().getZone(targetChar) != null && !targetChar.isGM())
                     {
-                    	SystemMessage sm = new SystemMessage(SystemMessageId.CANNOT_USE_SUMMON_SKILL_ON_SELECTED_TARGET);
+                        activeChar.sendPacket(new SystemMessage(SystemMessageId.CANNOT_USE_SUMMON_SKILL_ON_SELECTED_TARGET));
                     	continue;
                     }
 

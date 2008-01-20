@@ -135,6 +135,7 @@ public class QuestManager extends ScriptManager<Quest>
     /**
      * @see net.sf.l2j.gameserver.scripting.ScriptManager#getAllManagedScripts()
      */
+    @Override
     public Iterable<Quest> getAllManagedScripts()
     {
         return _quests.values();
@@ -143,6 +144,7 @@ public class QuestManager extends ScriptManager<Quest>
     /**
      * @see net.sf.l2j.gameserver.scripting.ScriptManager#unload(net.sf.l2j.gameserver.scripting.ManagedScript)
      */
+    @Override
     public boolean unload(Quest ms)
     {
         ms.saveGlobalData();

@@ -25,10 +25,12 @@ public class ExChooseInventoryAttributeItem extends L2GameServerPacket
     {
         _itemId = itemId;
     }
+    @Override
     public String getType()
     {
         return "ExChooseInventoryAttributeItem";
     }
+    @Override
     protected void writeImpl()
     {
         writeC(0xfe);

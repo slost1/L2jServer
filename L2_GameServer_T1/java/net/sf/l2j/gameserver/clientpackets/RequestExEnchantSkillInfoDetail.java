@@ -34,7 +34,8 @@ public final class RequestExEnchantSkillInfoDetail extends L2GameClientPacket
 	private int _skillLvl;
 	private int _unk;
 	
-	protected void readImpl()
+	@Override
+    protected void readImpl()
 	{
 		_skillId = readD();
 		_skillLvl = readD();

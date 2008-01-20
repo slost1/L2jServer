@@ -61,7 +61,8 @@ public class EtcStatusUpdate extends L2GameServerPacket
 	/**
 	 * @see net.sf.l2j.gameserver.serverpackets.L2GameServerPacket#getType()
 	 */
-	public String getType()
+	@Override
+    public String getType()
 	{
 		return _S__F3_ETCSTATUSUPDATE;
 	}

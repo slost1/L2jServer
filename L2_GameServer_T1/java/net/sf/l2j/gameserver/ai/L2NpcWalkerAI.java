@@ -71,7 +71,8 @@ public class L2NpcWalkerAI extends L2CharacterAI implements Runnable
 		onEvtThink();
 	}
 
-	protected void onEvtThink()
+	@Override
+    protected void onEvtThink()
 	{
 		if(!Config.ALLOW_NPC_WALKERS)
 			return;
@@ -90,7 +91,8 @@ public class L2NpcWalkerAI extends L2CharacterAI implements Runnable
 	 * If npc can't walk to it's target then just teleport to next point
 	 * @param blocked_at_pos ignoring it
 	 */
-	protected void onEvtArrivedBlocked(L2CharPosition blocked_at_pos)
+	@Override
+    protected void onEvtArrivedBlocked(L2CharPosition blocked_at_pos)
 	{
 		_log.warning("NpcWalker ID: " + getActor().getNpcId() + ": Blocked at rote position [" + _currentPos + "], coords: " + blocked_at_pos.x + ", " + blocked_at_pos.y + ", " + blocked_at_pos.z + ". Teleporting to next point");
 
@@ -168,7 +170,8 @@ public class L2NpcWalkerAI extends L2CharacterAI implements Runnable
 		setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(destinationX, destinationY, destinationZ, 0));
 	}
 
-	public L2NpcWalkerInstance getActor()
+	@Override
+    public L2NpcWalkerInstance getActor()
 	{
 		return (L2NpcWalkerInstance) super.getActor();
 	}

@@ -38,6 +38,7 @@ public class L2TownPetInstance extends L2NpcInstance
         ThreadPoolManager.getInstance().scheduleAiAtFixedRate(new RandomWalkTask(), 2000, 4000);
     }
 
+    @Override
     public void onAction(L2PcInstance player)
     {
         if (!canTarget(player)) return;
@@ -68,6 +69,7 @@ public class L2TownPetInstance extends L2NpcInstance
         player.sendPacket(new ActionFailed());
     }
 
+    @Override
     public void onSpawn()
     {
         super.onSpawn();
