@@ -5298,33 +5298,61 @@ public final class L2PcInstance extends L2PlayableInstance
 	}
 
 	/**
-	 * Reduce the number of arrows owned by the L2PcInstance and send it Server->Client Packet InventoryUpdate or ItemList (to unequip if the last arrow was consummed).<BR><BR>
+	 * Reduce the number of arrows/bolts owned by the L2PcInstance and send it Server->Client Packet InventoryUpdate or ItemList (to unequip if the last arrow was consummed).<BR><BR>
 	 */
 	@Override
-	protected void reduceArrowCount()
+	protected void reduceArrowCount(boolean bolts)
 	{
-		L2ItemInstance arrows = getInventory().destroyItem("Consume", getInventory().getPaperdollObjectId(Inventory.PAPERDOLL_LHAND), 1, this, null);
+	    L2ItemInstance arrows = getInventory().getPaperdollItem(Inventory.PAPERDOLL_LHAND);
 
-		if (Config.DEBUG) _log.fine("arrow count:" + (arrows==null? 0 : arrows.getCount()));
+	    if (arrows == null)
+        {
+            getInventory().unEquipItemInSlot(Inventory.PAPERDOLL_LHAND);
+            if (bolts) 
+                _boltItem = null;
+            else
+                _arrowItem = null;
+            sendPacket(new ItemList(this,false));
+            return;
+        }
+	    
+	    // Adjust item quantity
+        if (arrows.getCount() > 1)
+        {
+            synchronized(arrows)
+            {
+                arrows.changeCountWithoutTrace("Consume", -1, this, null);
+                arrows.setLastChange(L2ItemInstance.MODIFIED);
 
-		if (arrows == null || arrows.getCount() == 0)
+                // could do also without saving, but let's save approx 1 of 10
+                if(GameTimeController.getGameTicks() % 10 == 0)
+                    arrows.updateDatabase();
+                _inventory.refreshWeight();
+            }
+        }
+        else
+        {
+            // Destroy entire item and save to database
+            _inventory.destroyItem("Consume", arrows, this, null);
+            
+            getInventory().unEquipItemInSlot(Inventory.PAPERDOLL_LHAND);
+            if (bolts) 
+                _boltItem = null;
+            else
+                _arrowItem = null;
+
+            if (Config.DEBUG) _log.fine("removed arrows count");
+            sendPacket(new ItemList(this,false));
+            return;
+        }
+	    
+		if (!Config.FORCE_INVENTORY_UPDATE)
 		{
-			getInventory().unEquipItemInSlot(Inventory.PAPERDOLL_LHAND);
-			_arrowItem = null;
-
-			if (Config.DEBUG) _log.fine("removed arrows count");
-			sendPacket(new ItemList(this,false));
+		    InventoryUpdate iu = new InventoryUpdate();
+		    iu.addModifiedItem(arrows);
+		    sendPacket(iu);
 		}
-		else
-		{
-			if (!Config.FORCE_INVENTORY_UPDATE)
-			{
-				InventoryUpdate iu = new InventoryUpdate();
-				iu.addModifiedItem(arrows);
-				sendPacket(iu);
-			}
-			else sendPacket(new ItemList(this, false));
-		}
+		else sendPacket(new ItemList(this, false));
 	}
 
 	/**
@@ -5357,36 +5385,6 @@ public final class L2PcInstance extends L2PlayableInstance
 
 		return _arrowItem != null;
 	}
-
-    /**
-     * Reduce the number of bolts owned by the L2PcInstance and send it Server->Client Packet InventoryUpdate or ItemList (to unequip if the last bolt was consummed).<BR><BR>
-     */
-    @Override
-    protected void reduceBoltCount()
-    {
-        L2ItemInstance bolts = getInventory().destroyItem("Consume", getInventory().getPaperdollObjectId(Inventory.PAPERDOLL_LHAND), 1, this, null);
-
-        if (Config.DEBUG) _log.fine("bolt count:" + (bolts==null? 0 : bolts.getCount()));
-
-        if (bolts == null || bolts.getCount() == 0)
-        {
-            getInventory().unEquipItemInSlot(Inventory.PAPERDOLL_LHAND);
-            _boltItem = null;
-
-            if (Config.DEBUG) _log.fine("removed bolts count");
-            sendPacket(new ItemList(this,false));
-        }
-        else
-        {
-            if (!Config.FORCE_INVENTORY_UPDATE)
-            {
-                InventoryUpdate iu = new InventoryUpdate();
-                iu.addModifiedItem(bolts);
-                sendPacket(iu);
-            }
-            else sendPacket(new ItemList(this, false));
-        }
-    }
 
     /**
      * Equip bolts needed in left hand and send a Server->Client packet ItemList to the L2PcINstance then return True.<BR><BR>

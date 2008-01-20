@@ -289,7 +289,7 @@ public class L2Clan
 
 	public void addClanMember(L2PcInstance player)
 	{
-		L2ClanMember member = new L2ClanMember(this,player.getName(), player.getLevel(), player.getClassId().getId(), player.getObjectId(), player.getPledgeType(), player.getPowerGrade(), player.getTitle());
+		L2ClanMember member = new L2ClanMember(this,player.getName(), player.getLevel(), player.getClassId().getId(), player.getObjectId(), player.getPledgeType(), player.getPowerGrade(), player.getTitle(), player.getAppearance().getSex(), player.getRace().ordinal());
         // store in memory
 		addClanMember(member);
 		member.setPlayerInstance(player);
@@ -800,13 +800,13 @@ public class L2Clan
 
                 int leaderId = (clanData.getInt("leader_id"));
 
-                PreparedStatement statement2 = con.prepareStatement("SELECT char_name,level,classid,obj_Id,title,power_grade,subpledge,apprentice,sponsor FROM characters WHERE clanid=?");
+                PreparedStatement statement2 = con.prepareStatement("SELECT char_name,level,classid,obj_Id,title,power_grade,subpledge,apprentice,sponsor,sex,race FROM characters WHERE clanid=?");
                 statement2.setInt(1, getClanId());
                 ResultSet clanMembers = statement2.executeQuery();
 
                 while (clanMembers.next())
                 {
-                	member = new L2ClanMember(this, clanMembers.getString("char_name"), clanMembers.getInt("level"), clanMembers.getInt("classid"), clanMembers.getInt("obj_id"),clanMembers.getInt("subpledge"), clanMembers.getInt("power_grade"), clanMembers.getString("title"));
+                	member = new L2ClanMember(this, clanMembers.getString("char_name"), clanMembers.getInt("level"), clanMembers.getInt("classid"), clanMembers.getInt("obj_id"),clanMembers.getInt("subpledge"), clanMembers.getInt("power_grade"), clanMembers.getString("title"), (clanMembers.getInt("sex")!=0), clanMembers.getInt("race"));
                     if (member.getObjectId() == leaderId)
                     	setLeader(member);
                     else

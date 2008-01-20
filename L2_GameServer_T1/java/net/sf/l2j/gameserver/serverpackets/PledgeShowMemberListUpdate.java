@@ -25,7 +25,6 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 public final class PledgeShowMemberListUpdate extends L2GameServerPacket
 {
 	private static final String _S__54_PLEDGESHOWMEMBERLISTUPDATE = "[S] 5b PledgeShowMemberListUpdate";
-	private L2PcInstance _activeChar;
 	private int _pledgeType;
 	private int _hasSponsor;
 	private String _name;
@@ -38,39 +37,37 @@ public final class PledgeShowMemberListUpdate extends L2GameServerPacket
 
 	public PledgeShowMemberListUpdate(L2PcInstance player)
 	{
-		_activeChar = player;
 		_pledgeType = player.getPledgeType();
 		if (_pledgeType == L2Clan.SUBUNIT_ACADEMY)
         {
-			_hasSponsor = _activeChar.getSponsor() != 0 ? 1 : 0;
+			_hasSponsor = player.getSponsor() != 0 ? 1 : 0;
         }
 		else
         {
 			_hasSponsor = 0;
         }
-		_name = _activeChar.getName();
-		_level = _activeChar.getLevel();
-		_classId = _activeChar.getClassId().getId();
-        _race = _activeChar.getRace().ordinal();
-        _sex = _activeChar.getAppearance().getSex() ? 1 : 0;
-		_objectId = _activeChar.getObjectId();
-		_isOnline = _activeChar.isOnline() == 1;
+		_name = player.getName();
+		_level = player.getLevel();
+		_classId = player.getClassId().getId();
+        _race = player.getRace().ordinal();
+        _sex = player.getAppearance().getSex() ? 1 : 0;
+		_objectId = player.getObjectId();
+		_isOnline = player.isOnline() == 1;
 	}
 
-	public PledgeShowMemberListUpdate(L2ClanMember player)
+	public PledgeShowMemberListUpdate(L2ClanMember member)
 	{
-	    _activeChar = player.getPlayerInstance();
-	    _name=player.getName();
-	    _level=player.getLevel();
-	    _classId=player.getClassId();
-	    _objectId=player.getObjectId();
-	    _isOnline= player.isOnline();
-	    _pledgeType = player.getPledgeType();
-	    _race = _activeChar.getRace().ordinal();
-	    _sex = _activeChar.getAppearance().getSex() ? 1 : 0;
+	    _name = member.getName();
+	    _level = member.getLevel();
+	    _classId = member.getClassId();
+	    _objectId = member.getObjectId();
+	    _isOnline = member.isOnline();
+	    _pledgeType = member.getPledgeType();
+	    _race = member.getRaceOrdinal();
+	    _sex = member.getSex() ? 1 : 0;
 	    if (_pledgeType == L2Clan.SUBUNIT_ACADEMY)
 	    {
-	        _hasSponsor = _activeChar.getSponsor() != 0 ? 1 : 0;
+	        _hasSponsor = member.getSponsor() != 0 ? 1 : 0;
 	    }
 	    else
 	    {

@@ -185,7 +185,7 @@ public class ClanTable
 		}
 
 		L2Clan clan = new L2Clan(IdFactory.getInstance().getNextId(), clanName);
-		L2ClanMember leader = new L2ClanMember(clan, player.getName(), player.getLevel(), player.getClassId().getId(), player.getObjectId(), player.getPledgeType(), player.getPowerGrade(), player.getTitle());
+		L2ClanMember leader = new L2ClanMember(clan, player.getName(), player.getLevel(), player.getClassId().getId(), player.getObjectId(), player.getPledgeType(), player.getPowerGrade(), player.getTitle(), player.getAppearance().getSex(), player.getRace().ordinal());
 		clan.setLeader(leader);
 		leader.setPlayerInstance(player);
 		clan.store();

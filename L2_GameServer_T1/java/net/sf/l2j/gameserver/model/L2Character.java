@@ -883,7 +883,7 @@ public abstract class L2Character extends L2Object
 		boolean miss1 = Formulas.getInstance().calcHitMiss(this, target);
 
 		// Consumme arrows
-		reduceArrowCount();
+		reduceArrowCount(false);
 
 		_move = null;
 
@@ -954,8 +954,8 @@ public abstract class L2Character extends L2Object
         // Calculate if hit is missed or not
         boolean miss1 = Formulas.getInstance().calcHitMiss(this, target);
 
-        // Consumme arrows
-        reduceBoltCount();
+        // Consume bolts
+        reduceArrowCount(true);
 
         _move = null;
 
@@ -4952,15 +4952,10 @@ public abstract class L2Character extends L2Object
 	 * <li> L2PcInstance</li><BR><BR>
 	 *
 	 */
-	protected void reduceArrowCount()
+	protected void reduceArrowCount(boolean bolts)
 	{
-		// default is to do nothin
+		// default is to do nothing
 	}
-
-    protected void reduceBoltCount()
-    {
-        // default is to do nothin
-    }
 
 	/**
 	 * Manage Forced attack (shift + select target).<BR><BR>
