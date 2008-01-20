@@ -247,6 +247,28 @@ public class DoorTable
             // Tower of Insolence (every 5 minutes)
             else if (doorInst.getDoorName().startsWith("aden_tower"))
                 doorInst.setAutoActionDelay(300000);
+
+            /* TODO: check which are automatic  
+            // devils (every 5 minutes)
+            else if (doorInst.getDoorName().startsWith("pirate_isle"))
+               doorInst.setAutoActionDelay(300000);
+                
+            // Cruma Tower (every 20 minutes) 
+            else if (doorInst.getDoorName().startsWith("cruma")) 
+                doorInst.setAutoActionDelay(1200000);
+                
+            // Coral Garden Gate (every 15 minutes) 
+            else if (doorInst.getDoorName().startsWith("Coral_garden")) 
+                doorInst.setAutoActionDelay(900000);
+                
+            // Normil's cave (every 5 minutes) 
+            else if (doorInst.getDoorName().startsWith("Normils_cave")) 
+                doorInst.setAutoActionDelay(300000);
+                
+            // Normil's Garden (every 15 minutes) 
+            else if (doorInst.getDoorName().startsWith("Normils_garden")) 
+                doorInst.setAutoActionDelay(900000);
+            */
     }
 
     public boolean checkIfDoorsBetween(AbstractNodeLoc start, AbstractNodeLoc end)
