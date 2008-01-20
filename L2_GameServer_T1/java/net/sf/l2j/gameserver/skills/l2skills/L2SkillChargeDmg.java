@@ -75,7 +75,8 @@ public class L2SkillChargeDmg extends L2Skill
 			return;
 		}
         double modifier = 0;
-        modifier = (effect.numCharges-getNumCharges())*0.33;
+        modifier = 0.8+0.201*getNumCharges(); // thanks Diego Vargas of L2Guru: 70*((0.8+0.201*No.Charges) * (PATK+POWER)) / PDEF
+
 		if (getTargetType() != SkillTargetType.TARGET_AREA && getTargetType() != SkillTargetType.TARGET_MULTIFACE)
 			effect.numCharges -= getNumCharges();
 		if (caster instanceof L2PcInstance)
@@ -107,7 +108,7 @@ public class L2SkillChargeDmg extends L2Skill
 			if (damage > 0)
             {
                 double finalDamage = damage;
-                finalDamage = finalDamage+(modifier*finalDamage);
+                finalDamage = finalDamage*modifier;
 				target.reduceCurrentHp(finalDamage, caster);
 
 				caster.sendDamageMessage(target, (int)finalDamage, false, crit, false);
