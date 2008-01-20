@@ -37,7 +37,7 @@ public class PrivateStoreMsgBuy extends L2GameServerPacket
 	@Override
 	protected final void writeImpl()
 	{
-		writeC(0xb9);
+		writeC(0xbf);
 		writeD(_activeChar.getObjectId());
 		writeS(_storeMsg);
 	}

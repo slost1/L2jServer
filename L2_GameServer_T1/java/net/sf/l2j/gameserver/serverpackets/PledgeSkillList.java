@@ -25,11 +25,11 @@ import net.sf.l2j.gameserver.model.L2Skill;
 public class PledgeSkillList extends L2GameServerPacket
 {
 	private static final String _S__FE_39_PLEDGESKILLLIST = "[S] FE:3a PledgeSkillList";
-	private L2Clan _clan;
+	private L2Skill[] _skills;
 
 	public PledgeSkillList(L2Clan clan)
 	{
-		_clan = clan;
+        _skills = clan.getAllSkills();
 	}
 
 	/**
@@ -38,13 +38,11 @@ public class PledgeSkillList extends L2GameServerPacket
 	@Override
 	protected void writeImpl()
 	{
-		L2Skill[] skills = _clan.getAllSkills();
-
 		writeC(0xfe);
 		writeH(0x3a);
-		writeD(skills.length);
+		writeD(_skills.length);
         writeD(0x00);
-		for(L2Skill sk : skills)
+		for(L2Skill sk : _skills)
 		{
 			writeD(sk.getId());
 			writeD(sk.getLevel());
