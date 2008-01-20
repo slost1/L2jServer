@@ -68,12 +68,10 @@ public final class RequestMoveToLocationInVehicle extends L2GameClientPacket
 		}
 		else
 		{
-			if(!activeChar.isInBoat())
-			{
-				activeChar.setInBoat(true);
-			}
 			L2BoatInstance boat = BoatManager.getInstance().GetBoat(_boatId);
+			if (boat == null) return;
 			activeChar.setBoat(boat);
+			activeChar.setInBoat(true);
 			activeChar.setInBoatPosition(_pos);
 			activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO_IN_A_BOAT, new L2CharPosition(_pos.getX(),_pos.getY(), _pos.getZ(), 0), new L2CharPosition(_origin_pos.getX(),_origin_pos.getY(),_origin_pos.getZ(), 0));
 		}
