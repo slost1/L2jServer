@@ -938,90 +938,86 @@ public final class L2ItemInstance extends L2Object
 	 * @param objectId : int designating the objectID of the item
 	 * @return L2ItemInstance
 	 */
-	public static L2ItemInstance restoreFromDb(int objectId) {
+	public static L2ItemInstance restoreFromDb(int ownerId, ResultSet rs) 
+	{
 		L2ItemInstance inst = null;
-		java.sql.Connection con = null;
+		int objectId, item_id, count, loc_data, enchant_level, custom_type1, custom_type2, price_sell, price_buy, manaLeft;
+		ItemLocation loc;
 		try
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("SELECT owner_id, object_id, item_id, count, enchant_level, loc, loc_data, price_sell, price_buy, custom_type1, custom_type2, mana_left FROM items WHERE object_id = ?");
-			statement.setInt(1, objectId);
-			ResultSet rs = statement.executeQuery();
-			if (rs.next()) {
-				int owner_id = rs.getInt("owner_id");
-				int item_id = rs.getInt("item_id");
-				int count = rs.getInt("count");
-				ItemLocation loc = ItemLocation.valueOf(rs.getString("loc"));
-				int loc_data = rs.getInt("loc_data");
-				int enchant_level = rs.getInt("enchant_level");
-				int custom_type1 =  rs.getInt("custom_type1");
-				int custom_type2 =  rs.getInt("custom_type2");
-				int price_sell = rs.getInt("price_sell");
-				int price_buy = rs.getInt("price_buy");
-				int manaLeft = rs.getInt("mana_left");
-				L2Item item = ItemTable.getInstance().getTemplate(item_id);
-				if (item == null) {
-					_log.severe("Item item_id="+item_id+" not known, object_id="+objectId);
-					rs.close();
-					statement.close();
-					return null;
-				}
-				inst = new L2ItemInstance(objectId, item);
-				inst._existsInDb = true;
-				inst._storedInDb = true;
-				inst._ownerId = owner_id;
-				inst.setCount(count);
-				inst._enchantLevel = enchant_level;
-				inst._type1 = custom_type1;
-				inst._type2 = custom_type2;
-				inst._loc = loc;
-				inst._locData = loc_data;
-				inst._priceSell = price_sell;
-				inst._priceBuy  = price_buy;
-
-				// Setup life time for shadow weapons
-				inst._mana = manaLeft;
-
-				// consume 1 mana
-				if (inst._mana > 0 && inst.getLocation() == ItemLocation.PAPERDOLL)
-					inst.decreaseMana(false);
-
-				// if mana left is 0 delete this item
-				if (inst._mana == 0)
-				{
-					inst.removeFromDb();
-					rs.close();
-					statement.close();
-					return null;
-				}
-				else if (inst._mana > 0 && inst.getLocation() == ItemLocation.PAPERDOLL)
-					inst.scheduleConsumeManaTask();
-			} else {
-				_log.severe("Item object_id="+objectId+" not found");
-				rs.close();
-				statement.close();
-				return null;
-			}
-			rs.close();
-            statement.close();
-
-            //load augmentation
-            statement = con.prepareStatement("SELECT attributes,skill,level FROM augmentations WHERE item_id=?");
-            statement.setInt(1, objectId);
-			rs = statement.executeQuery();
-            if (rs.next())
-            {
-            	inst._augmentation = new L2Augmentation(inst, rs.getInt("attributes"), rs.getInt("skill"), rs.getInt("level"), false);
-            }
-
-            rs.close();
-            statement.close();
-
-        } catch (Exception e) {
-			_log.log(Level.SEVERE, "Could not restore item "+objectId+" from DB:", e);
-		} finally {
-			try { con.close(); } catch (Exception e) {}
+		    objectId = rs.getInt(1);
+		    item_id = rs.getInt("item_id");
+		    count = rs.getInt("count");
+		    loc = ItemLocation.valueOf(rs.getString("loc"));
+		    loc_data = rs.getInt("loc_data");
+		    enchant_level = rs.getInt("enchant_level");
+		    custom_type1 =  rs.getInt("custom_type1");
+		    custom_type2 =  rs.getInt("custom_type2");
+		    price_sell = rs.getInt("price_sell");
+		    price_buy = rs.getInt("price_buy");
+		    manaLeft = rs.getInt("mana_left");
+		} catch (Exception e) {
+		    _log.log(Level.SEVERE, "Could not restore an item owned by "+ownerId+" from DB:", e);
+		    return null;
 		}
+		L2Item item = ItemTable.getInstance().getTemplate(item_id);
+		if (item == null) {
+		    _log.severe("Item item_id="+item_id+" not known, object_id="+objectId);
+		    return null;
+		}
+		inst = new L2ItemInstance(objectId, item);
+		inst._existsInDb = true;
+		inst._storedInDb = true;
+		inst._ownerId = ownerId;
+		inst.setCount(count);
+		inst._enchantLevel = enchant_level;
+		inst._type1 = custom_type1;
+		inst._type2 = custom_type2;
+		inst._loc = loc;
+		inst._locData = loc_data;
+		inst._priceSell = price_sell;
+		inst._priceBuy  = price_buy;
+		
+		// Setup life time for shadow weapons
+		inst._mana = manaLeft;
+
+		// consume 1 mana
+		if (inst._mana > 0 && inst.getLocation() == ItemLocation.PAPERDOLL)
+		    inst.decreaseMana(false);
+
+		// if mana left is 0 delete this item
+		if (inst._mana == 0)
+		{
+		    inst.removeFromDb();
+		    return null;
+		}
+		else if (inst._mana > 0 && inst.getLocation() == ItemLocation.PAPERDOLL)
+		    inst.scheduleConsumeManaTask();
+
+		//load augmentation
+		if (inst.isEquipable())
+		{
+		    java.sql.Connection con = null;
+		    try
+		    {
+		        con = L2DatabaseFactory.getInstance().getConnection();
+		        PreparedStatement statement = con.prepareStatement("SELECT attributes,skill,level FROM augmentations WHERE item_id=?");
+                statement.setInt(1, objectId);
+                rs = statement.executeQuery();
+                if (rs.next())
+                {
+                    inst._augmentation = new L2Augmentation(inst, rs.getInt("attributes"), rs.getInt("skill"), rs.getInt("level"), false);
+                }
+
+                rs.close();
+                statement.close();
+		    } catch (Exception e) {
+		        _log.log(Level.SEVERE, "Could not restore item "+objectId+" from DB:", e);
+		    } finally {
+		        try { con.close(); } catch (Exception e) {}
+		    }
+		}
+        
 		return inst;
 	}
 
