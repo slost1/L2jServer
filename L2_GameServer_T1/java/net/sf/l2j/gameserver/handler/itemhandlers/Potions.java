@@ -184,73 +184,75 @@ public class Potions implements IItemHandler
 			case 8625:
 			case 8626:
 			case 8627:
-				// elixir of Life
-				if (
-					(itemId == 8622 && activeChar.getExpertiseIndex()==0) ||
-					(itemId == 8623 && activeChar.getExpertiseIndex()==1) ||
-					(itemId == 8624 && activeChar.getExpertiseIndex()==2) ||
-					(itemId == 8625 && activeChar.getExpertiseIndex()==3) ||
-					(itemId == 8626 && activeChar.getExpertiseIndex()==4) ||
-					(itemId == 8627 && activeChar.getExpertiseIndex()==5)
-				)
-					res = usePotion(activeChar, 2287, (activeChar.getExpertiseIndex()+1));
-				else
-				{
-					SystemMessage sm = new SystemMessage(SystemMessageId.INCOMPATIBLE_ITEM_GRADE); // INCOMPATIBLE_ITEM_GRADE
-					sm.addItemName(itemId);
-					activeChar.sendPacket(sm);
-					return;
-				}
-				break;
+			{
+                // elixir of Life
+                byte expIndex = (byte) activeChar.getExpertiseIndex();
+                if ((itemId == 8622 && expIndex == 0)
+                        || (itemId == 8623 && expIndex == 1)
+                        || (itemId == 8624 && expIndex == 2)
+                        || (itemId == 8625 && expIndex == 3)
+                        || (itemId == 8626 && expIndex == 4)
+                        || (itemId == 8627 && (expIndex == 5 || expIndex == 6)))
+                    res = usePotion(activeChar, 2287, (expIndex > 5 ? expIndex : expIndex + 1));
+                else
+                {
+                    SystemMessage sm = new SystemMessage(SystemMessageId.INCOMPATIBLE_ITEM_GRADE); // INCOMPATIBLE_ITEM_GRADE
+                    sm.addItemName(itemId);
+                    activeChar.sendPacket(sm);
+                    return;
+                }
+                break;
+            }
 			case 8628:
 			case 8629:
 			case 8630:
 			case 8631:
 			case 8632:
 			case 8633:
-				// elixir of Strength
-				if (
-					(itemId == 8628 && activeChar.getExpertiseIndex()==0) ||
-					(itemId == 8629 && activeChar.getExpertiseIndex()==1) ||
-					(itemId == 8630 && activeChar.getExpertiseIndex()==2) ||
-					(itemId == 8631 && activeChar.getExpertiseIndex()==3) ||
-					(itemId == 8632 && activeChar.getExpertiseIndex()==4) ||
-					(itemId == 8633 && activeChar.getExpertiseIndex()==5)
-				)
-					res = usePotion(activeChar, 2288, (activeChar.getExpertiseIndex()+1));
-				else
-				{
-					SystemMessage sm = new SystemMessage(SystemMessageId.INCOMPATIBLE_ITEM_GRADE); // INCOMPATIBLE_ITEM_GRADE
-					sm.addItemName(itemId);
-					activeChar.sendPacket(sm);
-					return;
-				}
-				break;
+            {
+                byte expIndex = (byte) activeChar.getExpertiseIndex();
+                // elixir of Strength
+                if ((itemId == 8628 && expIndex == 0)
+                        || (itemId == 8629 && expIndex == 1)
+                        || (itemId == 8630 && expIndex == 2)
+                        || (itemId == 8631 && expIndex == 3)
+                        || (itemId == 8632 && expIndex == 4)
+                        || (itemId == 8633 && (expIndex == 5 || expIndex == 6)))
+                    res = usePotion(activeChar, 2288, (expIndex > 5 ? expIndex : expIndex + 1));
+                else
+                {
+                    SystemMessage sm = new SystemMessage(SystemMessageId.INCOMPATIBLE_ITEM_GRADE); // INCOMPATIBLE_ITEM_GRADE
+                    sm.addItemName(itemId);
+                    activeChar.sendPacket(sm);
+                    return;
+                }
+                break;
+            }
 			case 8634:
 			case 8635:
 			case 8636:
 			case 8637:
 			case 8638:
 			case 8639:
-				// elixir of cp
-				if (
-					(itemId == 8634 && activeChar.getExpertiseIndex()==0) ||
-					(itemId == 8635 && activeChar.getExpertiseIndex()==1) ||
-					(itemId == 8636 && activeChar.getExpertiseIndex()==2) ||
-					(itemId == 8637 && activeChar.getExpertiseIndex()==3) ||
-					(itemId == 8638 && activeChar.getExpertiseIndex()==4) ||
-					(itemId == 8639 && activeChar.getExpertiseIndex()==5)
-				)
-					res = usePotion(activeChar, 2289, (activeChar.getExpertiseIndex()+1));
-				else
-				{
-					SystemMessage sm = new SystemMessage(SystemMessageId.INCOMPATIBLE_ITEM_GRADE); // INCOMPATIBLE_ITEM_GRADE
-					sm.addItemName(itemId);
-					activeChar.sendPacket(sm);
-					return;
-				}
-				break;
-
+            {
+                byte expIndex = (byte) activeChar.getExpertiseIndex();
+                // elixir of cp
+                if ((itemId == 8634 && expIndex == 0)
+                        || (itemId == 8635 && expIndex == 1)
+                        || (itemId == 8636 && expIndex == 2)
+                        || (itemId == 8637 && expIndex == 3)
+                        || (itemId == 8638 && expIndex == 4)
+                        || (itemId == 8639 && (expIndex == 5 || expIndex == 6)))
+                    res = usePotion(activeChar, 2289, (expIndex > 5 ? expIndex : expIndex + 1));
+                else
+                {
+                    SystemMessage sm = new SystemMessage(SystemMessageId.INCOMPATIBLE_ITEM_GRADE); // INCOMPATIBLE_ITEM_GRADE
+                    sm.addItemName(itemId);
+                    activeChar.sendPacket(sm);
+                    return;
+                }
+                break;
+            }
 			// VALAKAS AMULETS
 			case 6652: // Amulet Protection of Valakas
 				res = usePotion(activeChar, 2231, 1);
