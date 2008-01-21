@@ -440,8 +440,9 @@ public class Quest extends ManagedScript
             statement.close();
 
             // Get list of quests owned by the player from the DB in order to add variables used in the quest.
-            statement = con.prepareStatement("SELECT name,var,value FROM character_quests WHERE char_id=?");
+            statement = con.prepareStatement("SELECT name,var,value FROM character_quests WHERE char_id=? AND var<>?");
             statement.setInt(1,player.getObjectId());
+            statement.setString(2, "<state>");
 			rs = statement.executeQuery();
 			while (rs.next()) {
 				String questId = rs.getString("name");
