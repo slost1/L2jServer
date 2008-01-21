@@ -51,10 +51,8 @@ class EffectDamOverTime extends L2Effect
 				return false;
 			}
 
-            // ** This is just hotfix, needs better solution **
-            // 1947: "DOT skills shouldn't kill"
-            // Well, some of them should ;-)
-            if (getSkill().getId() != 4082) damage = getEffected().getCurrentHp() - 1;
+            // For DOT skills that will not kill effected player.
+            if (!getSkill().killByDOT()) damage = getEffected().getCurrentHp() - 1;
 		}
 
         boolean awake = !(getEffected() instanceof L2Attackable)

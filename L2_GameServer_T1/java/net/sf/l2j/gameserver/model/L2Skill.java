@@ -405,6 +405,9 @@ public abstract class L2Skill
     private final int _itemConsumeTime;
     private final int _castRange;
     private final int _effectRange;
+    
+    // kill by damage over time
+    private final boolean _killByDOT;
 
     // all times in milliseconds
     private final int _hitTime;
@@ -510,6 +513,8 @@ public abstract class L2Skill
 
         _castRange = set.getInteger("castRange", 0);
         _effectRange = set.getInteger("effectRange", -1);
+        
+        _killByDOT = set.getBool("killByDOT", false);
         
         _hitTime = set.getInteger("hitTime", 0);
         _coolTime = set.getInteger("coolTime", 0);
@@ -669,6 +674,11 @@ public abstract class L2Skill
     public final boolean isOverhit()
     {
         return _overhit;
+    }
+    
+    public final boolean killByDOT()
+    {
+        return _killByDOT;
     }
 
     public final boolean isSuicideAttack()
