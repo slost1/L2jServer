@@ -1109,6 +1109,13 @@ public class Quest extends ManagedScript
     public boolean reload()
     {
         this.saveGlobalData();
+        // cancel all pending timers before reloading.
+        // if timers ought to be restarted, the quest can take care of it
+        // with its code (example: save global data indicating what timer must 
+        // be restarted).
+        for (FastList<QuestTimer> timers : _allEventTimers.values())
+            for(QuestTimer timer :timers)
+                timer.cancel();
         return super.reload();
     }
 
