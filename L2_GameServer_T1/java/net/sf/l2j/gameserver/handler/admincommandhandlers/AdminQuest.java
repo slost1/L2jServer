@@ -24,10 +24,15 @@
  */
 package net.sf.l2j.gameserver.handler.admincommandhandlers;
 
+import java.io.File;
+
+import javax.script.ScriptException;
+
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
 import net.sf.l2j.gameserver.instancemanager.QuestManager;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.scripting.L2ScriptEngineManager;
 
 public class AdminQuest implements IAdminCommandHandler
 {
@@ -95,6 +100,46 @@ public class AdminQuest implements IAdminCommandHandler
             		}
         		}
         	}
+        }
+        // script load should NOT be used in place of reload.  If a script is already loaded
+        // successfully, quest_reload ought to be used.  The script_load command should only
+        // be used for scripts that failed to load altogether (eg. due to errors) or that 
+        // did not at all exist during server boot.  Using script_load to re-load a previously
+        // loaded script may cause unpredictable script flow, minor loss of data, and more.
+        // This provides a way to load new scripts without having to reboot the server.
+        if (command.startsWith("admin_script_load"))
+        {
+            String[] parts = command.split(" ");
+            if (parts.length < 2)
+            {
+                //activeChar.sendMessage("Example: //script_load <questFolder>/<questSubFolders...>/<filename>.<ext> ");
+                activeChar.sendMessage("Example: //script_load quests/SagasSuperclass/__init__.py");
+            }
+            else
+            {
+                File file = new File(L2ScriptEngineManager.SCRIPT_FOLDER, parts[1]);
+                if (file.isFile())
+                {
+                    try
+                    {
+                        L2ScriptEngineManager.getInstance().executeScript(file);
+                    }
+                    catch (ScriptException e)
+                    {
+                        activeChar.sendMessage("Failed loading: "+parts[1]);
+                        L2ScriptEngineManager.getInstance().reportScriptFileError(file, e);
+                    }
+                    catch (Exception e)
+                    {
+                        activeChar.sendMessage("Failed loading: "+parts[1]);
+                    }
+                }
+                else
+                {
+                    activeChar.sendMessage("File Not Found: "+parts[1]);
+                }
+            }
+
         }
         return true;
     }

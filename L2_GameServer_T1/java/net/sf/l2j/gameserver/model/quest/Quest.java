@@ -62,7 +62,6 @@ public class Quest extends ManagedScript
 
 	private final int _questId;
 	private final String _name;
-	private final String _prefixPath;	// used only for admin_quest_reload
 	private final String _descr;
     private final byte _initialState = State.CREATED;
     // NOTE: questItemIds will be overriden by child classes.  Ideally, it should be
@@ -92,19 +91,9 @@ public class Quest extends ManagedScript
 		_name = name;
 		_descr = descr;
         
-    	// Given the quest instance, create a string representing the path and questName 
-    	// like a simplified version of a canonical class name.  That is, if a script is in 
-    	// DATAPACK_PATH/scripts/quests/abc the result will be quests.abc
-    	// Similarly, for a script in DATAPACK_PATH/scripts/ai/individual/myClass.py
-    	// the result will be ai.individual.myClass
-    	// All quests are to be indexed, processed, and reloaded by this form of pathname.
-    	StringBuffer temp = new StringBuffer(getClass().getCanonicalName());
-    	temp.delete(0, temp.indexOf(".scripts.")+9);
-    	temp.delete(temp.indexOf(getClass().getSimpleName()), temp.length());
-    	_prefixPath = temp.toString();
 		if (questId != 0)
 		{
-			QuestManager.getInstance().addQuest(Quest.this);
+            QuestManager.getInstance().addQuest(Quest.this);
 		}
 		else
 		{
@@ -191,15 +180,6 @@ public class Quest extends ManagedScript
 	 */
 	public String getName() {
 		return _name;
-	}
-	
-	/**
-	 * Return name of the prefix path for the quest, down to the last "."
-	 * For example "quests." or "ai.individual."
-	 * @return String
-	 */
-	public String getPrefixPath() {
-		return _prefixPath;
 	}
 	
 	/**
@@ -1108,14 +1088,7 @@ public class Quest extends ManagedScript
     @Override
     public boolean reload()
     {
-        this.saveGlobalData();
-        // cancel all pending timers before reloading.
-        // if timers ought to be restarted, the quest can take care of it
-        // with its code (example: save global data indicating what timer must 
-        // be restarted).
-        for (FastList<QuestTimer> timers : _allEventTimers.values())
-            for(QuestTimer timer :timers)
-                timer.cancel();
+        unload();
         return super.reload();
     }
 
@@ -1126,6 +1099,14 @@ public class Quest extends ManagedScript
     public boolean unload()
     {
         this.saveGlobalData();
+        // cancel all pending timers before reloading.
+        // if timers ought to be restarted, the quest can take care of it
+        // with its code (example: save global data indicating what timer must 
+        // be restarted).
+        for (FastList<QuestTimer> timers : _allEventTimers.values())
+            for(QuestTimer timer :timers)
+                timer.cancel();
+        _allEventTimers.clear();
         return QuestManager.getInstance().removeQuest(this);
     }
 

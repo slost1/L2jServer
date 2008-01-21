@@ -114,11 +114,24 @@ public class QuestManager extends ScriptManager<Quest>
         {
             throw new IllegalArgumentException("Quest argument cannot be null");
         }
-    	Quest old = this.getQuests().put(newQuest.getName(), newQuest);
+    	Quest old = this.getQuests().get(newQuest.getName());
+        
+        // FIXME: unloading the old quest at this point is a tad too late.
+        // the new quest has already initialized itself and read the data, starting
+        // an unpredictable number of tasks with that data.  The old quest will now
+        // save data which will never be read.
+        // However, requesting the newQuest to re-read the data is not necessarily a 
+        // good option, since the newQuest may have already started timers, spawned NPCs
+        // or taken any other action which it might re-take by re-reading the data. 
+        // the current solution properly closes the running tasks of the old quest but
+        // ignores the data; perhaps the least of all evils...
         if (old != null)
         {
+            old.unload();
             _log.info("Replaced: ("+old.getName()+") with a new version ("+newQuest.getName()+")");
+            
         }
+        this.getQuests().put(newQuest.getName(), newQuest);
     }
     
     public final boolean removeQuest(Quest q)
