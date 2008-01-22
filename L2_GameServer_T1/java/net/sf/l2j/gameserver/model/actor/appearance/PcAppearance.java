@@ -63,7 +63,7 @@ public class PcAppearance
     
     /**
      * @param visibleName
-     *            The visibleName to set.
+     * The visibleName to set.
      */
     public final void setVisibleName(String visibleName)
     {
@@ -75,23 +75,16 @@ public class PcAppearance
      */
     public final String getVisibleName()
     {
-        if (_owner.isCursedWeaponEquiped()
-                && _owner.getCursedWeaponEquipedId() == 8689)
-            return "Akamanah";
-        else if (_owner.isCursedWeaponEquiped()
-                && _owner.getCursedWeaponEquipedId() == 8190)
-            return "Zariche";
-        
         if (_visibleName == null)
         {
-            return this.getOwner().getName();
+            _visibleName = getOwner().getName();
         }
-        return "";
+        return _visibleName;
     }
     
     /**
      * @param visibleTitle
-     *            The visibleTitle to set.
+     * The visibleTitle to set.
      */
     public final void setVisibleTitle(String visibleTitle)
     {
@@ -103,13 +96,11 @@ public class PcAppearance
      */
     public final String getVisibleTitle()
     {
-        if (_owner.isCursedWeaponEquiped())
-            return "";
         if (_visibleTitle == null)
         {
-            return this.getOwner().getTitle();
+            _visibleTitle = getOwner().getTitle();
         }
-        return "";
+        return _visibleTitle;
     }
     
     // =========================================================
