@@ -49,6 +49,7 @@ import net.sf.l2j.gameserver.model.zone.type.L2NoLandingZone;
 import net.sf.l2j.gameserver.model.zone.type.L2OlympiadStadiumZone;
 import net.sf.l2j.gameserver.model.zone.type.L2PeaceZone;
 import net.sf.l2j.gameserver.model.zone.type.L2TownZone;
+import net.sf.l2j.gameserver.model.zone.type.L2WaterZone;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -165,6 +166,8 @@ public class ZoneData
 								temp = new L2DerbyTrackZone(zoneId);
                                                         else if (zoneType.equals("BossZone"))
                                                                 temp = new L2BossZone(zoneId);
+                                                        else if (zoneType.equals("WaterZone"))
+                                                                temp = new L2WaterZone(zoneId);
 
 
 							// Check for unknown type

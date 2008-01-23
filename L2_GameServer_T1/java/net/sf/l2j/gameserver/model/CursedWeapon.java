@@ -32,7 +32,6 @@ import net.sf.l2j.gameserver.serverpackets.Earthquake;
 import net.sf.l2j.gameserver.serverpackets.ExRedSky;
 import net.sf.l2j.gameserver.serverpackets.InventoryUpdate;
 import net.sf.l2j.gameserver.serverpackets.ItemList;
-import net.sf.l2j.gameserver.serverpackets.Ride;
 import net.sf.l2j.gameserver.serverpackets.SocialAction;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.templates.L2Item;
@@ -379,13 +378,7 @@ public class CursedWeapon
 		// the zariche if unmounting is successful.
 		if (player.isMounted())
 		{
-			if (_player.setMountType(0))
-			{
-				Ride dismount = new Ride(_player.getObjectId(), Ride.ACTION_DISMOUNT, 0);
-				_player.broadcastPacket(dismount);
-				_player.setMountObjectID(0);
-			}
-			else
+			if (!_player.dismount())
 			{
 				// TODO: correct this custom message.
 				player.sendMessage("You may not pick up this item while riding in this territory");

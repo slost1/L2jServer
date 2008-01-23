@@ -290,9 +290,6 @@ public class EnterWorld extends L2GameClientPacket
             sendPacket(new Die(activeChar));
         }
 
-        if (Config.ALLOW_WATER)
-            activeChar.checkWaterState();
-
         if (Hero.getInstance().getHeroes() != null &&
                 Hero.getInstance().getHeroes().containsKey(activeChar.getObjectId()))
             activeChar.setHero(true);
@@ -355,10 +352,7 @@ public class EnterWorld extends L2GameClientPacket
             activeChar.sendMessage("You have been teleported to the nearest town due to you being in siege zone");
         }
         
-        
-        
         RegionBBSManager.getInstance().changeCommunityBoard();
-
         
         TvTEvent.onLogin(activeChar);
     }

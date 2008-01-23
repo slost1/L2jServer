@@ -19,8 +19,8 @@ import java.util.logging.Logger;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.ai.CtrlIntention;
-import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
+import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2CharPosition;
 import net.sf.l2j.gameserver.model.L2ManufactureList;
 import net.sf.l2j.gameserver.model.L2Object;
@@ -237,7 +237,7 @@ public final class RequestActionUse extends L2GameClientPacket
                         activeChar.sendPacket(msg);
                         msg = null;
                     }
-                    else if (activeChar.isSitting() || activeChar.isMoving())
+                    else if (activeChar.isSitting() || activeChar.isMoving() || activeChar.isInsideZone(L2Character.ZONE_WATER))
                     {
                         //A strider can be ridden only when standing
                         SystemMessage msg = new SystemMessage(SystemMessageId.STRIDER_CAN_BE_RIDDEN_ONLY_WHILE_STANDING);
@@ -273,13 +273,7 @@ public final class RequestActionUse extends L2GameClientPacket
                 }
                 else if (activeChar.isMounted())
                 {
-                    if (activeChar.setMountType(0))
-                    {
-                        if (activeChar.isFlying())activeChar.removeSkill(SkillTable.getInstance().getInfo(4289, 1));
-                        Ride dismount = new Ride(activeChar.getObjectId(), Ride.ACTION_DISMOUNT, 0);
-                        activeChar.broadcastPacket(dismount);
-                        activeChar.setMountObjectID(0);
-                    }
+                    activeChar.dismount();                
                 }
                 break;
             case 32: // Wild Hog Cannon - Mode Change

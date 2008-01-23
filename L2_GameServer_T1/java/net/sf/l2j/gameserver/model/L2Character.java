@@ -4049,7 +4049,10 @@ public abstract class L2Character extends L2Object
 
 		// GEODATA MOVEMENT CHECKS AND PATHFINDING
 		m.onGeodataPathIndex = -1; // Initialize not on geodata path
-		if (Config.GEODATA > 0 && !this.isFlying() && !(this instanceof L2NpcWalkerInstance)) // currently flying characters not checked
+		if (Config.GEODATA > 0 
+		    && !this.isFlying()
+		    //&& !this.isInsideZone(ZONE_WATER) // TODO: change geodata to return correct Z and check if exploiting possible
+		    && !(this instanceof L2NpcWalkerInstance)) // currently flying characters not checked
 		{
 			double originalDistance = distance;
 			int originalX = x;

@@ -1473,6 +1473,9 @@ public final class L2PcInstance extends L2PlayableInstance
     	}
 
     	getWorldRegion().revalidateZones(this);
+    	
+        if (Config.ALLOW_WATER)
+            checkWaterState();
 
         if (isInsideZone(ZONE_SIEGE))
         {
@@ -5503,6 +5506,20 @@ public final class L2PcInstance extends L2PlayableInstance
         }
         return true;
 	}
+	
+	public boolean dismount()
+	{
+	    if (setMountType(0))
+	    {
+	        if (isFlying()) 
+	            removeSkill(SkillTable.getInstance().getInfo(4289, 1));
+	        Ride dismount = new Ride(getObjectId(), Ride.ACTION_DISMOUNT, 0);
+	        broadcastPacket(dismount);
+	        setMountObjectID(0);
+	        return true;
+	    }
+        return false;
+	}
 
 	/**
 	 * Return True if the L2PcInstance use a dual weapon.<BR><BR>
@@ -9041,7 +9058,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
 		if (!isDead() && _taskWater == null)
 		{
-			int timeinwater = 86000;
+			int timeinwater = (int)calcStat(Stats.BREATH, 60000, this, null);
 
 			sendPacket(new SetupGauge(2, timeinwater));
 			_taskWater = ThreadPoolManager.getInstance().scheduleEffectAtFixedRate(new WaterTask(), timeinwater, 1000);
@@ -9058,17 +9075,10 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	public void checkWaterState()
 	{
-		//checking if char is  over base level of  water (sea, rivers)
-		if (getZ() > -3793)
-		{
-			stopWaterTask();
-			return;
-		}
-
 		if (isInsideZone(ZONE_WATER))
-		{
 			startWaterTask();
-		}
+		else 
+			stopWaterTask();
 	}
 
 	public void onPlayerEnter()
@@ -9302,9 +9312,6 @@ public final class L2PcInstance extends L2PlayableInstance
 
 		if (Config.PLAYER_SPAWN_PROTECTION > 0)
             setProtection(true);
-
-		if (Config.ALLOW_WATER)
-            checkWaterState();
 
 		// Modify the position of the tamed beast if necessary (normal pets are handled by super...though
         // L2PcInstance is the only class that actually has pets!!! )

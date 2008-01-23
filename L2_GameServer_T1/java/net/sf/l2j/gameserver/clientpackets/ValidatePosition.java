@@ -173,9 +173,6 @@ public class ValidatePosition extends L2GameClientPacket
 		if(activeChar.getParty() != null)
 			activeChar.getParty().broadcastToPartyMembers(activeChar,new PartyMemberPosition(activeChar));
 
-		if (Config.ALLOW_WATER)
-			activeChar.checkWaterState();
-
 		if (Config.ACCEPT_GEOEDITOR_CONN)
             if (GeoEditorListener.getInstance().getThread() != null  && GeoEditorListener.getInstance().getThread().isWorking()  && GeoEditorListener.getInstance().getThread().isSend(activeChar))
             	GeoEditorListener.getInstance().getThread().sendGmPosition(_x,_y,(short)_z);

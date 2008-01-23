@@ -567,6 +567,9 @@ public class CharStat
 			val += Config.STRIDER_SPEED;
 			return val;
 		}
+		// TODO: check if sharks/fish should be affected ;)
+		if (_activeChar.isInsideZone(L2Character.ZONE_WATER)) val /= 2;
+		
 		val /= _activeChar.getArmourExpertisePenalty();
 		return val;
 	}
