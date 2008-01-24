@@ -120,14 +120,13 @@ public class Sow implements ISkillHandler {
 		maxlevelSeed = L2Manor.getInstance().getSeedMaxLevel(_seedId);
 
 		int levelPlayer = _activeChar.getLevel(); // Attacker Level
-		int levelTarget = _target.getLevel(); // taret Level
+		int levelTarget = _target.getLevel(); // target Level
 
-		// 5% decrease in chance if player level
-		// is more then +/- 5 levels to _seed's_ level
+		// seed level
 		if (levelTarget < minlevelSeed)
-			basicSuccess -= 5;
+			basicSuccess -= 5 * (minlevelSeed - levelTarget);
 		if (levelTarget > maxlevelSeed)
-			basicSuccess -= 5;
+			basicSuccess -= 5 * (levelTarget - maxlevelSeed);
 
 		// 5% decrease in chance if player level
 		// is more than +/- 5 levels to _target's_ level
