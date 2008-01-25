@@ -64,7 +64,7 @@ public class ZoneNPoly extends L2ZoneForm
 		// Or a point of the rectangle inside the polygon
 		if (isInsideZone(ax1, ay1, (_z2-1))) return true;
 
-		// If the first point wasnt inside the rectangle it might still have any line crossing any side
+		// If the first point wasn't inside the rectangle it might still have any line crossing any side
 		// of the rectangle
 
 		// Check every possible line of the polygon for a collision with any of the rectangles side
@@ -76,10 +76,10 @@ public class ZoneNPoly extends L2ZoneForm
 			uY = _y[(i+1) % _x.length];
 
 			// Check if this line intersects any of the four sites of the rectangle
-			if (lineIntersectsLine(tX, tY, uX, uY, ax1, ay1, ax1, ay2)) return true;
-			if (lineIntersectsLine(tX, tY, uX, uY, ax1, ay1, ax2, ay1)) return true;
-			if (lineIntersectsLine(tX, tY, uX, uY, ax2, ay2, ax1, ay2)) return true;
-			if (lineIntersectsLine(tX, tY, uX, uY, ax2, ay2, ax2, ay1)) return true;
+			if (lineSegmentsIntersect(tX, tY, uX, uY, ax1, ay1, ax1, ay2)) return true;
+			if (lineSegmentsIntersect(tX, tY, uX, uY, ax1, ay1, ax2, ay1)) return true;
+			if (lineSegmentsIntersect(tX, tY, uX, uY, ax2, ay2, ax1, ay2)) return true;
+			if (lineSegmentsIntersect(tX, tY, uX, uY, ax2, ay2, ax2, ay1)) return true;
 		}
 
 		return false;

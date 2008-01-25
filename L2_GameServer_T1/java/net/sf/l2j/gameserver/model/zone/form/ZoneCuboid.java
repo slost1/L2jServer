@@ -73,16 +73,16 @@ public class ZoneCuboid extends L2ZoneForm
 		if (_x2 > ax1 && _x2 < ax2 && _y2 > ay1 && _y2 < ay2) return true;
 
 		// Horizontal lines may intersect vertical lines
-		if (lineIntersectsLine(_x1, _y1, _x2, _y1, ax1, ay1, ax1, ay2)) return true;
-		if (lineIntersectsLine(_x1, _y1, _x2, _y1, ax2, ay1, ax2, ay2)) return true;
-		if (lineIntersectsLine(_x1, _y2, _x2, _y2, ax1, ay1, ax1, ay2)) return true;
-		if (lineIntersectsLine(_x1, _y2, _x2, _y2, ax2, ay1, ax2, ay2)) return true;
+		if (lineSegmentsIntersect(_x1, _y1, _x2, _y1, ax1, ay1, ax1, ay2)) return true;
+		if (lineSegmentsIntersect(_x1, _y1, _x2, _y1, ax2, ay1, ax2, ay2)) return true;
+		if (lineSegmentsIntersect(_x1, _y2, _x2, _y2, ax1, ay1, ax1, ay2)) return true;
+		if (lineSegmentsIntersect(_x1, _y2, _x2, _y2, ax2, ay1, ax2, ay2)) return true;
 
 		// Vertical lines may intersect horizontal lines
-		if (lineIntersectsLine(_x1, _y1, _x1, _y2, ax1, ay1, ax2, ay1)) return true;
-		if (lineIntersectsLine(_x1, _y1, _x1, _y2, ax1, ay2, ax2, ay2)) return true;
-		if (lineIntersectsLine(_x2, _y1, _x2, _y2, ax1, ay1, ax2, ay1)) return true;
-		if (lineIntersectsLine(_x2, _y1, _x2, _y2, ax1, ay2, ax2, ay2)) return true;
+		if (lineSegmentsIntersect(_x1, _y1, _x1, _y2, ax1, ay1, ax2, ay1)) return true;
+		if (lineSegmentsIntersect(_x1, _y1, _x1, _y2, ax1, ay2, ax2, ay2)) return true;
+		if (lineSegmentsIntersect(_x2, _y1, _x2, _y2, ax1, ay1, ax2, ay1)) return true;
+		if (lineSegmentsIntersect(_x2, _y1, _x2, _y2, ax1, ay2, ax2, ay2)) return true;
 
 		return false;
 	}
