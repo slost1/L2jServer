@@ -20,7 +20,7 @@ package net.sf.l2j.gameserver.serverpackets;
 public class ExRegMax extends L2GameServerPacket
 {
 
-	private static final String _S__FE_25_EXOPENMPCC = "[S] FE:25 ExOpenMPCC";
+	private static final String _S__FE_01_EXREGMAX = "[S] FE:01 ExRegMax"; // RegenStatus?
 	private double _max;
 	private int _count;
 	private int _time;
@@ -52,7 +52,7 @@ public class ExRegMax extends L2GameServerPacket
 	@Override
 	public String getType()
 	{
-		return _S__FE_25_EXOPENMPCC;
+		return _S__FE_01_EXREGMAX;
 	}
 	
 }
