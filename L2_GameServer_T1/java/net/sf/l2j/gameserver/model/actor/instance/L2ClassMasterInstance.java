@@ -275,6 +275,8 @@ public final class L2ClassMasterInstance extends L2FolkInstance
             	player.sendPacket(new SystemMessage(SystemMessageId.THIRD_CLASS_TRANSFER)); // system sound 3rd occupation
             else
             	player.sendPacket(new SystemMessage(SystemMessageId.CLASS_TRANSFER));    // system sound for 1st and 2nd occupation
+            
+            player.rewardSkills();
 
             NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
             TextBuilder sb = new TextBuilder();
