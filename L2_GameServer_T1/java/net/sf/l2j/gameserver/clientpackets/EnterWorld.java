@@ -194,7 +194,19 @@ public class EnterWorld extends L2GameClientPacket
         
         if(activeChar.isCursedWeaponEquipped()) 
         { 
-            CursedWeaponsManager.getInstance().getCursedWeapon(activeChar.getCursedWeaponEquippedId()).giveSkill(); 
+            CursedWeaponsManager.getInstance().getCursedWeapon(activeChar.getCursedWeaponEquippedId()).giveSkill();
+            
+            SystemMessage msg = new SystemMessage(SystemMessageId.S2_OWNER_HAS_LOGGED_INTO_THE_S1_REGION);
+            msg.addZoneName(activeChar.getX(), activeChar.getY(), activeChar.getZ());
+            msg.addItemName(activeChar.getCursedWeaponEquippedId());
+            CursedWeaponsManager.announce(msg);
+            
+            CursedWeapon cw = CursedWeaponsManager.getInstance().getCursedWeapon(activeChar.getCursedWeaponEquippedId());
+            SystemMessage msg2 = new SystemMessage(SystemMessageId.S2_MINUTE_OF_USAGE_TIME_ARE_LEFT_FOR_S1);
+            int timeLeftInHours = (int)(((cw.getTimeLeft()/60000)/60));
+            msg2.addItemName(activeChar.getCursedWeaponEquippedId());
+            msg2.addNumber(timeLeftInHours*60);
+            activeChar.sendPacket(msg2);
         }
 
         if (activeChar.getAllEffects() != null)
@@ -307,21 +319,6 @@ public class EnterWorld extends L2GameClientPacket
         activeChar.onPlayerEnter();
         
         sendPacket(new SkillCoolTime(activeChar));
-        
-        if(activeChar.isCursedWeaponEquipped())
-		{
-			SystemMessage msg = new SystemMessage(SystemMessageId.S2_OWNER_HAS_LOGGED_INTO_THE_S1_REGION);
-			msg.addZoneName(activeChar.getX(), activeChar.getY(), activeChar.getZ());
-			msg.addItemName(activeChar.getCursedWeaponEquippedId());
-			CursedWeaponsManager.announce(msg);
-			
-			CursedWeapon cw = CursedWeaponsManager.getInstance().getCursedWeapon(activeChar.getCursedWeaponEquippedId());
-			SystemMessage msg2 = new SystemMessage(SystemMessageId.S2_MINUTE_OF_USAGE_TIME_ARE_LEFT_FOR_S1);
-			int timeLeftInHours = (int)(((cw.getTimeLeft()/60000)/60));
-			msg2.addItemName(activeChar.getCursedWeaponEquippedId());
-			msg2.addNumber(timeLeftInHours*60);
-			activeChar.sendPacket(msg2);
-		}
 
         if (Olympiad.getInstance().playerInStadia(activeChar))
         {
