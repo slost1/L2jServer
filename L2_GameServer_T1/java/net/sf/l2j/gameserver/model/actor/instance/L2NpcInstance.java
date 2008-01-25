@@ -1733,6 +1733,12 @@ public class L2NpcInstance extends L2Character
      */
     public void showChatWindow(L2PcInstance player, int val)
     {
+    	if(player.isCursedWeaponEquiped() && ( !(player.getTarget() instanceof L2ClanHallManagerInstance)
+    			    						|| !(player.getTarget() instanceof L2DoormenInstance)))
+    	{
+    		player.setTarget(player);
+    		return;
+    	}
     	if (player.getKarma() > 0)
         {	
 			if (!Config.ALT_GAME_KARMA_PLAYER_CAN_SHOP && this instanceof L2MerchantInstance)

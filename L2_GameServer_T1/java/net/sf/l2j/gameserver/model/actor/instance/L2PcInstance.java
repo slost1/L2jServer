@@ -75,6 +75,7 @@ import net.sf.l2j.gameserver.instancemanager.ItemsOnGroundManager;
 import net.sf.l2j.gameserver.instancemanager.QuestManager;
 import net.sf.l2j.gameserver.instancemanager.SiegeManager;
 import net.sf.l2j.gameserver.model.BlockList;
+import net.sf.l2j.gameserver.model.CursedWeapon;
 import net.sf.l2j.gameserver.model.FishData;
 import net.sf.l2j.gameserver.model.ForceBuff;
 import net.sf.l2j.gameserver.model.Inventory;
@@ -4656,6 +4657,13 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (isCursedWeaponEquiped())
 		{
 			CursedWeaponsManager.getInstance().increaseKills(_cursedWeaponEquipedId);
+			// Custom message for time left
+			// CursedWeapon cw = CursedWeaponsManager.getInstance().getCursedWeapon(_cursedWeaponEquipedId);
+			// SystemMessage msg = new SystemMessage(SystemMessageId.THERE_IS_S1_HOUR_AND_S2_MINUTE_LEFT_OF_THE_FIXED_USAGE_TIME);
+			// int timeLeftInHours = (int)(((cw.getTimeLeft()/60000)/60));
+			// msg.addItemName(_cursedWeaponEquipedId);
+			// msg.addNumber(timeLeftInHours);
+			// sendPacket(msg);
 			return;
 		}
 

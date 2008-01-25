@@ -37,6 +37,7 @@ import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
 import net.sf.l2j.gameserver.instancemanager.DimensionalRiftManager;
 import net.sf.l2j.gameserver.instancemanager.PetitionManager;
 import net.sf.l2j.gameserver.instancemanager.SiegeManager;
+import net.sf.l2j.gameserver.model.CursedWeapon;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.L2Effect;
@@ -306,6 +307,21 @@ public class EnterWorld extends L2GameClientPacket
         activeChar.onPlayerEnter();
         
         sendPacket(new SkillCoolTime(activeChar));
+        
+        if(activeChar.isCursedWeaponEquiped())
+		{
+			SystemMessage msg = new SystemMessage(SystemMessageId.S2_OWNER_HAS_LOGGED_INTO_THE_S1_REGION);
+			msg.addZoneName(activeChar.getX(), activeChar.getY(), activeChar.getZ());
+			msg.addItemName(activeChar.getCursedWeaponEquipedId());
+			CursedWeaponsManager.announce(msg);
+			
+			CursedWeapon cw = CursedWeaponsManager.getInstance().getCursedWeapon(activeChar.getCursedWeaponEquipedId());
+			SystemMessage msg2 = new SystemMessage(SystemMessageId.S2_MINUTE_OF_USAGE_TIME_ARE_LEFT_FOR_S1);
+			int timeLeftInHours = (int)(((cw.getTimeLeft()/60000)/60));
+			msg2.addItemName(activeChar.getCursedWeaponEquipedId());
+			msg2.addNumber(timeLeftInHours*60);
+			activeChar.sendPacket(msg2);
+		}
 
         if (Olympiad.getInstance().playerInStadia(activeChar))
         {

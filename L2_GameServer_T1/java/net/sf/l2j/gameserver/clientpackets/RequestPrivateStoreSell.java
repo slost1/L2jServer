@@ -94,6 +94,10 @@ public final class RequestPrivateStoreSell extends L2GameClientPacket
 		if (object == null || !(object instanceof L2PcInstance)) return;
 		L2PcInstance storePlayer = (L2PcInstance)object;
 		if (storePlayer.getPrivateStoreType() != L2PcInstance.STORE_PRIVATE_BUY) return;
+		
+		if(player.isCursedWeaponEquiped())
+			return;
+		
 		TradeList storeList = storePlayer.getBuyList();
 		if (storeList == null) return;
 

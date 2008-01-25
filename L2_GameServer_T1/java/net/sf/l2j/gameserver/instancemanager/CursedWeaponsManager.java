@@ -189,7 +189,7 @@ public class CursedWeaponsManager
 			PreparedStatement statement = con.prepareStatement("SELECT itemId, playerId, playerKarma, playerPkKills, nbKills, endTime FROM cursed_weapons");
 			ResultSet rset = statement.executeQuery();
 
-			if (rset.next())
+			while(rset.next())
 			{
 				int itemId        = rset.getInt("itemId");
 				int playerId      = rset.getInt("playerId");
