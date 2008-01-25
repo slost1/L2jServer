@@ -192,7 +192,7 @@ public class L2WeddingManagerInstance extends L2NpcInstance
                 	if(Config.L2JMOD_WEDDING_FORMALWEAR)
                 	{
                 		Inventory inv3 = player.getInventory();
-                		L2ItemInstance item3 = inv3.getPaperdollItem(10);
+                		L2ItemInstance item3 = inv3.getPaperdollItem(Inventory.PAPERDOLL_CHEST);
                 		if(null==item3)
                 		{
                 			player.setIsWearingFormalWear(false);
@@ -229,7 +229,7 @@ public class L2WeddingManagerInstance extends L2NpcInstance
                 	if(Config.L2JMOD_WEDDING_FORMALWEAR)
                 	{
                 		Inventory inv3 = player.getInventory();
-                		L2ItemInstance item3 = inv3.getPaperdollItem(10);
+                		L2ItemInstance item3 = inv3.getPaperdollItem(Inventory.PAPERDOLL_CHEST);
 
                 		if (null==item3)
                 		{
