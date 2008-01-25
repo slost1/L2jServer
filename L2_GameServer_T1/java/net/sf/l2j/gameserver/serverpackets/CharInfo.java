@@ -60,7 +60,7 @@ public class CharInfo extends L2GameServerPacket
 	private Inventory _inv;
 	private int _x, _y, _z, _heading;
 	private int _mAtkSpd, _pAtkSpd;
-	private int _runSpd, _walkSpd, _flRunSpd, _flWalkSpd, _flyRunSpd, _flyWalkSpd;
+	private int _runSpd, _walkSpd, _swimRunSpd, _swimWalkSpd, _flRunSpd, _flWalkSpd, _flyRunSpd, _flyWalkSpd;
     private float _moveMultiplier, _attackSpeedMultiplier;
     private int _maxCp;
 
@@ -80,8 +80,9 @@ public class CharInfo extends L2GameServerPacket
     	_moveMultiplier  = _activeChar.getMovementSpeedMultiplier();
     	_attackSpeedMultiplier = _activeChar.getAttackSpeedMultiplier();
     	_runSpd         = (int)(_activeChar.getRunSpeed()/_moveMultiplier);
-    	_walkSpd        = (int)(_activeChar.getWalkSpeed()/_moveMultiplier);    	
-        _flRunSpd = _flyRunSpd = _runSpd = _flWalkSpd = _flyWalkSpd = _walkSpd;
+    	_walkSpd        = (int)(_activeChar.getWalkSpeed()/_moveMultiplier);    
+        _swimRunSpd = _flRunSpd = _flyRunSpd = _runSpd;
+        _swimWalkSpd = _flWalkSpd = _flyWalkSpd = _walkSpd;
     	_maxCp = _activeChar.getMaxCp();
     }
     public CharInfo(PcAppearance appearance)
@@ -120,10 +121,10 @@ public class CharInfo extends L2GameServerPacket
 				writeD(0x00);
 				writeD(_mAtkSpd);
 				writeD(_pAtkSpd);
-				writeD(_runSpd);
+				writeD(_runSpd); // TODO: the order of the speeds should be confirmed
 				writeD(_walkSpd);
-				writeD(50);  // swimspeed
-				writeD(50);  // swimspeed
+				writeD(_swimRunSpd); // swim speed
+	            writeD(_swimWalkSpd); // swim speed
 				writeD(_flRunSpd);
 				writeD(_flWalkSpd);
 				writeD(_flyRunSpd);
@@ -274,10 +275,10 @@ public class CharInfo extends L2GameServerPacket
 			writeD(_activeChar.getPvpFlag());
 			writeD(_activeChar.getKarma());
 	
-			writeD(_runSpd);
+			writeD(_runSpd); // TODO: the order of the speeds should be confirmed
 			writeD(_walkSpd);
-			writeD(50);  // swimspeed
-			writeD(50);  // swimspeed
+	        writeD(_swimRunSpd); // swim speed
+	        writeD(_swimWalkSpd); // swim speed
 			writeD(_flRunSpd);
 			writeD(_flWalkSpd);
 			writeD(_flyRunSpd);
