@@ -30,8 +30,8 @@ import net.sf.l2j.gameserver.serverpackets.MyTargetSelected;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.serverpackets.Ride;
 import net.sf.l2j.gameserver.serverpackets.SellList;
-import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.serverpackets.ShopPreviewList;
+import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
 /**

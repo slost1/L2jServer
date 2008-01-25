@@ -38,7 +38,7 @@ public class L2WaterZone extends L2ZoneType
 		        ((L2PcInstance) character).dismount();
 
 		    if (((L2PcInstance) character).isTransformed()
-		            && !((L2PcInstance) character).isCursedWeaponEquiped())
+		            && !((L2PcInstance) character).isCursedWeaponEquipped())
 		    {
 		        ((L2PcInstance) character).untransform();
 		    }

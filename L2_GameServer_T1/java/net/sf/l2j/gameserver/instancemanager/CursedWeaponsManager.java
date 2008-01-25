@@ -330,7 +330,7 @@ public class CursedWeaponsManager
 			|| attackable instanceof L2FestivalMonsterInstance
 			)return;
 
-		if (player.isCursedWeaponEquiped())
+		if (player.isCursedWeaponEquipped())
 			return;
 
 		for (CursedWeapon cw : _cursedWeapons.values())
@@ -344,9 +344,9 @@ public class CursedWeaponsManager
 	public void activate(L2PcInstance player, L2ItemInstance item)
 	{
 		CursedWeapon cw = _cursedWeapons.get(item.getItemId());
-		if (player.isCursedWeaponEquiped()) // cannot own 2 cursed swords
+		if (player.isCursedWeaponEquipped()) // cannot own 2 cursed swords
 		{
-			CursedWeapon cw2 = _cursedWeapons.get(player.getCursedWeaponEquipedId());
+			CursedWeapon cw2 = _cursedWeapons.get(player.getCursedWeaponEquippedId());
 			/* TODO: give the bonus level in a more appropriate manner.
 			 *  The following code adds "_stageKills" levels.  This will also show in the char status.
 			 * I do not have enough info to know if the bonus should be shown in the pk count, or if it
@@ -411,7 +411,7 @@ public class CursedWeaponsManager
 				cw.setPlayer(player);
 				cw.setItem(player.getInventory().getItemByItemId(cw.getItemId()));
 				cw.giveSkill();
-				player.setCursedWeaponEquipedId(cw.getItemId());
+				player.setCursedWeaponEquippedId(cw.getItemId());
 
 				SystemMessage sm = new SystemMessage(SystemMessageId.S2_MINUTE_OF_USAGE_TIME_ARE_LEFT_FOR_S1);
 				sm.addString(cw.getName());

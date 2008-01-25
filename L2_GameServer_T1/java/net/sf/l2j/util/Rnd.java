@@ -14,7 +14,6 @@
  */
 package net.sf.l2j.util;
 
-import net.sf.l2j.util.MTRandom;
 /**$
  *
  * @author Balancer

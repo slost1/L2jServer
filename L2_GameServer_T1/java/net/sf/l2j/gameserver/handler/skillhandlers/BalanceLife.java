@@ -75,9 +75,9 @@ public class BalanceLife implements ISkillHandler
 			if (target != activeChar)
 			{
 				if (target instanceof L2PcInstance
-						&& ((L2PcInstance) target).isCursedWeaponEquiped())
+						&& ((L2PcInstance) target).isCursedWeaponEquipped())
 					continue;
-				else if (player != null && player.isCursedWeaponEquiped())
+				else if (player != null && player.isCursedWeaponEquipped())
 					continue;
 			}
 

@@ -23,12 +23,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javolution.util.FastMap;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.datatables.ItemTable;
 import net.sf.l2j.gameserver.templates.L2Item;
-
-import javolution.util.FastMap;
 
 /**
  * This class ...
@@ -367,4 +366,5 @@ public class L2TradeList
         }
     }
 }
+
 

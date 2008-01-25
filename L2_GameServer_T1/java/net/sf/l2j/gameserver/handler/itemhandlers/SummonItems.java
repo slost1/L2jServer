@@ -85,7 +85,7 @@ public class SummonItems implements IItemHandler
 			return;
 		}
 
-        if (activeChar.isCursedWeaponEquiped() && sitem.isPetSummon())
+        if (activeChar.isCursedWeaponEquipped() && sitem.isPetSummon())
         {
         	activeChar.sendPacket(new SystemMessage(SystemMessageId.STRIDER_CANT_BE_RIDDEN_WHILE_IN_BATTLE));
         	return;

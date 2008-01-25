@@ -17,7 +17,6 @@ package net.sf.l2j.gameserver.model.actor.stat;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-//import java.util.logging.Logger;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
@@ -57,7 +56,7 @@ public class PcStat extends PlayableStat
     	L2PcInstance activeChar = getActiveChar();
 
         // Set new karma
-        if (!activeChar.isCursedWeaponEquiped() && activeChar.getKarma() > 0 && (activeChar.isGM() || !activeChar.isInsideZone(L2Character.ZONE_PVP)))
+        if (!activeChar.isCursedWeaponEquipped() && activeChar.getKarma() > 0 && (activeChar.isGM() || !activeChar.isInsideZone(L2Character.ZONE_PVP)))
         {
             int karmaLost = activeChar.calculateKarmaLost(value);
             if (karmaLost > 0) activeChar.setKarma(activeChar.getKarma() - karmaLost);

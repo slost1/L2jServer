@@ -117,7 +117,7 @@ public final class Say2 extends L2GameClientPacket
 			return;
 		}
         
-        if (activeChar.isCursedWeaponEquiped() && (_type == TRADE || _type == SHOUT))
+        if (activeChar.isCursedWeaponEquipped() && (_type == TRADE || _type == SHOUT))
         {
             SystemMessage sm = new SystemMessage(SystemMessageId.SHOUT_AND_TRADE_CHAT_CANNOT_BE_USED_WHILE_POSSESSING_CURSED_WEAPON);
             activeChar.sendPacket(sm);

@@ -20,8 +20,8 @@ import java.util.logging.Logger;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
-import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2CharPosition;
+import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2ManufactureList;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
@@ -251,7 +251,7 @@ public final class RequestActionUse extends L2GameClientPacket
                         activeChar.sendPacket(msg);
                         msg = null;
                     }
-                    else if (activeChar.isCursedWeaponEquiped())
+                    else if (activeChar.isCursedWeaponEquipped())
                     {
                         //You can't mount, dismount, break and drop items while weilding a cursed weapon
                         SystemMessage msg = new SystemMessage(SystemMessageId.STRIDER_CANT_BE_RIDDEN_WHILE_IN_BATTLE);

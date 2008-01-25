@@ -33,9 +33,9 @@ import static net.sf.l2j.gameserver.model.base.ClassType.Mystic;
 import static net.sf.l2j.gameserver.model.base.ClassType.Priest;
 import static net.sf.l2j.gameserver.model.base.Race.DarkElf;
 import static net.sf.l2j.gameserver.model.base.Race.Dwarf;
+import static net.sf.l2j.gameserver.model.base.Race.Elf;
 import static net.sf.l2j.gameserver.model.base.Race.Human;
 import static net.sf.l2j.gameserver.model.base.Race.Kamael;
-import static net.sf.l2j.gameserver.model.base.Race.Elf;
 import static net.sf.l2j.gameserver.model.base.Race.Orc;
 
 import java.util.EnumMap;

@@ -66,7 +66,7 @@ public class RequestUnEquipItem extends L2GameClientPacket
 			return;
 		}
 		// Prevent of unequiping a cursed weapon
-		if (_slot == L2Item.SLOT_LR_HAND && activeChar.isCursedWeaponEquiped())
+		if (_slot == L2Item.SLOT_LR_HAND && activeChar.isCursedWeaponEquipped())
 		{
 			// Message ?
 			return;

@@ -584,13 +584,13 @@ public abstract class L2Character extends L2Object
 
 	        if (target instanceof L2PcInstance)
 	        {
-		        if (((L2PcInstance)target).isCursedWeaponEquiped() && ((L2PcInstance)this).getLevel()<=20){
+		        if (((L2PcInstance)target).isCursedWeaponEquipped() && ((L2PcInstance)this).getLevel()<=20){
 		        	((L2PcInstance)this).sendMessage("Can't attack a cursed player when under level 21.");
 		        	sendPacket(new ActionFailed());
 		        	return;
 		        }
 
-		        if (((L2PcInstance)this).isCursedWeaponEquiped() && ((L2PcInstance)target).getLevel()<=20){
+		        if (((L2PcInstance)this).isCursedWeaponEquipped() && ((L2PcInstance)target).getLevel()<=20){
 		        	((L2PcInstance)this).sendMessage("Can't attack a newbie player using a cursed weapon.");
 		        	sendPacket(new ActionFailed());
 		        	return;
@@ -829,14 +829,14 @@ public abstract class L2Character extends L2Object
 
         	if (player != null)
         	{
-        		if (player.isCursedWeaponEquiped())
+        		if (player.isCursedWeaponEquipped())
         		{
                 	// If hitted by a cursed weapon, Cp is reduced to 0
         			if (!target.isInvul())
         				target.setCurrentCp(0);
         		} else if (player.isHero())
         		{
-        			if (target instanceof L2PcInstance && ((L2PcInstance)target).isCursedWeaponEquiped())
+        			if (target instanceof L2PcInstance && ((L2PcInstance)target).isCursedWeaponEquipped())
                     	// If a cursed weapon is hitted by a Hero, Cp is reduced to 0
                 		target.setCurrentCp(0);
         		}

@@ -99,9 +99,9 @@ public class Continuous implements ISkillHandler
             {
 	            if (target != activeChar)
 	            {
-	            	if (target instanceof L2PcInstance && ((L2PcInstance)target).isCursedWeaponEquiped())
+	            	if (target instanceof L2PcInstance && ((L2PcInstance)target).isCursedWeaponEquipped())
 	            		continue;
-	            	else if (player != null && player.isCursedWeaponEquiped())
+	            	else if (player != null && player.isCursedWeaponEquipped())
 	            		continue;
 	            }
             }

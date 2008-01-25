@@ -31,22 +31,99 @@ import net.sf.l2j.gameserver.util.Broadcast;
 public class Mount implements IUserCommandHandler
 {
     private static final int[] COMMAND_IDS = { 61 };
-
+    
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.handler.IUserCommandHandler#useUserCommand(int, net.sf.l2j.gameserver.model.L2PcInstance)
      */
     public synchronized boolean useUserCommand(int id, L2PcInstance activeChar)
     {
-        if (id != COMMAND_IDS[0]) return false;
-
+        if (id != COMMAND_IDS[0])
+            return false;
+        
         L2Summon pet = activeChar.getPet();
-
-        if (pet != null && pet.isMountable() && !activeChar.isMounted())
+        
+        if (activeChar.isMounted())
         {
-            if (activeChar.isDead())
+            // You have already mounted another steed.
+            SystemMessage msg = new SystemMessage(SystemMessageId.YOU_HAVE_ALREADY_MOUNTED_ANOTHER_STEED);
+            activeChar.sendPacket(msg);
+        }
+        else if (activeChar.isTransformed())
+        {
+            // You cannot mount a steed while transformed.
+            SystemMessage msg = new SystemMessage(SystemMessageId.YOU_CANNOT_MOUNT_A_STEED_WHILE_TRANSFORMED);
+            activeChar.sendPacket(msg);
+        }
+        else if (activeChar.isParalyzed())
+        {
+            // You cannot mount a steed while petrified.
+            SystemMessage msg = new SystemMessage(SystemMessageId.YOU_CANNOT_MOUNT_A_STEED_WHILE_PETRIFIED);
+            activeChar.sendPacket(msg);
+        }
+        else if (activeChar.isDead())
+        {
+            // You cannot mount a steed while dead.
+            SystemMessage msg = new SystemMessage(SystemMessageId.YOU_CANNOT_MOUNT_A_STEED_WHILE_DEAD);
+            activeChar.sendPacket(msg);
+        }
+        else if (activeChar.isFishing())
+        {
+            // You cannot mount a steed while fishing.
+            SystemMessage msg = new SystemMessage(SystemMessageId.YOU_CANNOT_MOUNT_A_STEED_WHILE_FISHING);
+            activeChar.sendPacket(msg);
+        }
+        else if (activeChar.isInDuel())
+        {
+            // You cannot mount a steed while in a duel.
+            SystemMessage msg = new SystemMessage(SystemMessageId.YOU_CANNOT_MOUNT_A_STEED_WHILE_IN_A_DUEL);
+            activeChar.sendPacket(msg);
+        }
+        else if (activeChar.isSitting())
+        {
+            // You cannot mount a steed while sitting.
+            SystemMessage msg = new SystemMessage(SystemMessageId.YOU_CANNOT_MOUNT_A_STEED_WHILE_SITTING);
+            activeChar.sendPacket(msg);
+        }
+        else if (activeChar.isCastingNow())
+        {
+            // You cannot mount a steed while skill casting.
+            SystemMessage msg = new SystemMessage(SystemMessageId.YOU_CANNOT_MOUNT_A_STEED_WHILE_SKILL_CASTING);
+            activeChar.sendPacket(msg);
+        }
+        else if (activeChar.isCursedWeaponEquipped())
+        {
+            // You cannot mount a steed while a cursed weapon is equipped.
+            SystemMessage msg = new SystemMessage(SystemMessageId.YOU_CANNOT_MOUNT_A_STEED_WHILE_A_CURSED_WEAPON_IS_EQUIPPED);
+            activeChar.sendPacket(msg);
+        }
+        /** 
+         * TODO: Add Siege Flag Restriction, 
+         else if (activeChar.isFlagEquipped())
+        {
+            // You cannot mount a steed while holding a flag.
+            SystemMessage msg = new SystemMessage(SystemMessageId.YOU_CANNOT_MOUNT_A_STEED_WHILE_HOLDING_A_FLAG);
+            activeChar.sendPacket(msg);
+        }
+         */
+        else if (activeChar.isInCombat())
+        {
+            // A pet cannot be ridden while player is in battle.
+            SystemMessage msg = new SystemMessage(SystemMessageId.STRIDER_CANT_BE_RIDDEN_WHILE_IN_BATTLE);
+            activeChar.sendPacket(msg);
+        }
+        else if (activeChar.isMoving() || activeChar.isInsideZone(L2Character.ZONE_WATER))
+        {
+            // A strider can be ridden only when player is standing.
+            SystemMessage msg = new SystemMessage(SystemMessageId.STRIDER_CAN_BE_RIDDEN_ONLY_WHILE_STANDING);
+            activeChar.sendPacket(msg);
+        }
+        
+        else if (pet != null && pet.isMountable())
+        {
+            if (pet.isInCombat())
             {
-                // A strider cannot be ridden when player is dead.
-                SystemMessage msg = new SystemMessage(SystemMessageId.STRIDER_CANT_BE_RIDDEN_WHILE_DEAD);
+                // A strider in battle cannot be ridden.
+                SystemMessage msg = new SystemMessage(SystemMessageId.STRIDER_IN_BATLLE_CANT_BE_RIDDEN);
                 activeChar.sendPacket(msg);
             }
             else if (pet.isDead())
@@ -55,27 +132,10 @@ public class Mount implements IUserCommandHandler
                 SystemMessage msg = new SystemMessage(SystemMessageId.DEAD_STRIDER_CANT_BE_RIDDEN);
                 activeChar.sendPacket(msg);
             }
-            else if (pet.isInCombat())
+            else
             {
-                // A strider in battle cannot be ridden.
-                SystemMessage msg = new SystemMessage(SystemMessageId.STRIDER_IN_BATLLE_CANT_BE_RIDDEN);
-                activeChar.sendPacket(msg);
-            }
-            else if (activeChar.isInCombat())
-            {
-                // A pet cannot be ridden while player is in battle.
-                SystemMessage msg = new SystemMessage(SystemMessageId.STRIDER_CANT_BE_RIDDEN_WHILE_IN_BATTLE);
-                activeChar.sendPacket(msg);
-            }
-            else if (activeChar.isSitting() || activeChar.isMoving()  || activeChar.isInsideZone(L2Character.ZONE_WATER))
-            {
-                // A strider can be ridden only when player is standing.
-                SystemMessage msg = new SystemMessage(SystemMessageId.STRIDER_CAN_BE_RIDDEN_ONLY_WHILE_STANDING);
-                activeChar.sendPacket(msg);
-            }
-            else if (!pet.isDead() && !activeChar.isMounted())
-            {
-            	if(!activeChar.disarmWeapons()) return false;
+                if (!activeChar.disarmWeapons())
+                    return false;
                 Ride mount = new Ride(activeChar.getObjectId(), Ride.ACTION_MOUNT, pet.getTemplate().npcId);
                 Broadcast.toSelfAndKnownPlayersInRadius(activeChar, mount, 810000/*900*/);
                 activeChar.setMountType(mount.getMountType());
@@ -85,16 +145,12 @@ public class Mount implements IUserCommandHandler
         }
         else if (activeChar.isRentedPet())
         {
-        	activeChar.stopRentPet();
+            activeChar.stopRentPet();
         }
-        else if (activeChar.isMounted())
-        {
-        	activeChar.dismount();
-        }
-
+        
         return true;
     }
-
+    
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.handler.IUserCommandHandler#getUserCommandList()
      */

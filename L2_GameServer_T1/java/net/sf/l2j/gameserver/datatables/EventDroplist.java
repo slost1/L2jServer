@@ -16,7 +16,6 @@ package net.sf.l2j.gameserver.datatables;
 
 import java.util.Date;
 import java.util.List;
-//import java.util.logging.Logger;
 
 import javolution.util.FastList;
 import net.sf.l2j.gameserver.script.DateRange;

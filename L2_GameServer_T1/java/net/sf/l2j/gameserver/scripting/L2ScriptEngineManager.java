@@ -36,8 +36,8 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import javax.script.SimpleScriptContext;
 
-import net.sf.l2j.Config;
 import javolution.util.FastMap;
+import net.sf.l2j.Config;
 
 /**
  * Caches script engines and provides funcionality for executing and managing scripts.<BR>

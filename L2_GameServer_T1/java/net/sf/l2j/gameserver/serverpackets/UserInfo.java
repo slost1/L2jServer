@@ -355,8 +355,8 @@ public final class UserInfo extends L2GameServerPacket
 
         //writeD(0x00); // ??
 
-        if (_activeChar.isCursedWeaponEquiped())
-        	writeD(CursedWeaponsManager.getInstance().getLevel(_activeChar.getCursedWeaponEquipedId()));
+        if (_activeChar.isCursedWeaponEquipped())
+        	writeD(CursedWeaponsManager.getInstance().getLevel(_activeChar.getCursedWeaponEquippedId()));
         else
         	writeD(0x00);
         

@@ -42,7 +42,7 @@ public class Transformation implements ISkillHandler
             
             L2PcInstance trg = (L2PcInstance)target;
             
-            if (trg.isAlikeDead() || trg.isCursedWeaponEquiped())
+            if (trg.isAlikeDead() || trg.isCursedWeaponEquipped())
                 continue;
             
             int transformId = skill.getTransformId();

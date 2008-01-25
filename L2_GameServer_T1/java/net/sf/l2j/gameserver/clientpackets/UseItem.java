@@ -278,7 +278,7 @@ public final class UseItem extends L2GameClientPacket
                         }
                         
                         // Don't allow weapon/shield equipment if a cursed weapon is equiped
-                        if (activeChar.isCursedWeaponEquiped())
+                        if (activeChar.isCursedWeaponEquipped())
                         {
                             return;
                         }
@@ -346,7 +346,7 @@ public final class UseItem extends L2GameClientPacket
                     }
                 }
                 
-                if (activeChar.isCursedWeaponEquiped() && itemId == 6408) // Don't allow to put formal wear
+                if (activeChar.isCursedWeaponEquipped() && itemId == 6408) // Don't allow to put formal wear
                 {
                     return;
                 }

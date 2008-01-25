@@ -446,7 +446,7 @@ public class TvTEvent
 			NpcHtmlMessage npcHtmlMessage = new NpcHtmlMessage(0);
 			int playerLevel = playerInstance.getLevel();
 
-			if (playerInstance.isCursedWeaponEquiped())
+			if (playerInstance.isCursedWeaponEquipped())
 				npcHtmlMessage.setHtml("<html><head><title>TvT Event</title></head><body>Cursed weapon owners are not allowed to participate.</body></html>");
 			else if (playerInstance.getKarma() > 0)
 				npcHtmlMessage.setHtml("<html><head><title>TvT Event</title></head><body>Chaotic players are not allowed to participate.</body></html>");

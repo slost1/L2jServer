@@ -27,11 +27,6 @@ import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
-
 import javolution.util.FastList;
 import javolution.util.FastMap;
 import net.sf.l2j.Config;
@@ -55,6 +50,11 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Stats;
 import net.sf.l2j.gameserver.util.Util;
 import net.sf.l2j.util.Rnd;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 
 public class RecipeController
 {

@@ -81,9 +81,9 @@ public class Heal implements ISkillHandler
             // Player holding a cursed weapon can't be healed and can't heal
             if (target != activeChar)
             {
-            	if (target instanceof L2PcInstance && ((L2PcInstance)target).isCursedWeaponEquiped())
+            	if (target instanceof L2PcInstance && ((L2PcInstance)target).isCursedWeaponEquipped())
             		continue;
-            	else if (player != null && player.isCursedWeaponEquiped())
+            	else if (player != null && player.isCursedWeaponEquipped())
             		continue;
             }
 

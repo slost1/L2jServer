@@ -4811,6 +4811,30 @@ public enum SystemMessageId
      * Message: $s1 cannot receive a duel challenge because $s1 is too far away.
      */
     S1_CANNOT_RECEIVE_A_DUEL_CHALLENGE_BECAUSE_S1_IS_TOO_FAR_AWAY(2028),
+    
+    /**
+     * ID: 2058<br>
+     * Message: You already polymorphed and cannot polymorph again.
+     */
+    YOU_ALREADY_POLYMORPHED_AND_CANNOT_POLYMORPH_AGAIN(2058),
+    
+    /**
+     * ID: 2060<br>
+     * Message: You cannot polymorph into the desired form in water.
+     */
+    YOU_CANNOT_POLYMORPH_INTO_THE_DESIRED_FORM_IN_WATER(2060),
+    
+    /**
+     * ID: 2062<br>
+     * Message: You cannot polymorph when you have summoned a servitor/pet.
+     */
+    YOU_CANNOT_POLYMORPH_WHEN_YOU_HAVE_SUMMONED_A_SERVITOR(2062),
+    
+    /**
+     * ID: 2063<br>
+     * Message: You cannot polymorph while riding a pet.
+     */
+    YOU_CANNOT_POLYMORPH_WHILE_RIDING_A_PET(2063),
 
     /**
      * ID: 2085<br>
@@ -4874,10 +4898,82 @@ public enum SystemMessageId
    NOT_ENOUGH_BOLTS(2226),
 
    /**
-    * ID: 2226<br>
+    * ID: 2229<br>
     * Message: There is no instance zone under a time limit.
     */
-   NO_INSTANCEZONE_TIME_LIMIT(2226);
+   NO_INSTANCEZONE_TIME_LIMIT(2229),
+   
+   /**
+    * ID: 2247<br>
+    * Message: You cannot mount a steed while transformed.
+    */
+   YOU_CANNOT_MOUNT_A_STEED_WHILE_TRANSFORMED(2247),
+   
+   /**
+    * ID: 2248<br>
+    * Message: You cannot mount a steed while petrified.
+    */
+   YOU_CANNOT_MOUNT_A_STEED_WHILE_PETRIFIED(2248),
+   
+   /**
+    * ID: 2249<br>
+    * Message: You cannot mount a steed while dead.
+    */
+   YOU_CANNOT_MOUNT_A_STEED_WHILE_DEAD(2249),
+   
+   /**
+    * ID: 2250<br>
+    * Message: You cannot mount a steed while fishing.
+    */
+   YOU_CANNOT_MOUNT_A_STEED_WHILE_FISHING(2250),
+   
+   /**
+    * ID: 2251<br>
+    * Message: You cannot mount a steed while in battle.
+    */
+   YOU_CANNOT_MOUNT_A_STEED_WHILE_BATTLE(2251),
+   
+   /**
+    * ID: 2252<br>
+    * Message: You cannot mount a steed while in a duel.
+    */
+   YOU_CANNOT_MOUNT_A_STEED_WHILE_IN_A_DUEL(2252),
+   
+   /**
+    * ID: 2253<br>
+    * Message: You cannot mount a steed while sitting.
+    */
+   YOU_CANNOT_MOUNT_A_STEED_WHILE_SITTING(2253),
+   
+   /**
+    * ID: 2254<br>
+    * Message: You cannot mount a steed while skill casting.
+    */
+   YOU_CANNOT_MOUNT_A_STEED_WHILE_SKILL_CASTING(2254),
+   
+   /**
+    * ID: 2255<br>
+    * Message: You cannot mount a steed while a cursed weapon is equipped.
+    */
+   YOU_CANNOT_MOUNT_A_STEED_WHILE_A_CURSED_WEAPON_IS_EQUIPPED(2255),
+   
+   /**
+    * ID: 2256<br>
+    * Message: You cannot mount a steed while holding a flag.
+    */
+   YOU_CANNOT_MOUNT_A_STEED_WHILE_HOLDING_A_FLAG(2256),
+   
+   /**
+    * ID: 2257<br>
+    * Message: You cannot mount a steed while a pet or a servitor is summoned.
+    */
+   YOU_CANNOT_MOUNT_A_STEED_WHILE_A_PET_OR_A_SERVITOR_IS_SUMMONED(2257),
+   
+   /**
+    * ID: 2258<br>
+    * Message: You have already mounted another steed
+    */
+   YOU_HAVE_ALREADY_MOUNTED_ANOTHER_STEED(2258);
 
 
     private int _id;
