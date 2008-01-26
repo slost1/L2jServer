@@ -39,14 +39,20 @@ public final class Ride extends L2GameServerPacket
         
         switch(rideClassId)
         {
+            case 0: // dismount
+                _rideType = 0;
+                break;
             case 12526: // Wind
             case 12527: // Star
             case 12528: // Twilight
-                _rideType = 1; break;
+                _rideType = 1;
+                break;
             case 12621: // Wyvern
-                _rideType = 2; break;
+                _rideType = 2;
+                break;
             case 16030: // Great Wolf
-                _rideType = 3; break;
+                _rideType = 3;
+                break;
             default:
                 throw new IllegalArgumentException("Unsupported mount NpcId: "+rideClassId);
         }
