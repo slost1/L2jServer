@@ -3358,7 +3358,7 @@ public enum SystemMessageId
 
         /**
          * ID: 1441<br>
-         * Message: You have failed to enchant the skill $s1.
+         * Message: Skill enchant failed. The skill will be initialized.
          */
         YOU_HAVE_FAILED_TO_ENCHANT_THE_SKILL_S1(1441),
 
@@ -4805,7 +4805,7 @@ public enum SystemMessageId
      * Message: $s1 cannot duel because $s1 is currently riding a boat, wyvern, or strider.
      */
     S1_CANNOT_DUEL_BECAUSE_S1_IS_CURRENTLY_RIDING_A_BOAT_WYVERN_OR_STRIDER(2027),
-
+    
     /**
      * ID: 2028<br>
      * Message: $s1 cannot receive a duel challenge because $s1 is too far away.
@@ -4835,6 +4835,48 @@ public enum SystemMessageId
      * Message: You cannot polymorph while riding a pet.
      */
     YOU_CANNOT_POLYMORPH_WHILE_RIDING_A_PET(2063),
+    
+    /**
+     * ID: 2068<br>
+     * Message: You do not have all of the items needed to untrain the enchant skill.
+     */
+    YOU_DONT_HAVE_ALL_ITENS_NEEDED_TO_UNTRAIN_SKILL_ENCHANT(2068),
+    
+    /**
+     * ID: 2069<br>
+     * Message: Untrain of enchant skill was successful. Current level of enchant skill $s1 has been decreased by 1.
+     */
+    UNTRAIN_SUCCESSFUL_SKILL_S1_ENCHANT_LEVEL_DECREASED_BY_ONE(2069),
+    
+    /**
+     * ID: 2070<br>
+     * Message: Untrain of enchant skill was successful. Current level of enchant skill $s1 became 0 and enchant skill will be initialized.
+     */
+    UNTRAIN_SUCCESSFUL_SKILL_S1_ENCHANT_LEVEL_RESETED(2070),
+    
+    /**
+     * ID: 2071<br>
+     * Message: You do not have all of the items needed to enchant skill route change.
+     */
+    YOU_DONT_HAVE_ALL_ITENS_NEEDED_TO_CHANGE_SKILL_ENCHANT_ROUTE(2071),
+    
+    /**
+     * ID: 2072<br>
+     * Message: Enchant skill route change was successful. Lv of enchant skill $s1 has been decreased by $s2.
+     */
+    SKILL_ENCHANT_CHANGE_SUCCESSFUL_S1_LEVEL_WAS_DECREASED_BY_S2(2072),
+    
+    /**
+     * ID: 2073<br>
+     * Message: Enchant skill route change was successful. Lv of enchant skill $s1 will remain.
+     */
+    SKILL_ENCHANT_CHANGE_SUCCESSFUL_S1_LEVEL_WILL_REMAIN(2073),
+    
+    /**
+     * ID: 2074<br>
+     * Message: Skill enchant failed. Current level of enchant skill $s1 will remain unchanged.
+     */
+    SKILL_ENCHANT_FAILED_S1_LEVEL_WILL_REMAIN(2074),
 
     /**
      * ID: 2085<br>

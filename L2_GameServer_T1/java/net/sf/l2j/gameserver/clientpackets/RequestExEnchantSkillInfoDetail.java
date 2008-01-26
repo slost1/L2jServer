@@ -16,7 +16,9 @@ package net.sf.l2j.gameserver.clientpackets;
 
 import java.util.logging.Logger;
 
+import net.sf.l2j.gameserver.datatables.SkillTreeTable;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.serverpackets.ExEnchantSkillInfoDetail;
 
 /**
  * Format (ch) ddd
@@ -31,16 +33,22 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 public final class RequestExEnchantSkillInfoDetail extends L2GameClientPacket
 {
     protected static final Logger _log = Logger.getLogger(RequestExEnchantSkillInfoDetail.class.getName());
-	private int _skillId;
-	private int _skillLvl;
-	private int _unk;
+    
+    private static final int TYPE_NORMAL_ENCHANT = 0;
+    private static final int TYPE_SAFE_ENCHANT = 1;
+    private static final int TYPE_UNTRAIN_ENCHANT = 2;
+    private static final int TYPE_CHANGE_ENCHANT = 3;
+    
+    private int _type;
+    private int _skillId;
+    private int _skillLvl;
 	
 	@Override
     protected void readImpl()
 	{
+        _type = readD();
 		_skillId = readD();
 		_skillLvl = readD();
-		_unk = readD();
 	}
 
 	/* (non-Javadoc)
@@ -53,11 +61,41 @@ public final class RequestExEnchantSkillInfoDetail extends L2GameClientPacket
         
         if (activeChar == null) 
             return;
-        //TODO this
         
-        _log.info("[T1:RequestExEnchantSkillInfoDetail] skill id?:"+_skillId);
-        _log.info("[T1:RequestExEnchantSkillInfoDetail] skill lvl?:"+_skillLvl);
-        _log.info("[T1:RequestExEnchantSkillInfoDetail] unk:"+_unk);
+        int bookId = 0;
+        int reqCount = 0;
+        // require book for first level
+        int enchantLevel = _skillLvl%100;
+        // if going to first level OR going to Original level(untraining) OR changing route then require book
+        if ((_skillLvl > 100 && enchantLevel == 1) || (_skillLvl < 100) || _type == TYPE_CHANGE_ENCHANT)
+        {
+            switch (_type)
+            {
+                case TYPE_NORMAL_ENCHANT:
+                    bookId = SkillTreeTable.NORMAL_ENCHANT_BOOK;
+                    reqCount = 1;
+                    break;
+                case TYPE_SAFE_ENCHANT:
+                    bookId = SkillTreeTable.SAFE_ENCHANT_BOOK;
+                    reqCount = 1;
+                    break;
+                case TYPE_UNTRAIN_ENCHANT:
+                    bookId = SkillTreeTable.UNTRAIN_ENCHANT_BOOK;
+                    reqCount = 1;
+                    break;
+                case TYPE_CHANGE_ENCHANT:
+                    bookId = SkillTreeTable.CHANGE_ENCHANT_BOOK;
+                    reqCount = 1;
+                    break;
+                default:
+                    _log.severe("Unknown skill enchant type: "+_type);
+                return;
+            }
+        }
+        
+        // send skill enchantment detail
+        ExEnchantSkillInfoDetail esd = new ExEnchantSkillInfoDetail(bookId, reqCount);
+        activeChar.sendPacket(esd);
 	}
 
 	/* (non-Javadoc)

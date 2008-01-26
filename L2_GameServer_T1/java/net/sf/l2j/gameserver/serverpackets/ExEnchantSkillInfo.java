@@ -14,47 +14,69 @@
  */
 package net.sf.l2j.gameserver.serverpackets;
 
+import net.sf.l2j.gameserver.datatables.SkillTreeTable;
+import net.sf.l2j.gameserver.model.L2EnchantSkillLearn.EnchantSkillDetail;
+import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.serverpackets.ExEnchantSkillList.EnchantSkillType;
 import javolution.util.FastList;
 
-public class ExEnchantSkillInfo extends L2GameServerPacket
+public final class ExEnchantSkillInfo extends L2GameServerPacket
 {
     private static final String _S__FE_18_EXENCHANTSKILLINFO = "[S] FE:2a ExEnchantSkillInfo";
-    private FastList<Req> _reqs;
-    private int _id;
-    private int _level;
-    private int _spCost;
-    private int _xpCost;
-    private int _rate;
-
-    class Req
+    private FastList<SkillEnchantDetailElement> _routes;
+    
+    private final int _id;
+    private final EnchantSkillType _type;
+    private final int _xpSpCostMultiplier;
+    
+    public ExEnchantSkillInfo(EnchantSkillType type, int id)
     {
-        public int id;
-        public int count;
-        public int type;
-        public int unk;
-
-        Req(int pType, int pId, int pCount, int pUnk)
+        _routes = new FastList<SkillEnchantDetailElement>();
+        _id = id;
+        _type = type;
+        _xpSpCostMultiplier = (type == EnchantSkillType.SAFE ? SkillTreeTable.SAFE_ENCHANT_COST_MULTIPLIER : SkillTreeTable.NORMAL_ENCHANT_COST_MULTIPLIER);
+    }
+    
+    static class SkillEnchantDetailElement
+    {
+        public final int _level;
+        public final int _rate;
+        public final int _spCost;
+        public final int _expCost;
+        
+        public SkillEnchantDetailElement(int level, int rate, int spCost, int expCost)
         {
-            id = pId;
-            type = pType;
-            count = pCount;
-            unk = pUnk;
+            _level = level;
+            _rate = rate;
+            _spCost = spCost;
+            _expCost = expCost;
+        }
+        
+        public SkillEnchantDetailElement(L2PcInstance cha, EnchantSkillDetail esd)
+        {
+            this(esd.getLevel(), esd.getRate(cha), esd.getSpCost(), esd.getExp());
+        }
+        
+        public SkillEnchantDetailElement(int rate, EnchantSkillDetail esd)
+        {
+            this(esd.getLevel(), rate, esd.getSpCost(), esd.getExp());
         }
     }
 
-    public ExEnchantSkillInfo(int id, int level, int spCost, int xpCost, int rate)
+    
+    public void addEnchantSkillDetail(L2PcInstance cha, EnchantSkillDetail esd)
     {
-        _reqs = new FastList<Req>();
-        _id = id;
-        _level = level;
-        _spCost = spCost;
-        _xpCost = xpCost;
-        _rate = rate;
+        _routes.add(new SkillEnchantDetailElement(cha, esd));
     }
-
-    public void addRequirement(int type, int id, int count, int unk)
+    
+    public void addEnchantSkillDetail(int rate, EnchantSkillDetail esd)
     {
-        _reqs.add(new Req(type, id, count, unk));
+        _routes.add(new SkillEnchantDetailElement(rate, esd));
+    }
+    
+    public void addEnchantSkillDetail(int level, int rate, int spCost, int expCost)
+    {
+        _routes.add(new SkillEnchantDetailElement(level, rate, spCost, expCost));
     }
 
     /* (non-Javadoc)
@@ -66,20 +88,20 @@ public class ExEnchantSkillInfo extends L2GameServerPacket
         writeC(0xfe);
         writeH(0x2a);
 
-        writeD(_id);
-        writeD(_level);
-        writeD(_spCost);
-        writeQ(_xpCost);
-        writeD(_rate);
-
-        writeD(_reqs.size());
-
-        for (Req temp : _reqs)
+        writeD(_type.ordinal()); // safe enchant
+        writeD(_routes.size());
+        
+        for (SkillEnchantDetailElement sede : _routes)
         {
-            writeD(temp.type);
-            writeD(temp.id);
-            writeD(temp.count);
-            writeD(temp.unk);
+            writeD(_id);
+            writeD(sede._level);
+            writeD(sede._rate);
+            writeD(sede._spCost * _xpSpCostMultiplier);
+            writeQ(sede._expCost * _xpSpCostMultiplier);
+            writeD(0); // required item count
+            writeD(0); // req type?
+            writeD(0); // required itemId
+            writeD(0); // ?
         }
 
     }
