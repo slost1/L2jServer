@@ -19,7 +19,6 @@ import net.sf.l2j.gameserver.instancemanager.CastleManager;
 import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.entity.Castle;
-import net.sf.l2j.gameserver.serverpackets.Ride;
 
 /**
  *
@@ -51,15 +50,12 @@ public class castle implements IVoicedCommandHandler
 	        }
 
     	}
-    	else if(command.startsWith("ride wyvern")&&target.equals("castle")){
-    		if(activeChar.getClan().getHasCastle()>0&&activeChar.isClanLeader()){
-    			 if(!activeChar.disarmWeapons()) return false;
-    			 Ride mount = new Ride(activeChar.getObjectId(), Ride.ACTION_MOUNT, 12621);
-                 activeChar.sendPacket(mount);
-                 activeChar.broadcastPacket(mount);
-                 activeChar.setMountType(mount.getMountType());
+    	else if(command.startsWith("ride wyvern")&&target.equals("castle"))
+        {
+    		if(activeChar.getClan().getHasCastle() > 0 && activeChar.isClanLeader())
+            {
+    		    activeChar.mount(12621, 0);
     		}
-
     	}
     	return true;
     }

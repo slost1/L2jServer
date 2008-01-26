@@ -391,6 +391,7 @@ public final class L2PcInstance extends L2PlayableInstance
     private Point3D _inBoatPosition;
 
 	private int _mountType;
+    private int _mountNpcId;
     /** Store object used to summon the strider you are mounting **/
 	private int _mountObjectID = 0;
 
@@ -5515,14 +5516,43 @@ public final class L2PcInstance extends L2PlayableInstance
         }
         return true;
 	}
+    
+    public boolean mount(L2Summon pet)
+    {
+        if (!this.disarmWeapons())
+        {
+            return false;
+        }
+        
+        Ride mount = new Ride(this, true, pet.getTemplate().npcId);
+        this.setMount(pet.getTemplate().npcId, mount.getMountType());
+        this.setMountObjectID(pet.getControlItemId());
+        this.broadcastPacket(mount);
+        pet.unSummon(this);
+        return true;
+    }
+    
+    public boolean mount(int npcId, int controlItemObjId)
+    {
+        if (!this.disarmWeapons())
+        {
+            return false;
+        }
+        
+        Ride mount = new Ride(this, true, npcId);
+        this.setMount(npcId, mount.getMountType());
+        this.setMountObjectID(controlItemObjId);
+        this.broadcastPacket(mount);
+        return true;
+    }
 	
 	public boolean dismount()
 	{
-	    if (setMountType(0))
+	    if (setMount(0, 0))
 	    {
 	        if (isFlying()) 
 	            removeSkill(SkillTable.getInstance().getInfo(4289, 1));
-	        Ride dismount = new Ride(getObjectId(), Ride.ACTION_DISMOUNT, 0);
+	        Ride dismount = new Ride(this, false, 0);
 	        broadcastPacket(dismount);
 	        setMountObjectID(0);
 	        return true;
@@ -7812,9 +7842,9 @@ public final class L2PcInstance extends L2PlayableInstance
 	}
 
 	// returns false if the change of mount type fails.
-	public boolean setMountType(int mountType)
+	public boolean setMount(int npcId, int mountType)
 	{
-		if (checkLandingState() && mountType ==2)
+		if (checkLandingState() && mountType == 2)
 			return false;
 
 		switch(mountType)
@@ -7837,6 +7867,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 
 		_mountType = mountType;
+        _mountNpcId = npcId;
 
 		// Send a Server->Client packet InventoryUpdate to the L2PcInstance in order to update speed
 		UserInfo ui = new UserInfo(this);
@@ -9027,14 +9058,11 @@ public final class L2PcInstance extends L2PlayableInstance
 			if (checkLandingState() && getMountType()==2)
 				teleToLocation(MapRegionTable.TeleportWhereType.Town);
 			
-			if(setMountType(0))  // this should always be true now, since we teleported already
+			if (this.dismount())  // this should always be true now, since we teleported already
 			{
 				_taskRentPet.cancel(true);
-				Ride dismount = new Ride(getObjectId(), Ride.ACTION_DISMOUNT, 0);
-				sendPacket(dismount);
-				broadcastPacket(dismount);
 				_taskRentPet = null;
-			}			
+			}
 		}
 	}
 
@@ -10131,7 +10159,15 @@ public final class L2PcInstance extends L2PlayableInstance
         return recclim;
     }
 
-	public void setMountObjectID(int newID)
+    /**
+     * @return Returns the mountNpcId.
+     */
+    public int getMountNpcId()
+    {
+        return _mountNpcId;
+    }
+
+    public void setMountObjectID(int newID)
 	{
 	    _mountObjectID = newID;
 	}

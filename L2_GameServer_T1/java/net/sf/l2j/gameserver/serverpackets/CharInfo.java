@@ -339,7 +339,7 @@ public class CharInfo extends L2GameServerPacket
 				writeC(_activeChar.getAppearance().getInvisible() ? 1 : 0);	// invisible = 1  visible =0
 			}
 
-			writeC(_activeChar.getMountType());	// 1 on strider   2 on wyvern   0 no mount
+			writeC(0/*_activeChar.getMountType()*/);	// 1 on strider   2 on wyvern   0 no mount
 			writeC(_activeChar.getPrivateStoreType());   //  1 - sellshop
 
 			writeH(_activeChar.getCubics().size());

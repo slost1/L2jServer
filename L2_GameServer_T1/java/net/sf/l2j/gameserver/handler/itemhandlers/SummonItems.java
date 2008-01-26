@@ -37,7 +37,6 @@ import net.sf.l2j.gameserver.model.entity.TvTEvent;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.MagicSkillLaunched;
 import net.sf.l2j.gameserver.serverpackets.MagicSkillUse;
-import net.sf.l2j.gameserver.serverpackets.Ride;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 import net.sf.l2j.gameserver.util.FloodProtector;
@@ -164,12 +163,8 @@ public class SummonItems implements IItemHandler
 
         	break;
         case 2: // wyvern
-        	if(!activeChar.disarmWeapons()) return;
-        	Ride mount = new Ride(activeChar.getObjectId(), Ride.ACTION_MOUNT, sitem.getNpcId());
-            activeChar.sendPacket(mount);
-            activeChar.broadcastPacket(mount);
-            activeChar.setMountType(mount.getMountType());
-            activeChar.setMountObjectID(item.getObjectId());
+            activeChar.mount(sitem.getNpcId(), item.getObjectId());
+            break;
         }
 	}
 

@@ -20,9 +20,7 @@ import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Summon;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
-import net.sf.l2j.gameserver.serverpackets.Ride;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
-import net.sf.l2j.gameserver.util.Broadcast;
 
 /**
  * Support for /mount command.
@@ -134,13 +132,7 @@ public class Mount implements IUserCommandHandler
             }
             else
             {
-                if (!activeChar.disarmWeapons())
-                    return false;
-                Ride mount = new Ride(activeChar.getObjectId(), Ride.ACTION_MOUNT, pet.getTemplate().npcId);
-                Broadcast.toSelfAndKnownPlayersInRadius(activeChar, mount, 810000/*900*/);
-                activeChar.setMountType(mount.getMountType());
-                activeChar.setMountObjectID(pet.getControlItemId());
-                pet.unSummon(activeChar);
+                activeChar.mount(pet);
             }
         }
         else if (activeChar.isRentedPet())

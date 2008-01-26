@@ -40,6 +40,7 @@ public final class RequestExEnchantSkillInfoDetail extends L2GameClientPacket
     private static final int TYPE_CHANGE_ENCHANT = 3;
     
     private int _type;
+    @SuppressWarnings("unused")
     private int _skillId;
     private int _skillLvl;
 	

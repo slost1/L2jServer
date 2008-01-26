@@ -36,7 +36,6 @@ import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.ChairSit;
 import net.sf.l2j.gameserver.serverpackets.RecipeShopManageList;
-import net.sf.l2j.gameserver.serverpackets.Ride;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 /**
  * This class ...
@@ -259,12 +258,7 @@ public final class RequestActionUse extends L2GameClientPacket
                     }
                     else if (!pet.isDead() && !activeChar.isMounted())
                     {
-                        if(!activeChar.disarmWeapons()) return;
-                        Ride mount = new Ride(activeChar.getObjectId(), Ride.ACTION_MOUNT, pet.getTemplate().npcId);
-                        activeChar.broadcastPacket(mount);
-                        activeChar.setMountType(mount.getMountType());
-                        activeChar.setMountObjectID(pet.getControlItemId());
-                        pet.unSummon(activeChar);
+                        activeChar.mount(pet);
                     }
                 }
                 else if (activeChar.isRentedPet())

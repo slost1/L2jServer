@@ -20,7 +20,6 @@ import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.MyTargetSelected;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
-import net.sf.l2j.gameserver.serverpackets.Ride;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.serverpackets.ValidateLocation;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
@@ -73,18 +72,16 @@ public class L2WyvernManagerInstance extends L2CastleChamberlainInstance
         			}
         			else
         			{
-        				if(!player.disarmWeapons()) return;
         				player.getPet().unSummon(player);
-        				player.getInventory().destroyItemByItemId("Wyvern", 1460, 10, player, player.getTarget());
-        				Ride mount = new Ride(player.getObjectId(), Ride.ACTION_MOUNT, 12621);
-        				player.sendPacket(mount);
-        				player.broadcastPacket(mount);
-        				player.setMountType(mount.getMountType());
-        				player.addSkill(SkillTable.getInstance().getInfo(4289, 1));
-        				SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
-                		sm.addString("The Wyvern has been summoned successfully!");
-                		player.sendPacket(sm);
-                		return;
+        				if (player.mount(12621, 0))
+        				{
+        				    player.getInventory().destroyItemByItemId("Wyvern", 1460, 10, player, player.getTarget());
+        				    player.addSkill(SkillTable.getInstance().getInfo(4289, 1));
+        				    SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
+        				    sm.addString("The Wyvern has been summoned successfully!");
+        				    player.sendPacket(sm);
+        				}
+                        return;
         			}
         		}
         		else

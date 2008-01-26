@@ -37,6 +37,7 @@ import net.sf.l2j.gameserver.serverpackets.PrivateStoreMsgBuy;
 import net.sf.l2j.gameserver.serverpackets.PrivateStoreMsgSell;
 import net.sf.l2j.gameserver.serverpackets.RecipeShopMsg;
 import net.sf.l2j.gameserver.serverpackets.RelationChanged;
+import net.sf.l2j.gameserver.serverpackets.Ride;
 import net.sf.l2j.gameserver.serverpackets.SpawnItem;
 import net.sf.l2j.gameserver.serverpackets.StaticObject;
 import net.sf.l2j.gameserver.serverpackets.VehicleInfo;
@@ -152,8 +153,9 @@ public class PcKnownList extends PlayableKnownList
                 if(otherPlayer.isInBoat())
                 {
                 	otherPlayer.getPosition().setWorldPosition(otherPlayer.getBoat().getPosition().getWorldPosition());
-                	getActiveChar().sendPacket(new CharInfo(otherPlayer));
-                	int relation = otherPlayer.getRelation(getActiveChar());
+                	
+                    getActiveChar().sendPacket(new CharInfo(otherPlayer));
+                    int relation = otherPlayer.getRelation(getActiveChar());
                 	if (otherPlayer.getKnownList().getKnownRelations().get(getActiveChar().getObjectId()) != null && otherPlayer.getKnownList().getKnownRelations().get(getActiveChar().getObjectId()) != relation)
                 		getActiveChar().sendPacket(new RelationChanged(otherPlayer, relation, getActiveChar().isAutoAttackable(otherPlayer)));
                 	getActiveChar().sendPacket(new GetOnVehicle(otherPlayer, otherPlayer.getBoat(), otherPlayer.getInBoatPosition().getX(), otherPlayer.getInBoatPosition().getY(), otherPlayer.getInBoatPosition().getZ()));
@@ -195,6 +197,10 @@ public class PcKnownList extends PlayableKnownList
                 else
                 {
                 	getActiveChar().sendPacket(new CharInfo(otherPlayer));
+                    if (otherPlayer.isMounted())
+                    {
+                        getActiveChar().sendPacket(new Ride(otherPlayer, true, otherPlayer.getMountNpcId()));
+                    }
                 	int relation = otherPlayer.getRelation(getActiveChar());
                 	if (otherPlayer.getKnownList().getKnownRelations().get(getActiveChar().getObjectId()) != null && otherPlayer.getKnownList().getKnownRelations().get(getActiveChar().getObjectId()) != relation)
                 		getActiveChar().sendPacket(new RelationChanged(otherPlayer, relation, getActiveChar().isAutoAttackable(otherPlayer)));
