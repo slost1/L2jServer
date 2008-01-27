@@ -20,7 +20,7 @@ package net.sf.l2j.gameserver.serverpackets;
 public class ExRegMax extends L2GameServerPacket
 {
 
-	private static final String _S__FE_01_EXREGMAX = "[S] FE:01 ExRegMax"; // RegenStatus?
+	private static final String _S__FE_01_EXREGMAX = "[S] FE:01 ExRegenMax";
 	private double _max;
 	private int _count;
 	private int _time;
