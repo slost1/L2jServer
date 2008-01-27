@@ -23,7 +23,6 @@ import net.sf.l2j.gameserver.model.Inventory;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Summon;
 import net.sf.l2j.gameserver.model.L2Transformation;
-import net.sf.l2j.gameserver.model.actor.appearance.PcAppearance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
@@ -56,7 +55,6 @@ public class CharInfo extends L2GameServerPacket
 
 	private static final String _S__03_CHARINFO = "[S] 31 CharInfo";
 	private L2PcInstance _activeChar;
-	private PcAppearance _appearance;
 	private Inventory _inv;
 	private int _x, _y, _z, _heading;
 	private int _mAtkSpd, _pAtkSpd;
@@ -85,10 +83,6 @@ public class CharInfo extends L2GameServerPacket
         _swimWalkSpd = _flWalkSpd = _flyWalkSpd = _walkSpd;
     	_maxCp = _activeChar.getMaxCp();
     }
-    public CharInfo(PcAppearance appearance)
-    {
-        _appearance = appearance;
-    }
 
 	@Override
 	protected final void writeImpl()
@@ -110,7 +104,7 @@ public class CharInfo extends L2GameServerPacket
 
 			if (template != null)
 			{
-				writeC(0x16);
+				writeC(0x0c);
 				writeD(_activeChar.getObjectId());
 				writeD(_activeChar.getPoly().getPolyId()+1000000);  // npctype id
 				writeD(_activeChar.getKarma() > 0 ? 1 : 0);
@@ -150,7 +144,7 @@ public class CharInfo extends L2GameServerPacket
 					writeC(_activeChar.getAppearance().getInvisible()? 1 : 0); // invisible ?? 0=false  1=true   2=summoned (only works if model has a summon animation)
 				}
 
-				writeS(_appearance.getVisibleName());
+				writeS(_activeChar.getAppearance().getVisibleName());
 
 				if (gmSeeInvis)
 				{
@@ -158,7 +152,7 @@ public class CharInfo extends L2GameServerPacket
 				}
 				else
 				{
-					writeS(_appearance.getVisibleTitle());
+					writeS(_activeChar.getAppearance().getVisibleTitle());
 				}
 
 				writeD(0);
@@ -179,7 +173,15 @@ public class CharInfo extends L2GameServerPacket
 				writeD(0);  // C2
 				writeD(0);  // C2
 				writeC(0);  // C2
-			} else
+                writeC(0x00);  // C3  team circle 1-blue, 2-red
+                writeF(template.collisionRadius);
+                writeF(template.collisionHeight);
+                writeD(0x00);  // C4
+                writeD(0x00);  // C6
+                writeD(0x00);
+                writeD(0x00);
+			}
+            else
 			{
 				_log.warning("Character "+_activeChar.getName()+" ("+_activeChar.getObjectId()+") morphed in a Npc ("+_activeChar.getPoly().getPolyId()+") w/o template.");
 			}
