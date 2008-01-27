@@ -270,8 +270,9 @@ public abstract class L2Character extends L2Object
 	public void onDecay()
 	{
 		L2WorldRegion reg = getWorldRegion();
-		if(reg != null) reg.removeFromZones(this);
 		decayMe();
+		if(reg != null) reg.removeFromZones(this);
+		
 	}
 
 	@Override
@@ -479,11 +480,6 @@ public abstract class L2Character extends L2Object
 		setIsTeleporting(true);
 		setTarget(null);
 
-		// Remove from world regions zones
-		if (getWorldRegion() != null)
-		    getWorldRegion().removeFromZones(this);
-		
-
 		getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
 
         if (Config.RESPAWN_RANDOM_ENABLED && allowRandomOffset)
@@ -497,6 +493,8 @@ public abstract class L2Character extends L2Object
 		if (Config.DEBUG)
             _log.fine("Teleporting to: " + x + ", " + y + ", " + z);
 
+		L2WorldRegion oldRegion = getWorldRegion();
+		
 		// Send a Server->Client packet TeleportToLocationt to the L2Character AND to all L2PcInstance in the _KnownPlayers of the L2Character
 		broadcastPacket(new TeleportToLocation(this, x, y, z));
 
@@ -504,6 +502,10 @@ public abstract class L2Character extends L2Object
 		getPosition().setXYZ(x, y, z);
 
 		decayMe();
+		
+      // Remove from world regions zones
+        if (oldRegion != null)
+            oldRegion.removeFromZones(this);
 
 		if (!(this instanceof L2PcInstance))
             onTeleported();

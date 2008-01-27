@@ -396,11 +396,12 @@ public abstract class L2Summon extends L2PlayableInstance
                 party.broadcastToPartyMembers(owner, new ExPartyPetWindowDelete(this));
             }
             
-	        if (getWorldRegion() != null) getWorldRegion().removeFromZones(this);
 	        store();
-
 	        giveAllToOwner();
+	        
+	        L2WorldRegion oldRegion = getWorldRegion();
 		    decayMe();
+		    if (oldRegion != null) oldRegion.removeFromZones(this);
             getKnownList().removeAllKnownObjects();
 	        owner.setPet(null);
 	        setTarget(null);

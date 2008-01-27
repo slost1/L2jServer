@@ -51,6 +51,7 @@ import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2Spawn;
 import net.sf.l2j.gameserver.model.L2Summon;
 import net.sf.l2j.gameserver.model.L2World;
+import net.sf.l2j.gameserver.model.L2WorldRegion;
 import net.sf.l2j.gameserver.model.MobGroupTable;
 import net.sf.l2j.gameserver.model.L2Skill.SkillType;
 import net.sf.l2j.gameserver.model.actor.knownlist.NpcKnownList;
@@ -2214,10 +2215,11 @@ public class L2NpcInstance extends L2Character
      */
     public void deleteMe()
     {
-    	if (getWorldRegion() != null) getWorldRegion().removeFromZones(this);
-        //FIXME this is just a temp hack, we should find a better solution
+    	L2WorldRegion oldRegion = getWorldRegion();
         
         try { decayMe(); } catch (Throwable t) {_log.severe("deletedMe(): " + t); }
+        
+        if (oldRegion != null) oldRegion.removeFromZones(this);
         
         // Remove all L2Object from _knownObjects and _knownPlayer of the L2Character then cancel Attak or Cast and notify AI
         try { getKnownList().removeAllKnownObjects(); } catch (Throwable t) {_log.severe("deletedMe(): " + t); }

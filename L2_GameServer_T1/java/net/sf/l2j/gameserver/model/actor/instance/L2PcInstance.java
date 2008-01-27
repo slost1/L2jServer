@@ -101,6 +101,7 @@ import net.sf.l2j.gameserver.model.L2SkillLearn;
 import net.sf.l2j.gameserver.model.L2Summon;
 import net.sf.l2j.gameserver.model.L2Transformation;
 import net.sf.l2j.gameserver.model.L2World;
+import net.sf.l2j.gameserver.model.L2WorldRegion;
 import net.sf.l2j.gameserver.model.MacroList;
 import net.sf.l2j.gameserver.model.PcFreight;
 import net.sf.l2j.gameserver.model.PcInventory;
@@ -9685,9 +9686,6 @@ public final class L2PcInstance extends L2PlayableInstance
 		// Cancel Attak or Cast
 		try { setTarget(null); } catch (Throwable t) {_log.log(Level.SEVERE, "deleteMe()", t); }
 		
-		// Remove from world regions zones
-		if (getWorldRegion() != null) getWorldRegion().removeFromZones(this);
-
 		try
 		{
 			if(_forceBuff != null)
@@ -9700,10 +9698,15 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 		catch(Throwable t) {_log.log(Level.SEVERE, "deleteMe()", t); }
 
+		// Remove from world regions zones
+        L2WorldRegion oldRegion = getWorldRegion();
+		
 		// Remove the L2PcInstance from the world
 		if (isVisible())
 			try { decayMe(); } catch (Throwable t) {_log.log(Level.SEVERE, "deleteMe()", t); }
 
+	    if (oldRegion != null) oldRegion.removeFromZones(this);
+			
 		// If a Party is in progress, leave it (and festival party)
 		if (isInParty()) try { leaveParty(); } catch (Throwable t) {_log.log(Level.SEVERE, "deleteMe()", t); }
 
