@@ -114,8 +114,8 @@ public final class CharacterCreate extends L2GameClientPacket
 		
 		L2PcTemplate template = CharTemplateTable.getInstance().getTemplate(_classId);
 		
-        if (Config.DEBUG || true)
-            _log.fine("charname: " + _name + " classId: " + _classId+" tempalte: "+template);
+        if (Config.DEBUG)
+            _log.fine("charname: " + _name + " classId: " + _classId+" template: "+template);
         
         if(template == null || template.classBaseLevel > 1) 
 		{
