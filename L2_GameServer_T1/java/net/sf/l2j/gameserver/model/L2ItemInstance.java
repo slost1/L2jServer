@@ -965,8 +965,6 @@ public final class L2ItemInstance extends L2Object
 		    return null;
 		}
 		inst = new L2ItemInstance(objectId, item);
-		inst._existsInDb = true;
-		inst._storedInDb = true;
 		inst._ownerId = ownerId;
 		inst.setCount(count);
 		inst._enchantLevel = enchant_level;
@@ -976,6 +974,8 @@ public final class L2ItemInstance extends L2Object
 		inst._locData = loc_data;
 		inst._priceSell = price_sell;
 		inst._priceBuy  = price_buy;
+        inst._existsInDb = true;
+        inst._storedInDb = true;
 		
 		// Setup life time for shadow weapons
 		inst._mana = manaLeft;
