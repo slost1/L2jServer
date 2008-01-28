@@ -289,11 +289,7 @@ public class CursedWeapon
 	 */
 	public void giveSkill()
 	{
-
-        // Disable All Skills
-        disableAllSkills();
-        
-		int level = 1+(_nbKills/_stageKills);
+	    int level = 1+(_nbKills/_stageKills);
 		if (level > _skillMaxLevel)
 			level = _skillMaxLevel;
 
@@ -432,6 +428,8 @@ public class CursedWeapon
 		if (_player.isInParty())
 			_player.getParty().oustPartyMember(_player);
 
+		// Disable All Skills
+        disableAllSkills();
 		// Do Transform
 		doTransform();
 		// Add skill
