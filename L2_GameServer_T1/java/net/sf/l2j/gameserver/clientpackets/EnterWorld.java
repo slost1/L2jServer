@@ -37,6 +37,7 @@ import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
 import net.sf.l2j.gameserver.instancemanager.DimensionalRiftManager;
 import net.sf.l2j.gameserver.instancemanager.PetitionManager;
 import net.sf.l2j.gameserver.instancemanager.SiegeManager;
+import net.sf.l2j.gameserver.instancemanager.TransformationManager;
 import net.sf.l2j.gameserver.model.CursedWeapon;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Clan;
@@ -192,8 +193,9 @@ public class EnterWorld extends L2GameClientPacket
             notifyPartner(activeChar,activeChar.getPartnerId());
         }
         
-        if(activeChar.isCursedWeaponEquipped()) 
+        if((activeChar.isCursedWeaponEquipped() && activeChar.transformId() > 0) || activeChar.isCursedWeaponEquipped()) 
         { 
+            CursedWeaponsManager.getInstance().getCursedWeapon(activeChar.getCursedWeaponEquippedId()).doTransform();
             CursedWeaponsManager.getInstance().getCursedWeapon(activeChar.getCursedWeaponEquippedId()).giveSkill();
             
             SystemMessage msg = new SystemMessage(SystemMessageId.S2_OWNER_HAS_LOGGED_INTO_THE_S1_REGION);
@@ -208,6 +210,8 @@ public class EnterWorld extends L2GameClientPacket
             msg2.addNumber(timeLeftInHours*60);
             activeChar.sendPacket(msg2);
         }
+        else if (activeChar.transformId() > 0)
+            TransformationManager.getInstance().transformPlayer(activeChar.transformId(), activeChar, Long.MAX_VALUE);
 
         if (activeChar.getAllEffects() != null)
         {

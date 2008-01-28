@@ -266,14 +266,13 @@ public class CharSelectionInfo extends L2GameServerPacket
     private CharSelectInfoPackage restoreChar(ResultSet chardata) throws Exception
     {
         int objectId = chardata.getInt("obj_id");
-        
+        L2PcInstance cha = L2PcInstance.load(objectId);
         // See if the char must be deleted
         long deletetime = chardata.getLong("deletetime");
         if (deletetime > 0)
         {
             if (System.currentTimeMillis() > deletetime)
             {
-                L2PcInstance cha = L2PcInstance.load(objectId);
                 L2Clan clan = cha.getClan();
                 if(clan != null)
                     clan.removeClanMember(cha.getName(), 0);
@@ -318,14 +317,22 @@ public class CharSelectionInfo extends L2GameServerPacket
         if (weaponObjId < 1)
             weaponObjId = charInfopackage.getPaperdollObjectId(Inventory.PAPERDOLL_RHAND);
         
-        // cursed weapon check
-        int weaponId = charInfopackage.getPaperdollItemId(Inventory.PAPERDOLL_LRHAND);
-        if (weaponId < 1)
-            weaponId = charInfopackage.getPaperdollItemId(Inventory.PAPERDOLL_RHAND);
-        if(weaponId == 8190)
-            charInfopackage.setTransformId(301);
-        else if(weaponId == 8689)
-            charInfopackage.setTransformId(302);
+        // Check Transformation
+        if (cha.isCursedWeaponEquipped())
+        {
+            // cursed weapon check
+            int weaponId = charInfopackage.getPaperdollItemId(Inventory.PAPERDOLL_LRHAND);
+            if (weaponId < 1)
+                weaponId = charInfopackage.getPaperdollItemId(Inventory.PAPERDOLL_RHAND);
+            if(weaponId == 8190)
+                charInfopackage.setTransformId(301);
+            else if(weaponId == 8689)
+                charInfopackage.setTransformId(302);
+        }
+        else if (cha.transformId() > 0)
+        {
+            charInfopackage.setTransformId(cha.transformId());
+        }
         else
             charInfopackage.setTransformId(0);
         

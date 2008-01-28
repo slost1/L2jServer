@@ -289,6 +289,10 @@ public class CursedWeapon
 	 */
 	public void giveSkill()
 	{
+
+        // Disable All Skills
+        disableAllSkills();
+        
 		int level = 1+(_nbKills/_stageKills);
 		if (level > _skillMaxLevel)
 			level = _skillMaxLevel;
@@ -307,7 +311,10 @@ public class CursedWeapon
 		if (Config.DEBUG)
 			_log.info("Player "+_player.getName() +" has been awarded with skill "+skill);
 		_player.sendSkillList();
-        
+	}
+	
+	public void doTransform()
+	{
         if (_itemId == 8689)
         {
             transformationId = 302;
@@ -338,8 +345,31 @@ public class CursedWeapon
 		_player.removeSkill(SkillTable.getInstance().getInfo(_skillId, _player.getSkillLevel(_skillId)), false);
 		_player.removeSkill(SkillTable.getInstance().getInfo(3630, 1), false);
 		_player.removeSkill(SkillTable.getInstance().getInfo(3631, 1), false);
-		_player.sendSkillList();
 		_player.untransform();
+		if (_player.transformId() > 0)
+		{
+            TransformationManager.getInstance().transformPlayer(_player.transformId(), _player, Long.MAX_VALUE);
+            return;
+		}
+		else
+		{
+	        for (L2Skill sk : _player.getAllSkills())
+	        {
+	            if (sk != null)
+	            _player.addSkill(sk, false);
+	        }
+		}
+		_player.sendSkillList();
+	}
+	
+	public void disableAllSkills()
+	{
+        for (L2Skill sk : _player.getAllSkills())
+        {
+            if (sk != null)
+            _player.removeSkill(sk, false);
+        }
+        _player.sendSkillList();
 	}
 
 
@@ -402,7 +432,8 @@ public class CursedWeapon
 		if (_player.isInParty())
 			_player.getParty().oustPartyMember(_player);
 
-
+		// Do Transform
+		doTransform();
 		// Add skill
 		giveSkill();
 

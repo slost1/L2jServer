@@ -214,7 +214,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	private static final String UPDATE_CHARACTER_SKILL_LEVEL = "UPDATE character_skills SET skill_level=? WHERE skill_id=? AND char_obj_id=? AND class_index=?";
 	private static final String DELETE_SKILL_FROM_CHAR = "DELETE FROM character_skills WHERE skill_id=? AND char_obj_id=? AND class_index=?";
 	private static final String DELETE_CHAR_SKILLS = "DELETE FROM character_skills WHERE char_obj_id=? AND class_index=?";
-
+	
 	private static final String ADD_SKILL_SAVE = "INSERT INTO character_skills_save (char_obj_id,skill_id,skill_level,effect_count,effect_cur_time,reuse_delay,restore_type,class_index,buff_index) VALUES (?,?,?,?,?,?,?,?,?)";
 	private static final String RESTORE_SKILL_SAVE = "SELECT skill_id,skill_level,effect_count,effect_cur_time, reuse_delay FROM character_skills_save WHERE char_obj_id=? AND class_index=? AND restore_type=? ORDER BY buff_index ASC";
 	private static final String DELETE_SKILL_SAVE = "DELETE FROM character_skills_save WHERE char_obj_id=? AND class_index=?";
@@ -235,6 +235,10 @@ public final class L2PcInstance extends L2PlayableInstance
 	private static final String RESTORE_CHAR_RECOMS = "SELECT char_id,target_id FROM character_recommends WHERE char_id=?";
 	private static final String ADD_CHAR_RECOM = "INSERT INTO character_recommends (char_id,target_id) VALUES (?,?)";
 	private static final String DELETE_CHAR_RECOMS = "DELETE FROM character_recommends WHERE char_id=?";
+	
+	// Transformation SQL String definitions:
+	private static final String SELECT_CHAR_TRANSFORM = "SELECT transform_id FROM characters WHERE obj_id=?";
+	private static final String UPDATE_CHAR_TRANSFORM = "UPDATE characters SET transform_id=? WHERE obj_Id=?";
 
 	public static final int REQUEST_TIMEOUT = 15;
 
@@ -407,6 +411,8 @@ public final class L2PcInstance extends L2PlayableInstance
 	private boolean _inCraftMode;
     
     private L2Transformation _transformation;
+    
+    private static int _transformationId;
 
 	/** The table containing all L2RecipeList of the L2PcInstance */
 	private Map<Integer, L2RecipeList> _dwarvenRecipeBook = new FastMap<Integer, L2RecipeList>();
@@ -2122,6 +2128,8 @@ public final class L2PcInstance extends L2PlayableInstance
 		// Auto-Learn skills if activated
 		if (Config.AUTO_LEARN_SKILLS)
 		{
+		    if (this.isTransformed() || this.isCursedWeaponEquipped())
+		        return;
 			giveAvailableSkills();
 		}
 		sendSkillList(); 
@@ -4092,6 +4100,7 @@ public final class L2PcInstance extends L2PlayableInstance
     {
         if (this.isTransformed())
         {
+            restoreSkills();
             _transformation.onUntransform();
             _transformation = null;
             this.broadcastUserInfo();
@@ -4111,6 +4120,86 @@ public final class L2PcInstance extends L2PlayableInstance
             return 0;
         }
         return transformation.getId();
+    }
+    
+    public void transformInsertInfo()
+    {
+        java.sql.Connection con = null;
+        try
+        {
+            con = L2DatabaseFactory.getInstance().getConnection();
+            PreparedStatement statement;
+            
+            statement = con.prepareStatement(UPDATE_CHAR_TRANSFORM);
+            statement.setInt(1, getTranformationId());
+            statement.setInt(2, getObjectId());
+            statement.execute();
+            statement.close();
+        }
+        catch (Exception e)
+        {
+            _log.severe(e.toString());
+        }
+        finally
+        {
+            try { con.close(); } catch (Exception e) {}
+        }
+    }
+    
+    public int transformId()
+    {
+       return transformSelectInfo();
+    }
+
+    private int transformSelectInfo()
+    {
+        java.sql.Connection con = null;
+        try
+        {
+            con = L2DatabaseFactory.getInstance().getConnection();
+            PreparedStatement statement;
+
+            statement = con.prepareStatement(SELECT_CHAR_TRANSFORM);
+            statement.setInt(1, getObjectId());
+            ResultSet rset = statement.executeQuery();
+            rset.next();
+            _transformationId = rset.getInt("transform_id");
+            statement.close();
+            return _transformationId;
+        }
+        catch (Exception e)
+        {
+            _log.severe(e.toString());
+        }
+        finally
+        {
+            try { con.close(); } catch (Exception e) {}
+        }
+        return _transformationId = 0;
+    }
+
+    public void transformUpdateInfo()
+    {
+        java.sql.Connection con = null;
+        try
+        {
+            con = L2DatabaseFactory.getInstance().getConnection();
+            PreparedStatement statement;
+
+            statement = con.prepareStatement(UPDATE_CHAR_TRANSFORM);
+            statement.setInt(1, 0);
+            statement.setInt(2, getObjectId());
+            statement.execute();
+            statement.close();
+        }
+        catch (Exception e)
+        {
+            _log.severe(e.toString());
+        }
+        finally
+        {
+            try { con.close(); } catch (Exception e) {}
+        }
     }
 
 	/**
@@ -4418,19 +4507,22 @@ public final class L2PcInstance extends L2PlayableInstance
 
 
 	/**
-	 * Kill the L2Character, Apply Death Penalty, Manage gain/loss Karma and Item Drop.<BR><BR>
 	 *
-	 * <B><U> Actions</U> :</B><BR><BR>
-	 * <li>Reduce the Experience of the L2PcInstance in function of the calculated Death Penalty </li>
-	 * <li>If necessary, unsummon the Pet of the killed L2PcInstance </li>
-	 * <li>Manage Karma gain for attacker and Karam loss for the killed L2PcInstance </li>
-	 * <li>If the killed L2PcInstance has Karma, manage Drop Item</li>
-	 * <li>Kill the L2PcInstance </li><BR><BR>
-	 *
-	 *
-	 * @param i The HP decrease value
-	 * @param attacker The L2Character who attacks
-	 *
+     * Kill the L2Character, Apply Death Penalty, Manage gain/loss Karma and Item Drop.<BR><BR>
+     *
+     * <B><U> Actions</U> :</B><BR><BR>
+     * <li>Reduce the Experience of the L2PcInstance in function of the calculated Death Penalty </li>
+     * <li>If necessary, unsummon the Pet of the killed L2PcInstance </li>
+     * <li>Manage Karma gain for attacker and Karam loss for the killed L2PcInstance </li>
+     * <li>If the killed L2PcInstance has Karma, manage Drop Item</li>
+     * <li>Kill the L2PcInstance </li><BR><BR>
+     *
+     *
+     * @param i The HP decrease value
+     * @param attacker The L2Character who attacks
+     *
+     *
+	 * @see net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance#doDie(net.sf.l2j.gameserver.model.L2Character)
 	 */
 	@Override
 	public boolean doDie(L2Character killer)
@@ -4454,7 +4546,8 @@ public final class L2PcInstance extends L2PlayableInstance
 
 			// Clear resurrect xp calculation
 			setExpBeforeDeath(0);
-
+			
+			// Issues drop of Cursed Weapon.
 			if (isCursedWeaponEquipped())
 			{
 				CursedWeaponsManager.getInstance().drop(_cursedWeaponEquippedId, killer);
@@ -4495,6 +4588,11 @@ public final class L2PcInstance extends L2PlayableInstance
 				}
 			}
 		}
+		
+		// Untransforms character.
+	    if (isTransformed())
+	        untransform();
+
 
 		setPvpFlag(0);              // Clear the pvp flag
 
@@ -6608,6 +6706,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	@Override
 	public L2Skill removeSkill(L2Skill skill)
 	{
+	    L2PcInstance player = null;
 		// Remove a skill from the L2Character and its Func objects from calculator set of the L2Character
 		L2Skill oldSkill = super.removeSkill(skill);
 
@@ -6639,12 +6738,15 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 
 
-		L2ShortCut[] allShortCuts = getAllShortCuts();
-
-		for (L2ShortCut sc : allShortCuts)
+		if (player != null && (player.transformId() > 0 || player.isCursedWeaponEquipped()))
 		{
-			if (sc != null && skill != null && sc.getId() == skill.getId() && sc.getType() == L2ShortCut.TYPE_SKILL)
-				deleteShortCut(sc.getSlot(), sc.getPage());
+		    L2ShortCut[] allShortCuts = getAllShortCuts();
+
+		    for (L2ShortCut sc : allShortCuts)
+		    {
+			    if (sc != null && skill != null && sc.getId() == skill.getId() && sc.getType() == L2ShortCut.TYPE_SKILL)
+			        deleteShortCut(sc.getSlot(), sc.getPage());
+		    }
 		}
 
 		return oldSkill;
@@ -8700,8 +8802,8 @@ public final class L2PcInstance extends L2PlayableInstance
     		}  
     	}  
     	sendPacket(sl);  
-    }  
-
+    }
+    
     /**
      * 1. Add the specified class ID as a subclass (up to the maximum number of <b>three</b>)
      * for this character.<BR>
@@ -8918,6 +9020,10 @@ public final class L2PcInstance extends L2PlayableInstance
      */
     public boolean setActiveClass(int classIndex)
     {
+        //  Cannot switch or change subclasses while transformed
+        if (isTransformed())
+            return false;
+        
         /*
          * 1. Call store() before modifying _classIndex to avoid skill effects rollover.
          * 2. Register the correct _classId against applied 'classIndex'.
@@ -8976,10 +9082,6 @@ public final class L2PcInstance extends L2PlayableInstance
         for (L2Skill oldSkill : getAllSkills())
             super.removeSkill(oldSkill);
 
-        // Yesod: Rebind CursedWeapon passive.
-        if (isCursedWeaponEquipped())
-        	CursedWeaponsManager.getInstance().givePassive(_cursedWeaponEquippedId);
-
         stopAllEffects();
 
         if (isSubClassActive())
@@ -9031,11 +9133,7 @@ public final class L2PcInstance extends L2PlayableInstance
         //_macroses.restore();
         //_macroses.sendUpdate();
         _shortCuts.restore();
-        sendPacket(new ShortCutInit(this));
-        
-        // Method untransform() already check if player is transformed
-        untransform();
-            
+        sendPacket(new ShortCutInit(this));            
 
         broadcastPacket(new SocialAction(getObjectId(), 15));
 
@@ -10732,8 +10830,8 @@ public final class L2PcInstance extends L2PlayableInstance
                 }
             }
         }
-		if (mcrit)
-			sendPacket(new SystemMessage(SystemMessageId.CRITICAL_HIT_MAGIC));
+        if (mcrit)
+            sendPacket(new SystemMessage(SystemMessageId.CRITICAL_HIT_MAGIC));
 
 		SystemMessage sm = new SystemMessage(SystemMessageId.YOU_DID_S1_DMG);
 		sm.addNumber(damage);

@@ -15,7 +15,6 @@
 package net.sf.l2j.gameserver.handler.skillhandlers;
 
 import net.sf.l2j.gameserver.handler.ISkillHandler;
-import net.sf.l2j.gameserver.instancemanager.TransformationManager;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
@@ -23,14 +22,14 @@ import net.sf.l2j.gameserver.model.L2Skill.SkillType;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
- *
- * @author nBd
+ * @author Ahmed
  */
-public class Transformation implements ISkillHandler
+public class TransformDispel implements ISkillHandler
 {
-    private static final SkillType[] SKILL_IDS = {SkillType.TRANSFORM};
-
-    public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
+    private static final SkillType[] SKILL_IDS = { SkillType.TRANSFORMDISPEL };
+    
+    public void useSkill(L2Character activeChar, L2Skill skill,
+            L2Object[] targets)
     {
         if (activeChar.isAlikeDead())
             return;
@@ -40,35 +39,18 @@ public class Transformation implements ISkillHandler
             if (!(target instanceof L2PcInstance))
                 continue;
             
-            L2PcInstance trg = (L2PcInstance)target;
+            L2PcInstance trg = (L2PcInstance) target;
             
             if (trg.isAlikeDead() || trg.isCursedWeaponEquipped())
                 continue;
             
-            int transformId = skill.getTransformId();
-            int duration = skill.getTransformDuration();
-            
-            if (duration < -1)
-                duration = -1;
-            
-            if (!trg.isTransformed())
+            if (trg.isTransformed())
             {
-                switch (duration)
-                {
-                    case 0:
-                        TransformationManager.getInstance().transformPlayer(transformId, trg);
-                        break;
-                    case -1:
-                        TransformationManager.getInstance().transformPlayer(transformId, trg, Integer.MAX_VALUE);
-                        break;
-                    default:
-                        TransformationManager.getInstance().transformPlayer(transformId, trg, duration);
-                        break;
-                }
+                trg.untransform();
             }
         }
     }
-
+    
     public SkillType[] getSkillIds()
     {
         return SKILL_IDS;
