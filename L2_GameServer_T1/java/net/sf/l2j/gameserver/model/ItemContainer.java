@@ -78,7 +78,25 @@ public abstract class ItemContainer
 
 	    return null;
 	}
+	/**
+	 * Returns the item's list from inventory by using its <B>itemId</B><BR><BR>
+     * 
+	 * @param itemId : int designating the ID of the item
+	 * @return List<L2ItemInstance> designating the items list (empty list if not found)
+	 */
+	public List<L2ItemInstance> getItemsByItemId(int itemId)
+	{
+		List<L2ItemInstance> returnList = new FastList<L2ItemInstance>();
+	    for (L2ItemInstance item : _items)
+	    {
+	        if (item != null && item.getItemId() == itemId)
+	        {
+	        	returnList.add(item);
+	        }
+	    }
 
+	    return returnList;
+	}
     /**
      * Returns the item from inventory by using its <B>itemId</B><BR><BR>
      *

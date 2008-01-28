@@ -210,18 +210,28 @@ public class PcInventory extends Inventory
 	 */
 	public void adjustAvailableItem(TradeItem item)
 	{
-		for (L2ItemInstance adjItem: _items)
+		boolean notAllEquipped = false;
+		for(L2ItemInstance adjItem: getItemsByItemId(item.getItem().getItemId()))
 		{
-			if (adjItem.getItemId() == item.getItem().getItemId())
+			if(adjItem.isEquipable())
 			{
-				item.setObjectId(adjItem.getObjectId());
-				item.setEnchant(adjItem.getEnchantLevel());
-
-				if (adjItem.getCount() < item.getCount())
-					item.setCount(adjItem.getCount());
-
-				return;
+				if(!adjItem.isEquipped())
+					notAllEquipped |= true;
+			}else{
+				notAllEquipped |= true;
+				break;
 			}
+		}
+		if(notAllEquipped)
+		{
+			L2ItemInstance adjItem = getItemByItemId(item.getItem().getItemId());
+			item.setObjectId(adjItem.getObjectId());
+			item.setEnchant(adjItem.getEnchantLevel());
+			
+			if (adjItem.getCount() < item.getCount()) 
+				item.setCount(adjItem.getCount());
+			
+			return;
 		}
 
 		item.setCount(0);
