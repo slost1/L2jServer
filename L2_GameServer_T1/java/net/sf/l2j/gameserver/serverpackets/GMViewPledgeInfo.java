@@ -62,6 +62,8 @@ public class GMViewPledgeInfo extends L2GameServerPacket
 
 		for (L2ClanMember member : _clan.getMembers())
 		{
+		    if (member != null)
+		    {
             writeS(member.getName());
             writeD(member.getLevel());
             writeD(member.getClassId());
@@ -69,6 +71,7 @@ public class GMViewPledgeInfo extends L2GameServerPacket
             writeD(member.getPlayerInstance().getRace().ordinal());
             writeD(member.isOnline() ? member.getObjectId() : 0);
             writeD(member.getSponsor() != 0 ? 1 : 0);
+		    }
 		}
 	}
 
