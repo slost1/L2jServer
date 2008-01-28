@@ -5529,7 +5529,13 @@ public final class L2PcInstance extends L2PlayableInstance
         this.setMount(pet.getTemplate().npcId, mount.getMountType());
         this.setMountObjectID(pet.getControlItemId());
         this.broadcastPacket(mount);
+        
+        // Notify self and others about speed change
+        this.broadcastUserInfo();
+        
         pet.unSummon(this);
+        
+        
         return true;
     }
     
@@ -5544,6 +5550,9 @@ public final class L2PcInstance extends L2PlayableInstance
         this.setMount(npcId, mount.getMountType());
         this.setMountObjectID(controlItemObjId);
         this.broadcastPacket(mount);
+        
+        // Notify self and others about speed change
+        this.broadcastUserInfo();
         return true;
     }
 	
@@ -5556,6 +5565,9 @@ public final class L2PcInstance extends L2PlayableInstance
 	        Ride dismount = new Ride(this, false, 0);
 	        broadcastPacket(dismount);
 	        setMountObjectID(0);
+            
+            // Notify self and others about speed change
+            this.broadcastUserInfo();
 	        return true;
 	    }
         return false;
@@ -7870,9 +7882,6 @@ public final class L2PcInstance extends L2PlayableInstance
 		_mountType = mountType;
         _mountNpcId = npcId;
 
-		// Send a Server->Client packet InventoryUpdate to the L2PcInstance in order to update speed
-		UserInfo ui = new UserInfo(this);
-		sendPacket(ui);
 		return true;
 	}
 
