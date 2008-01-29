@@ -616,14 +616,14 @@ public abstract class Inventory extends ItemContainer
      * @param item : L2ItemInstance to be removed from inventory
      */
     @Override
-	protected void removeItem(L2ItemInstance item)
+	protected boolean removeItem(L2ItemInstance item)
     {
     	// Unequip item if equiped
-//    	if (item.isEquipped()) unEquipItemInSlotAndRecord(item.getEquipSlot());
+        // if (item.isEquipped()) unEquipItemInSlotAndRecord(item.getEquipSlot());
         for (int i = 0; i < _paperdoll.length; i++)
             if (_paperdoll[i] == item) unEquipItemInSlot(i);
 
-        super.removeItem(item);
+        return super.removeItem(item);
     }
 
 	/**

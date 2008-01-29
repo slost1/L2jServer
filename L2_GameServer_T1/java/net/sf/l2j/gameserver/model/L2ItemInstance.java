@@ -291,13 +291,28 @@ public final class L2ItemInstance extends L2Object
 	 */
 	public void changeCount(String process, int count, L2PcInstance creator, L2Object reference)
 	{
-        if (count == 0) return;
-        if ( count > 0 && getCount() > Integer.MAX_VALUE - count) setCount(Integer.MAX_VALUE);
-        else setCount(getCount() + count);
-        if (getCount() < 0) setCount(0);
+        if (count == 0) 
+        {
+            return;
+        }
+        
+        if ( count > 0 && getCount() > Integer.MAX_VALUE - count) 
+        {
+            setCount(Integer.MAX_VALUE);
+        }
+        else 
+        {
+            setCount(getCount() + count);
+        }
+        
+        if (getCount() < 0) 
+        {
+            setCount(0);
+        }
+        
         _storedInDb = false;
 
-		if (Config.LOG_ITEMS)
+		if (Config.LOG_ITEMS && process != null)
 		{
 			LogRecord record = new LogRecord(Level.INFO, "CHANGE:" + process);
 			record.setLoggerName("item");
@@ -307,13 +322,9 @@ public final class L2ItemInstance extends L2Object
 	}
 
 	// No logging (function designed for shots only)
-	public void changeCountWithoutTrace(String process, int count, L2PcInstance creator, L2Object reference)
+	public void changeCountWithoutTrace(int count, L2PcInstance creator, L2Object reference)
 	{
-        if (count == 0) return;
-        if ( count > 0 && getCount() > Integer.MAX_VALUE - count) setCount(Integer.MAX_VALUE);
-        else setCount(getCount() + count);
-        if (getCount() < 0) setCount(0);
-        _storedInDb = false;
+        this.changeCount(null, count, creator, reference);
 	}
 
 	
@@ -896,38 +907,48 @@ public final class L2ItemInstance extends L2Object
     {
     	return getItem().getStatFuncs(this, player);
     }
-
+    
     /**
-     * Updates database.<BR><BR>
-     * <U><I>Concept : </I></U><BR>
-     *
-     * <B>IF</B> the item exists in database :
-     * <UL>
-     * 		<LI><B>IF</B> the item has no owner, or has no location, or has a null quantity : remove item from database</LI>
-     * 		<LI><B>ELSE</B> : update item in database</LI>
-     * </UL>
-     *
-     * <B> Otherwise</B> :
-     * <UL>
-     * 		<LI><B>IF</B> the item hasn't a null quantity, and has a correct location, and has a correct owner : insert item in database</LI>
-     * </UL>
+     * Updates the database.<BR>
      */
-	public void updateDatabase()
+    public void updateDatabase()
+    {
+        this.updateDatabase(false);
+    }
+    
+    /**
+     * Updates the database.<BR>
+     * 
+     * @param force if the update should necessarilly be done.
+     */
+	public void updateDatabase(boolean force)
 	{
-		if(isWear()) //avoid saving weared items
+		if (isWear()) //avoid saving weared items
 		{
 			return;
 		}
-		if (_existsInDb) {
-			if (_ownerId == 0 || _loc==ItemLocation.VOID || (getCount() == 0 && _loc!=ItemLocation.LEASE))
+        
+		if (_existsInDb)
+        {
+			if (_ownerId == 0 || _loc == ItemLocation.VOID || (getCount() == 0 && _loc != ItemLocation.LEASE))
+            {
 				removeFromDb();
-			else
+            }
+			else if (!Config.LAZY_ITEMS_UPDATE || force)
+            {
 				updateInDb();
-		} else {
-			if (getCount() == 0 && _loc!=ItemLocation.LEASE)
+            }
+		} 
+        else
+        {
+			if (getCount() == 0 && _loc != ItemLocation.LEASE)
+            {
 				return;
-			if(_loc==ItemLocation.VOID || _ownerId == 0)
+            }
+			if (_loc == ItemLocation.VOID || _ownerId == 0)
+            {
 				return;
+            }
 			insertIntoDb();
 		}
 	}
@@ -1010,9 +1031,13 @@ public final class L2ItemInstance extends L2Object
 
                 rs.close();
                 statement.close();
-		    } catch (Exception e) {
-		        _log.log(Level.SEVERE, "Could not restore item "+objectId+" from DB:", e);
-		    } finally {
+		    }
+            catch (Exception e)
+            {
+		        _log.log(Level.SEVERE, "Could not restore augmentation for item "+objectId+" from DB: "+e.getMessage(), e);
+		    }
+            finally
+            {
 		        try { con.close(); } catch (Exception e) {}
 		    }
 		}
@@ -1075,9 +1100,11 @@ public final class L2ItemInstance extends L2Object
 	 */
 	private void updateInDb()
     {
-		if (Config.ASSERT) assert _existsInDb;
+        if (Config.ASSERT) assert _existsInDb;
+        
 		if (_wear)
 			return;
+        
 		if (_storedInDb)
 			return;
 
@@ -1103,10 +1130,13 @@ public final class L2ItemInstance extends L2Object
 			_existsInDb = true;
 			_storedInDb = true;
             statement.close();
-        } catch (Exception e) {
-			_log.log(Level.SEVERE, "Could not update item "+getObjectId()+" in DB: Reason: " +
-                    "Duplicate itemId");
-		} finally {
+        }
+        catch (Exception e)
+        {
+			_log.log(Level.SEVERE, "Could not update item "+getObjectId()+" in DB: Reason: "+e.getMessage(), e);
+		}
+        finally
+        {
 			try { con.close(); } catch (Exception e) {}
 		}
 	}
@@ -1142,10 +1172,13 @@ public final class L2ItemInstance extends L2Object
 			_existsInDb = true;
 			_storedInDb = true;
             statement.close();
-        } catch (Exception e) {
-			_log.log(Level.SEVERE, "Could not insert item "+getObjectId()+" into DB: Reason: " +
-                    "Duplicate itemId" );
-		} finally {
+        }
+        catch (Exception e)
+        {
+			_log.log(Level.SEVERE, "Could not insert item "+getObjectId()+" into DB: Reason: "+e.getMessage(), e);
+		}
+        finally
+        {
 			try { con.close(); } catch (Exception e) {}
 		}
 	}
@@ -1153,7 +1186,8 @@ public final class L2ItemInstance extends L2Object
 	/**
 	 * Delete item from database
 	 */
-	private void removeFromDb() {
+	private void removeFromDb()
+    {
 		if (_wear)
 			return;
 		if (Config.ASSERT) assert _existsInDb;
@@ -1172,9 +1206,13 @@ public final class L2ItemInstance extends L2Object
 			_existsInDb = false;
 			_storedInDb = false;
             statement.close();
-        } catch (Exception e) {
-			_log.log(Level.SEVERE, "Could not delete item "+getObjectId()+" in DB:", e);
-		} finally {
+        }
+        catch (Exception e)
+        {
+			_log.log(Level.SEVERE, "Could not delete item "+getObjectId()+" in DB: "+e.getMessage(), e);
+		}
+        finally
+        {
 			try { con.close(); } catch (Exception e) {}
 		}
 	}

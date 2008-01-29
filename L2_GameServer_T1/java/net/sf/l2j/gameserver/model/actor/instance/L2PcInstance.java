@@ -1947,7 +1947,6 @@ public final class L2PcInstance extends L2PlayableInstance
 
             // receive graduation gift
             getInventory().addItem("Gift",8181,1,this,null); // give academy circlet
-            getInventory().updateDatabase(); // update database
         }
 		if (isSubClassActive())
 		{
@@ -2815,42 +2814,58 @@ public final class L2PcInstance extends L2PlayableInstance
 	 */
 	public boolean destroyItem(String process, L2ItemInstance item, L2Object reference, boolean sendMessage)
 	{
-		int oldCount = item.getCount();
-		item = _inventory.destroyItem(process, item, this, reference);
-
-		if (item == null)
-		{
-			if (sendMessage)
-                sendPacket(new SystemMessage(SystemMessageId.NOT_ENOUGH_ITEMS));
-
-			return false;
-		}
-
-		// Send inventory update packet
-		if (!Config.FORCE_INVENTORY_UPDATE)
-		{
-			InventoryUpdate playerIU = new InventoryUpdate();
-			playerIU.addItem(item);
-			sendPacket(playerIU);
-		}
-        else sendPacket(new ItemList(this, false));
-
-		// Update current load as well
-		StatusUpdate su = new StatusUpdate(getObjectId());
-		su.addAttribute(StatusUpdate.CUR_LOAD, getCurrentLoad());
-		sendPacket(su);
-
-		// Sends message to client if requested
-		if (sendMessage)
-		{
-			SystemMessage sm = new SystemMessage(SystemMessageId.DISSAPEARED_ITEM);
-			sm.addNumber(oldCount);
-			sm.addItemName(item.getItemId());
-			sendPacket(sm);
-		}
-
-		return true;
+		return this.destroyItem(process, item, item.getCount(), reference, sendMessage);
 	}
+    
+    /**
+     * Destroy item from inventory and send a Server->Client InventoryUpdate packet to the L2PcInstance.
+     * @param process : String Identifier of process triggering this action
+     * @param item : L2ItemInstance to be destroyed
+     * @param reference : L2Object Object referencing current action like NPC selling item or previous item in transformation
+     * @param sendMessage : boolean Specifies whether to send message to Client about this action
+     * @return boolean informing if the action was successfull
+     */
+    public boolean destroyItem(String process, L2ItemInstance item, int count, L2Object reference, boolean sendMessage)
+    {
+        item = _inventory.destroyItem(process, item, count, this, reference);
+
+        if (item == null)
+        {
+            if (sendMessage)
+            {
+                sendPacket(new SystemMessage(SystemMessageId.NOT_ENOUGH_ITEMS));
+            }
+            return false;
+        }
+
+        // Send inventory update packet
+        if (!Config.FORCE_INVENTORY_UPDATE)
+        {
+            InventoryUpdate playerIU = new InventoryUpdate();
+            playerIU.addItem(item);
+            sendPacket(playerIU);
+        }
+        else 
+        {
+            sendPacket(new ItemList(this, false));
+        }
+
+        // Update current load as well
+        StatusUpdate su = new StatusUpdate(getObjectId());
+        su.addAttribute(StatusUpdate.CUR_LOAD, getCurrentLoad());
+        sendPacket(su);
+
+        // Sends message to client if requested
+        if (sendMessage)
+        {
+            SystemMessage sm = new SystemMessage(SystemMessageId.DISSAPEARED_ITEM);
+            sm.addNumber(count);
+            sm.addItemName(item.getItemId());
+            sendPacket(sm);
+        }
+
+        return true;
+    }
 
 	/**
 	 * Destroys item from inventory and send a Server->Client InventoryUpdate packet to the L2PcInstance.
@@ -2866,38 +2881,16 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
         L2ItemInstance item = _inventory.getItemByObjectId(objectId);
 
-		if (item == null || item.getCount() < count || _inventory.destroyItem(process, objectId, count, this, reference) == null)
+		if (item == null)
 		{
 			if (sendMessage)
+            {
                 sendPacket(new SystemMessage(SystemMessageId.NOT_ENOUGH_ITEMS));
-
+            }
+            
 			return false;
 		}
-
-		// Send inventory update packet
-		if (!Config.FORCE_INVENTORY_UPDATE)
-		{
-			InventoryUpdate playerIU = new InventoryUpdate();
-			playerIU.addItem(item);
-			sendPacket(playerIU);
-		}
-        else sendPacket(new ItemList(this, false));
-
-		// Update current load as well
-		StatusUpdate su = new StatusUpdate(getObjectId());
-		su.addAttribute(StatusUpdate.CUR_LOAD, getCurrentLoad());
-		sendPacket(su);
-
-		// Sends message to client if requested
-		if (sendMessage)
-		{
-			SystemMessage sm = new SystemMessage(SystemMessageId.DISSAPEARED_ITEM);
-			sm.addNumber(count);
-			sm.addItemName(item.getItemId());
-			sendPacket(sm);
-		}
-
-		return true;
+        return this.destroyItem(process, item, count, reference, sendMessage);
 	}
 
 	/**
@@ -2917,54 +2910,14 @@ public final class L2PcInstance extends L2PlayableInstance
         if (item == null || item.getCount() < count)
 		{
 			if (sendMessage)
+            {
                 sendPacket(new SystemMessage(SystemMessageId.NOT_ENOUGH_ITEMS));
+            }
+            
 			return false;
 		}
-
-        // Adjust item quantity
-        if (item.getCount() > count)
-        {
-        	synchronized(item)
-        	{
-        		item.changeCountWithoutTrace(process, -count, this, reference);
-        		item.setLastChange(L2ItemInstance.MODIFIED);
-
-        		// could do also without saving, but let's save approx 1 of 10
-        		if(GameTimeController.getGameTicks() % 10 == 0)
-        			item.updateDatabase();
-        		_inventory.refreshWeight();
-        	}
-        }
-        else
-        {
-        	// Destroy entire item and save to database
-        	_inventory.destroyItem(process, item, this, reference);
-        }
-
-		// Send inventory update packet
-		if (!Config.FORCE_INVENTORY_UPDATE)
-		{
-			InventoryUpdate playerIU = new InventoryUpdate();
-			playerIU.addItem(item);
-			sendPacket(playerIU);
-		}
-        else sendPacket(new ItemList(this, false));
-
-		// Update current load as well
-		StatusUpdate su = new StatusUpdate(getObjectId());
-		su.addAttribute(StatusUpdate.CUR_LOAD, getCurrentLoad());
-		sendPacket(su);
-
-		// Sends message to client if requested
-		if (sendMessage)
-		{
-			SystemMessage sm = new SystemMessage(SystemMessageId.DISSAPEARED_ITEM);
-			sm.addNumber(count);
-			sm.addItemName(item.getItemId());
-			sendPacket(sm);
-		}
-
-		return true;
+        
+        return this.destroyItem(null, item, count, reference, sendMessage);
 	}
 
 	/**
@@ -5445,7 +5398,7 @@ public final class L2PcInstance extends L2PlayableInstance
         {
             synchronized(arrows)
             {
-                arrows.changeCountWithoutTrace("Consume", -1, this, null);
+                arrows.changeCountWithoutTrace(-1, this, null);
                 arrows.setLastChange(L2ItemInstance.MODIFIED);
 
                 // could do also without saving, but let's save approx 1 of 10
