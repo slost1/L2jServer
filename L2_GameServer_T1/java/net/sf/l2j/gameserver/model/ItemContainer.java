@@ -367,6 +367,19 @@ public abstract class ItemContainer
         }
 		return targetitem;
 	}
+    
+    /**
+     * Destroy item from inventory and updates database
+     * @param process : String Identifier of process triggering this action
+     * @param item : L2ItemInstance to be destroyed
+     * @param actor : L2PcInstance Player requesting the item destroy
+     * @param reference : L2Object Object referencing current action like NPC selling item or previous item in transformation
+     * @return L2ItemInstance corresponding to the destroyed item or the updated item in inventory
+     */
+    public L2ItemInstance destroyItem(String process, L2ItemInstance item, L2PcInstance actor, L2Object reference)
+    {
+        return this.destroyItem(process, item, item.getCount(), actor, reference);
+    }
 
 	/**
 	 * Destroy item from inventory and updates database
@@ -376,21 +389,35 @@ public abstract class ItemContainer
 	 * @param reference : L2Object Object referencing current action like NPC selling item or previous item in transformation
      * @return L2ItemInstance corresponding to the destroyed item or the updated item in inventory
 	 */
-	public L2ItemInstance destroyItem(String process, L2ItemInstance item, L2PcInstance actor, L2Object reference)
+	public L2ItemInstance destroyItem(String process, L2ItemInstance item, int count, L2PcInstance actor, L2Object reference)
 	{
         synchronized(item)
         {
-        	// check if item is present in this container
-        	if (!_items.contains(item))
-        	{
-        		return null;
-        	}
+            // Adjust item quantity
+            if (item.getCount() > count)
+            {
+                
+                item.changeCount(process, -count, actor, reference);
+                item.setLastChange(L2ItemInstance.MODIFIED);
+                
+                item.updateDatabase();
+                refreshWeight();
+                
+                return item;
+            }
+            else 
+            {
+                boolean removed = this.removeItem(item);
+                if (!removed)
+                {
+                    return null;
+                }
+                
+                ItemTable.getInstance().destroyItem(process, item, actor, reference);
 
-    		removeItem(item);
-            ItemTable.getInstance().destroyItem(process, item, actor, reference);
-
-    		item.updateDatabase();
-    		refreshWeight();
+                item.updateDatabase();
+                refreshWeight();
+            }
         }
 		return item;
 	}
@@ -407,23 +434,11 @@ public abstract class ItemContainer
 	public L2ItemInstance destroyItem(String process, int objectId, int count, L2PcInstance actor, L2Object reference)
 	{
 		L2ItemInstance item = getItemByObjectId(objectId);
-		if (item == null) return null;
-
-		// Adjust item quantity
-		if (item.getCount() > count)
-		{
-            synchronized(item)
-            {
-    			item.changeCount(process, -count, actor, reference);
-    			item.setLastChange(L2ItemInstance.MODIFIED);
-
-    			item.updateDatabase();
-    			refreshWeight();
-                }
-			return item;
-		}
-		// Directly drop entire item
-		else return destroyItem(process, item, actor, reference);
+		if (item == null) 
+        {
+            return null;
+        }
+        return this.destroyItem(process, item, count, actor, reference);
 	}
 
 	/**
@@ -438,23 +453,11 @@ public abstract class ItemContainer
 	public L2ItemInstance destroyItemByItemId(String process, int itemId, int count, L2PcInstance actor, L2Object reference)
 	{
 		L2ItemInstance item = getItemByItemId(itemId);
-		if (item == null) return null;
-
-        synchronized(item)
+		if (item == null) 
         {
-            // Adjust item quantity
-    		if (item.getCount() > count)
-    		{
-    			item.changeCount(process, -count, actor, reference);
-    			item.setLastChange(L2ItemInstance.MODIFIED);
-    		}
-    		// Directly drop entire item
-    		else return destroyItem(process, item, actor, reference);
-
-    		item.updateDatabase();
-    		refreshWeight();
+            return null;
         }
-		return item;
+        return this.destroyItem(process, item, count, actor, reference);
 	}
 
 	/**
@@ -477,11 +480,13 @@ public abstract class ItemContainer
         int count = 0;
 
         for (L2ItemInstance item : _items)
+        {
             if (item.getItemId() == 57)
             {
                 count = item.getCount();
                 return count;
             }
+        }
 
         return count;
     }
@@ -499,9 +504,9 @@ public abstract class ItemContainer
      * Removes item from inventory for further adjustments.
      * @param item : L2ItemInstance to be removed from inventory
      */
-    protected void removeItem(L2ItemInstance item)
+    protected boolean removeItem(L2ItemInstance item)
     {
-        _items.remove(item);
+        return _items.remove(item);
     }
 
 	/**
@@ -531,7 +536,9 @@ public abstract class ItemContainer
 		    for (L2ItemInstance item : _items)
 		    {
 		    	if (item != null)
-		    		item.updateDatabase();
+                {
+		    		item.updateDatabase(true);
+                }
 		    }
 		}
 	}
