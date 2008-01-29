@@ -203,7 +203,7 @@ public class Pdam implements ISkillHandler
                 if (effect != null)
                 {
                     int effectcharge = effect.getLevel();
-                    if (effectcharge < 7)
+                    if (effectcharge < 8)
                     {
                         effectcharge++;
                         effect.addNumCharges(1);
@@ -225,12 +225,12 @@ public class Pdam implements ISkillHandler
                 {
                     if (skill.getId() == 345) // Sonic Rage
                     {
-                        L2Skill dummy = SkillTable.getInstance().getInfo(8, 7); // Lv7 Sonic Focus
+                        L2Skill dummy = SkillTable.getInstance().getInfo(8, 8); // Lv7 Sonic Focus
                         dummy.getEffects(activeChar, activeChar);
                     }
                     else if (skill.getId() == 346) // Raging Force
                     {
-                        L2Skill dummy = SkillTable.getInstance().getInfo(50, 7); // Lv7 Focused Force
+                        L2Skill dummy = SkillTable.getInstance().getInfo(50, 8); // Lv7 Focused Force
                         dummy.getEffects(activeChar, activeChar);
                     }
                 }
