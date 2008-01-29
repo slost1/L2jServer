@@ -89,6 +89,12 @@ public final class RequestDropItem extends L2GameClientPacket
 			return;
         }
 
+        if (Config.PLAYER_SPAWN_PROTECTION > 0 && activeChar.isInvul() && !activeChar.isGM())
+        {
+            activeChar.sendPacket(new SystemMessage(SystemMessageId.CANNOT_DISCARD_THIS_ITEM));
+            return;
+        }
+
         if(_count < 0)
         {
         	Util.handleIllegalPlayerAction(activeChar,"[RequestDropItem] count <= 0! ban! oid: "+_objectId+" owner: "+activeChar.getName(),IllegalPlayerAction.PUNISH_KICK);

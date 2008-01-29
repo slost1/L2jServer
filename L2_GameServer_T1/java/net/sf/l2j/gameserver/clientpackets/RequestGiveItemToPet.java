@@ -17,6 +17,7 @@ package net.sf.l2j.gameserver.clientpackets;
 import java.util.logging.Logger;
 
 import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -56,6 +57,15 @@ public final class RequestGiveItemToPet extends L2GameClientPacket
             player.sendMessage("Cannot exchange items while trading");
             return;
         }
+
+	// Exploit Fix for Hero weapons Uses pet Inventory to buy New One.
+	// [L2JOneo]
+	L2ItemInstance item = player.getInventory().getItemByObjectId(_objectId);
+	if (item.isHeroItem())
+	{
+	    player.sendMessage("Duo To Hero Weapons Protection u Canot Use Pet's Inventory");
+	    return;
+	}
 
         L2PetInstance pet = (L2PetInstance)player.getPet();
 		if (pet.isDead())

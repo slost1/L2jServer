@@ -3932,6 +3932,15 @@ public final class L2PcInstance extends L2PlayableInstance
 				return;
 			}
 
+            if (isInvul() && !isGM())
+            {
+                sendPacket(new ActionFailed());
+                SystemMessage smsg = new SystemMessage(SystemMessageId.FAILED_TO_PICKUP_S1);
+                smsg.addItemName(target.getItemId());
+                sendPacket(smsg);
+                return;
+            }
+
 	        if (target.getOwnerId() != 0 && target.getOwnerId() != getObjectId() && !isInLooterParty(target.getOwnerId()))
             {
                 sendPacket(new ActionFailed());
