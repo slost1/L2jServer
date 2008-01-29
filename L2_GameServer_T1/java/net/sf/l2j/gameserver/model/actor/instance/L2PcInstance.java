@@ -6582,7 +6582,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			// reuse delays for matching skills. 'restore_type'= 0.
 			for (L2Effect effect : getAllEffects())
 			{
-				if (effect != null && effect.getInUse() && !effect.getSkill().isToggle())
+				if (effect != null && !effect.isHerbEffect() && effect.getInUse() && !effect.getSkill().isToggle())
 				{
 					int skillId = effect.getSkill().getId();
 					buff_index++;
