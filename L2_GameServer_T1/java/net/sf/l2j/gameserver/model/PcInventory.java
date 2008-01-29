@@ -368,30 +368,16 @@ public class PcInventory extends Inventory
 	@Override
 	public L2ItemInstance destroyItem(String process, L2ItemInstance item, L2PcInstance actor, L2Object reference)
 	{
-        return this.destroyItem(process, item, item.getCount(), actor, reference);
-	}
-    
-    /**
-     * Destroy item from inventory and checks _adena and _ancientAdena
-     * @param process : String Identifier of process triggering this action
-     * @param item : L2ItemInstance to be destroyed
-     * @param actor : L2PcInstance Player requesting the item destroy
-     * @param reference : L2Object Object referencing current action like NPC selling item or previous item in transformation
-     * @return L2ItemInstance corresponding to the destroyed item or the updated item in inventory
-     */
-    @Override
-    public L2ItemInstance destroyItem(String process, L2ItemInstance item, int count, L2PcInstance actor, L2Object reference)
-    {
-        item = super.destroyItem(process, item, count, actor, reference);
+        item = super.destroyItem(process, item, actor, reference);
 
         if (_adena != null && _adena.getCount() <= 0)
-            _adena = null;
+        	_adena = null;
 
         if (_ancientAdena != null && _ancientAdena.getCount() <= 0)
-            _ancientAdena = null;
+        	_ancientAdena = null;
 
         return item;
-    }
+	}
 
 	/**
 	 * Destroys item from inventory and checks _adena and _ancientAdena
@@ -405,12 +391,15 @@ public class PcInventory extends Inventory
 	@Override
 	public L2ItemInstance destroyItem(String process, int objectId, int count, L2PcInstance actor, L2Object reference)
     {
-        L2ItemInstance item = getItemByObjectId(objectId);
-        if (item == null) 
-        {
-            return null;
-        }
-        return this.destroyItem(process, item, count, actor, reference);
+        L2ItemInstance item = super.destroyItem(process, objectId, count, actor, reference);
+
+        if (_adena != null && _adena.getCount() <= 0)
+        	_adena = null;
+
+        if (_ancientAdena != null && _ancientAdena.getCount() <= 0)
+        	_ancientAdena = null;
+
+        return item;
     }
 
 	/**
@@ -425,12 +414,15 @@ public class PcInventory extends Inventory
 	@Override
 	public L2ItemInstance destroyItemByItemId(String process, int itemId, int count, L2PcInstance actor, L2Object reference)
 	{
-        L2ItemInstance item = getItemByItemId(itemId);
-        if (item == null) 
-        {
-            return null;
-        }
-        return this.destroyItem(process, item, count, actor, reference);
+		L2ItemInstance item = super.destroyItemByItemId(process, itemId, count, actor, reference);
+
+		if (_adena != null && _adena.getCount() <= 0)
+			_adena = null;
+
+        if (_ancientAdena != null && _ancientAdena.getCount() <= 0)
+        	_ancientAdena = null;
+
+        return item;
 	}
 
 	/**
@@ -483,7 +475,7 @@ public class PcInventory extends Inventory
      * @param item : L2ItemInstance to be removed from inventory
      */
     @Override
-	protected boolean removeItem(L2ItemInstance item)
+	protected void removeItem(L2ItemInstance item)
     {
         // Removes any reference to the item from Shortcut bar
     	getOwner().removeItemFromShortCut(item.getObjectId());
@@ -497,7 +489,7 @@ public class PcInventory extends Inventory
         else if (item.getItemId() == ANCIENT_ADENA_ID)
         	_ancientAdena = null;
 
-        return super.removeItem(item);
+        super.removeItem(item);
     }
 
 	/**

@@ -535,12 +535,6 @@ public final class Config
     
     /** Interval that the gameserver will update and store character information */
     public static int CHAR_STORE_INTERVAL;
-    
-    /** Update itens owned by this char when storing the char on DB */
-    public static boolean UPDATE_ITEMS_ON_CHAR_STORE;
-    
-    /** Update itens only when strictly necessary */
-    public static boolean LAZY_ITEMS_UPDATE;
 
     /** Auto destroy nonequipable items dropped by players */
     public static boolean     DESTROY_DROPPED_PLAYER_ITEM;
@@ -1268,10 +1262,6 @@ public final class Config
                 }
                 
                 CHAR_STORE_INTERVAL        = Integer.parseInt(optionsSettings.getProperty("CharacterDataStoreInterval", "15"));
-                
-                UPDATE_ITEMS_ON_CHAR_STORE = Boolean.parseBoolean(optionsSettings.getProperty("UpdateItemsOnCharStore", "true"));
-                
-                LAZY_ITEMS_UPDATE          = Boolean.parseBoolean(optionsSettings.getProperty("LazyItemsUpdate", "true"));
                 
                 DESTROY_DROPPED_PLAYER_ITEM        = Boolean.valueOf(optionsSettings.getProperty("DestroyPlayerDroppedItem", "false"));
                 DESTROY_EQUIPABLE_PLAYER_ITEM    = Boolean.valueOf(optionsSettings.getProperty("DestroyEquipableItem", "false"));
