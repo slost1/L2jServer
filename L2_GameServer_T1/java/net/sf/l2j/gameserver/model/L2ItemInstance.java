@@ -934,7 +934,7 @@ public final class L2ItemInstance extends L2Object
             {
 				removeFromDb();
             }
-			else if (!Config.LAZY_ITENS_UPDATE || force)
+			else if (!Config.LAZY_ITEMS_UPDATE || force)
             {
 				updateInDb();
             }
