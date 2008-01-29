@@ -74,6 +74,7 @@ public abstract class L2Effect
         SILENCE_MAGIC_PHYSICAL,
         BETRAY,
         NOBLESSE_BLESSING,
+        PHOENIX_BLESSING,
         PETRIFICATION,
         BLUFF,
         BATTLE_FORCE,

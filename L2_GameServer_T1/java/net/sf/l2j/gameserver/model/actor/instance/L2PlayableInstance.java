@@ -37,6 +37,7 @@ public abstract class L2PlayableInstance extends L2Character
 
 	private boolean _isNoblesseBlessed = false; // for Noblesse Blessing skill, restores buffs after death
 	private boolean _getCharmOfLuck = false; // Charm of Luck - During a Raid/Boss war, decreased chance for death penalty
+	private boolean _isPhoenixBlessed = false; // for Soul of The Phoenix or Salvation buffs
 	/**
 	 * Constructor of L2PlayableInstance (use L2Character constructor).<BR><BR>
 	 *
@@ -172,6 +173,27 @@ public abstract class L2PlayableInstance extends L2Character
 
     	setIsNoblesseBlessed(false);
     	updateAbnormalEffect();
+    }
+    
+    // Support for Soul of the Phoenix and Salvation skills
+    public final boolean isPhoenixBlessed() { return _isPhoenixBlessed; }
+    public final void setIsPhoenixBlessed(boolean value) { _isPhoenixBlessed = value; }
+         
+    public final void startPhoenixBlessing()
+    {
+       setIsPhoenixBlessed(true);
+       updateAbnormalEffect();
+    }
+    
+    public final void stopPhoenixBlessing(L2Effect effect)
+    {
+       if (effect == null)
+          stopEffects(L2Effect.EffectType.PHOENIX_BLESSING);
+       else
+          removeEffect(effect);
+                  
+       setIsPhoenixBlessed(false);
+       updateAbnormalEffect();
     }
 
 	public abstract boolean destroyItemByItemId(String process, int itemId, int count, L2Object reference, boolean sendMessage);

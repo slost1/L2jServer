@@ -1576,9 +1576,17 @@ public abstract class L2Character extends L2Object
 		getStatus().stopHpMpRegeneration();
 
 		// Stop all active skills effects in progress on the L2Character,
-		// if the Character isn't a Noblesse Blessed L2PlayableInstance
-		if (this instanceof L2PlayableInstance && ((L2PlayableInstance)this).isNoblesseBlessed())
-		{ 
+		// if the Character isn't affected by Soul of The Phoenix or Salvation
+        if (this instanceof L2PlayableInstance && ((L2PlayableInstance)this).isPhoenixBlessed())
+        {
+           if (((L2PlayableInstance)this).getCharmOfLuck()) //remove Lucky Charm if player has SoulOfThePhoenix/Salvation buff
+              ((L2PlayableInstance)this).stopCharmOfLuck(null);
+            if (((L2PlayableInstance)this).isNoblesseBlessed())
+               ((L2PlayableInstance)this).stopNoblesseBlessing(null);
+        }
+        // Same thing if the Character isn't a Noblesse Blessed L2PlayableInstance
+        else if (this instanceof L2PlayableInstance && ((L2PlayableInstance)this).isNoblesseBlessed())
+        { 
 			((L2PlayableInstance)this).stopNoblesseBlessing(null); 
 			if (((L2PlayableInstance)this).getCharmOfLuck()) //remove Lucky Charm if player have Nobless blessing buff 
 				((L2PlayableInstance)this).stopCharmOfLuck(null); 
@@ -1605,6 +1613,14 @@ public abstract class L2Character extends L2Object
 		getNotifyQuestOfDeath().clear();
 
 		getAttackByList().clear();
+		//If character is PhoenixBlessed a resurrection popup will show up
+        if (this instanceof L2PlayableInstance && ((L2PlayableInstance)this).isPhoenixBlessed())
+        {
+           if (this instanceof L2Summon) {
+              ((L2Summon)this).getOwner().reviveRequest(((L2Summon)this).getOwner(), null, true);
+           }
+           else ((L2PcInstance)this).reviveRequest(((L2PcInstance)this),null,false);
+        }
 		return true;
 	}
 
@@ -1618,11 +1634,15 @@ public abstract class L2Character extends L2Object
 		if (!isTeleporting())
 		{
 			setIsPendingRevive(false);
-
-			_status.setCurrentCp(getMaxCp() * Config.RESPAWN_RESTORE_CP);
+			
+			if (this instanceof L2PlayableInstance && ((L2PlayableInstance)this).isPhoenixBlessed())
+			{
+			    ((L2PlayableInstance)this).stopPhoenixBlessing(null);
+			}
+			//_status.setCurrentCp(getMaxCp() * Config.RESPAWN_RESTORE_CP);
 			_status.setCurrentHp(getMaxHp() * Config.RESPAWN_RESTORE_HP);
-			//_Status.setCurrentMp(getMaxMp() * Config.RESPAWN_RESTORE_MP);
-
+		 	//_Status.setCurrentMp(getMaxMp() * Config.RESPAWN_RESTORE_MP);
+			
 			// Start broadcast status
 			broadcastPacket(new Revive(this));
 			if (getWorldRegion() != null)

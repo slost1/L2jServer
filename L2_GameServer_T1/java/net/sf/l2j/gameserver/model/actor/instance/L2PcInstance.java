@@ -9379,7 +9379,10 @@ public final class L2PcInstance extends L2PlayableInstance
 		if((Pet && getPet() != null && getPet().isDead()) || (!Pet && isDead()))
 		{
 			_reviveRequested = 1;
-			_revivePower = Formulas.getInstance().calculateSkillResurrectRestorePercent(skill.getPower(), Reviver.getWIT());
+			if (isPhoenixBlessed())
+			    _revivePower=100;
+			else
+			    _revivePower = Formulas.getInstance().calculateSkillResurrectRestorePercent(skill.getPower(), Reviver.getWIT());
 			_revivePet = Pet;
 			sendPacket(new ConfirmDlg(SystemMessageId.RESSURECTION_REQUEST.getId(),Reviver.getName()));
 		}
@@ -9389,6 +9392,12 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
 		if (_reviveRequested != 1 || (!isDead() && !_revivePet) || (_revivePet && getPet() != null && !getPet().isDead()))
 			return;
+		//If character refuses a PhoenixBless autoress, cancell all buffs he had
+		if (answer == 0 && isPhoenixBlessed())
+		{
+		    stopPhoenixBlessing(null);
+		    stopAllEffects();
+		}
 		if (answer == 1)
 		{
 			if (!_revivePet)
