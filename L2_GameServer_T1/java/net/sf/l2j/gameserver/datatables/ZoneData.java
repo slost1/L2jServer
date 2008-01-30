@@ -164,10 +164,10 @@ public class ZoneData
 								temp = new L2JailZone(zoneId);
 							else if (zoneType.equals("DerbyTrackZone"))
 								temp = new L2DerbyTrackZone(zoneId);
-                                                        else if (zoneType.equals("BossZone"))
-                                                                temp = new L2BossZone(zoneId);
-                                                        else if (zoneType.equals("WaterZone"))
-                                                                temp = new L2WaterZone(zoneId);
+                            else if (zoneType.equals("BossZone"))
+                                temp = new L2BossZone(zoneId);
+                            else if (zoneType.equals("WaterZone"))
+                                temp = new L2WaterZone(zoneId);
 
 
 							// Check for unknown type
@@ -317,8 +317,8 @@ public class ZoneData
 								TownManager.getInstance().addTown((L2TownZone)temp);
 							else if (temp instanceof L2OlympiadStadiumZone)
 								OlympiadStadiaManager.getInstance().addStadium((L2OlympiadStadiumZone)temp);
-			                                else if (temp instanceof L2BossZone)
-				                                BossZoneManager.getInstance().addZone((L2BossZone) temp);
+						    else if (temp instanceof L2BossZone)
+						        BossZoneManager.getInstance().addZone((L2BossZone) temp);
 
 							// Increase the counter
 							zoneCount++;
