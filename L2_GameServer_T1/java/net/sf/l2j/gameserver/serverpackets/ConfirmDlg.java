@@ -22,7 +22,15 @@ public class ConfirmDlg extends L2GameServerPacket
 {
 	private static final String _S__ED_CONFIRMDLG = "[S] f3 ConfirmDlg";
 	private int _requestId;
+	private int _unk1 = 0;
 	private String _name;
+
+	public ConfirmDlg(int requestId, String requestorName, int unk1)
+	{
+		_requestId = requestId;
+		_name = requestorName;
+		_unk1 = unk1;
+	}
 
 	public ConfirmDlg(int requestId, String requestorName)
 	{
@@ -39,7 +47,7 @@ public class ConfirmDlg extends L2GameServerPacket
 		writeD(0x00); // ??
 		writeS(_name);
 		writeD(0x01); // ??
-		writeD(0x00); // ??
+		writeD(_unk1); // Value: Restore Percent, old values
 	}
 
 	/* (non-Javadoc)
