@@ -117,6 +117,12 @@ public final class L2World
         _allObjects.put(object);
     }
 
+    public void forceObject(L2Object object)
+    {
+        _allObjects.put(object);
+    }
+
+    
     public long timeStoreObject(L2Object object)
     {
         long time   = System.currentTimeMillis();
