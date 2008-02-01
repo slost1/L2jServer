@@ -39,7 +39,7 @@ public class SpawnTable
 
     private static final SpawnTable _instance = new SpawnTable();
 
-    private Map<Integer, L2Spawn> _spawntable = new FastMap<Integer, L2Spawn>();
+    private Map<Integer, L2Spawn> _spawntable = new FastMap<Integer, L2Spawn>().setShared(true);
     private int _npcSpawnCount;
 
     private int _highestId;
