@@ -29,6 +29,7 @@ import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.datatables.ItemTable;
 import net.sf.l2j.gameserver.instancemanager.ItemsOnGroundManager;
+import net.sf.l2j.gameserver.instancemanager.MercTicketManager;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.knownlist.NullKnownList;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -580,29 +581,23 @@ public final class L2ItemInstance extends L2Object
 	{
 		// this causes the validate position handler to do the pickup if the location is reached.
 		// mercenary tickets can only be picked up by the castle owner.
-		if (
-				(_itemId >=3960 && _itemId<=4021 && player.isInParty()) ||
-				(_itemId >=3960 && _itemId<=3969 && !player.isCastleLord(1)) ||
-				(_itemId >=3973 && _itemId<=3982 && !player.isCastleLord(2)) ||
-				(_itemId >=3986 && _itemId<=3995 && !player.isCastleLord(3)) ||
-				(_itemId >=3999 && _itemId<=4008 && !player.isCastleLord(4)) ||
-				(_itemId >=4012 && _itemId<=4021 && !player.isCastleLord(5)) ||
-				(_itemId >=5205 && _itemId<=5214 && !player.isCastleLord(6)) ||
-				(_itemId >=6779 && _itemId<=6788 && !player.isCastleLord(7)) ||
-				(_itemId >=7973 && _itemId<=7982 && !player.isCastleLord(8)) ||
-				(_itemId >=7918 && _itemId<=7927 && !player.isCastleLord(9))
-			)
-		{
-			if	(player.isInParty())    //do not allow owner who is in party to pick tickets up
-				player.sendMessage("You cannot pickup mercenaries while in a party.");
-			else
-				player.sendMessage("Only the castle lord can pickup mercenaries.");
+        int castleId = MercTicketManager.getInstance().getTicketCastleId(_itemId);
+        
+        if (  castleId == -1  ||
+              !player.isCastleLord(castleId) || 
+              player.isInParty() 
+            )
+        {
+            if  (player.isInParty())    //do not allow owner who is in party to pick tickets up
+                player.sendMessage("You cannot pickup mercenaries while in a party.");
+            else
+                player.sendMessage("Only the castle lord can pickup mercenaries.");
 
-			player.setTarget(this);
-			player.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
+            player.setTarget(this);
+            player.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
             // Send a Server->Client ActionFailed to the L2PcInstance in order to avoid that the client wait another packet
             player.sendPacket(new ActionFailed());
-		}
+        }
 		else
 			player.getAI().setIntention(CtrlIntention.AI_INTENTION_PICK_UP, this);
 	}

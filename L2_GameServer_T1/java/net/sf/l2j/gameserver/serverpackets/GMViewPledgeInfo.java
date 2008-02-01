@@ -48,6 +48,7 @@ public class GMViewPledgeInfo extends L2GameServerPacket
 		writeD(_clan.getLevel());
 		writeD(_clan.getHasCastle());
 		writeD(_clan.getHasHideout());
+        writeD(0); // -> _clan.getHasFortress() need implementation
 		writeD(_clan.getRank());
 		writeD(_clan.getReputationScore());
 		writeD(0);
@@ -67,8 +68,8 @@ public class GMViewPledgeInfo extends L2GameServerPacket
             writeS(member.getName());
             writeD(member.getLevel());
             writeD(member.getClassId());
-            writeD(member.getPlayerInstance().getAppearance().getSex() ? 1 : 0);
-            writeD(member.getPlayerInstance().getRace().ordinal());
+            writeD(member.getSex() ? 1 : 0);
+            writeD(member.getRaceOrdinal());
             writeD(member.isOnline() ? member.getObjectId() : 0);
             writeD(member.getSponsor() != 0 ? 1 : 0);
 		    }

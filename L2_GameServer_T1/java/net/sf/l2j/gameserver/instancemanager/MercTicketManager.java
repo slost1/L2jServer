@@ -178,7 +178,7 @@ public class MercTicketManager
 	        int npcId;
 	        int itemId;
 	        int x,y,z;
-            int mercPlaced[] =  new int[10];
+            int mercPlaced[] =  new int[20];
 	        // start index to begin the search for the itemId corresponding to this NPC
 	        // this will help with:
 	        //    a) skip unnecessary iterations in the search loop
@@ -194,7 +194,7 @@ public class MercTicketManager
             	Castle castle = CastleManager.getInstance().getCastle(x,y,z);
             	if(castle != null)
                 {
-            		startindex = 10*(castle.getCastleId()-1);
+            		startindex = 20*(castle.getCastleId()-1);
                     mercPlaced[castle.getCastleId()-1] += 1;
                     if (mercPlaced[castle.getCastleId()-1] > MERCS_MAX_PER_CASTLE[castle.getCastleId()-1]) 
                         break;
