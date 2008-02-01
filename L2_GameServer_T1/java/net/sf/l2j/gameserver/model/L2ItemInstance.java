@@ -583,10 +583,8 @@ public final class L2ItemInstance extends L2Object
 		// mercenary tickets can only be picked up by the castle owner.
         int castleId = MercTicketManager.getInstance().getTicketCastleId(_itemId);
         
-        if (  castleId == -1  ||
-              !player.isCastleLord(castleId) || 
-              player.isInParty() 
-            )
+        if (castleId > 0 && 
+                (!player.isCastleLord(castleId) || player.isInParty()))
         {
             if  (player.isInParty())    //do not allow owner who is in party to pick tickets up
                 player.sendMessage("You cannot pickup mercenaries while in a party.");
