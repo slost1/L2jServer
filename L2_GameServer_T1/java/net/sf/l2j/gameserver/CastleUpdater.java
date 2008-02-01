@@ -24,62 +24,46 @@ import net.sf.l2j.gameserver.model.entity.Castle;
 
 /**
  *
- * Thorgrim - 2005 Class managing periodical events with castle
+ * Thorgrim - 2005
+ * Class managing periodical events with castle
  *
  */
 public class CastleUpdater implements Runnable
 {
-    protected static Logger _log = Logger.getLogger(CastleUpdater.class.getName());
-    
-    private L2Clan _clan;
-    
-    private int _runCount = 0;
-    
-    public CastleUpdater(L2Clan clan, int runCount)
-    {
-        _clan = clan;
-        _runCount = runCount;
-    }
-    
-    public void run()
-    {
-        try
+        protected static Logger _log = Logger.getLogger(CastleUpdater.class.getName());
+        private L2Clan _clan;
+        private int _runCount = 0;
+
+        public CastleUpdater(L2Clan clan, int runCount)
         {
-            // Move current castle treasury to clan warehouse every 2 hour
-            ItemContainer warehouse = _clan.getWarehouse();
-            if ((warehouse != null) && (_clan.getHasCastle() > 0))
+            _clan = clan;
+            _runCount = runCount;
+        }
+
+        public void run()
+        {
+            try
             {
-                Castle castle = CastleManager.getInstance().getCastleById(_clan.getHasCastle());
-                if (!Config.ALT_MANOR_SAVE_ALL_ACTIONS)
+                // Move current castle treasury to clan warehouse every 2 hour
+                ItemContainer warehouse = _clan.getWarehouse();
+                if ((warehouse != null) && (_clan.getHasCastle() > 0))
                 {
-                    if (_runCount % Config.ALT_MANOR_SAVE_PERIOD_RATE == 0)
+                    Castle castle = CastleManager.getInstance().getCastleById(_clan.getHasCastle());
+                    if (!Config.ALT_MANOR_SAVE_ALL_ACTIONS)
                     {
-                        castle.saveSeedData();
-                        castle.saveCropData();
-                        _log.info("Manor System: all data for " + castle.getName() + " saved");
+                        if (_runCount % Config.ALT_MANOR_SAVE_PERIOD_RATE == 0)
+                        {
+                            castle.saveSeedData();
+                            castle.saveCropData();
+                            _log.info("Manor System: all data for " + castle.getName() + " saved");
+                        }
                     }
+                    _runCount++;
+                    CastleUpdater cu = new CastleUpdater(_clan, _runCount);
+                    ThreadPoolManager.getInstance().scheduleGeneral(cu, 3600000);
                 }
-                // Dual Craft stamp added to Castle warehouse every 3 hours.
-                if (_runCount % 3 == 0)
-                {
-                    warehouse.addItem("Castle", 5126, 1, null, null);
-                }
-                // Secret Book of Giants added to Castle warehouse every 24 hours.
-                if (_runCount % 24 == 0)
-                {
-                    if (((castle.getCastleId() >= 1) && (castle.getCastleId() < 5)) || (castle.getCastleId() == 6))
-                        warehouse.addItem("Castle", 6622, 1, null, null);
-                    else
-                        warehouse.addItem("Castle", 6622, 2, null, null);
-                }
-                _runCount++;
-                CastleUpdater cu = new CastleUpdater(_clan, _runCount);
-                ThreadPoolManager.getInstance().scheduleGeneral(cu, 3600000);
+            } catch (Throwable e) {
+                e.printStackTrace();
             }
         }
-        catch (Throwable e)
-        {
-            e.printStackTrace();
-        }
-    }
 }
