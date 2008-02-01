@@ -47,8 +47,10 @@ import net.sf.l2j.gameserver.skills.conditions.ConditionPlayerRace;
 import net.sf.l2j.gameserver.skills.conditions.ConditionPlayerState;
 import net.sf.l2j.gameserver.skills.conditions.ConditionSkillStats;
 import net.sf.l2j.gameserver.skills.conditions.ConditionSlotItemId;
+import net.sf.l2j.gameserver.skills.conditions.ConditionTargetActiveSkillId;
 import net.sf.l2j.gameserver.skills.conditions.ConditionTargetAggro;
 import net.sf.l2j.gameserver.skills.conditions.ConditionTargetClassIdRestriction;
+import net.sf.l2j.gameserver.skills.conditions.ConditionTargetActiveEffectId;
 import net.sf.l2j.gameserver.skills.conditions.ConditionTargetLevel;
 import net.sf.l2j.gameserver.skills.conditions.ConditionTargetRaceId;
 import net.sf.l2j.gameserver.skills.conditions.ConditionTargetUsesWeaponKind;
@@ -472,6 +474,16 @@ abstract class DocumentBase
                     array.add(Integer.decode(getValue(item, null)));
                 }
             	cond = joinAnd(cond, new ConditionTargetClassIdRestriction(array));
+            }
+            else if ("active_effect_id".equalsIgnoreCase(a.getNodeName()))
+            {
+                int effect_id = Integer.decode(getValue(a.getNodeValue(), template));
+            	cond = joinAnd(cond, new ConditionTargetActiveEffectId(effect_id));
+            }
+            else if ("active_skill_id".equalsIgnoreCase(a.getNodeName()))
+            {
+                int skill_id = Integer.decode(getValue(a.getNodeValue(), template));
+                cond = joinAnd(cond, new ConditionTargetActiveSkillId(skill_id));
             }
             else if ("race_id".equalsIgnoreCase(a.getNodeName()))
             {
