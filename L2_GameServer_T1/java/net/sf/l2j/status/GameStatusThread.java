@@ -30,9 +30,11 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Properties;
 import java.util.StringTokenizer;
+import java.util.Map.Entry;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
@@ -224,6 +226,7 @@ public class GameStatusThread extends Thread
                 else if(_usrCommand.equals("help debug"))
                 {
                 	_print.println("The following is a list of all available debug commands: ");
+                    _print.println("full                - Dumps complete debug information to an file (recommended)");
                 	_print.println("decay               - prints info about the DecayManager");
                 	_print.println("PacketTP            - prints info about the General Packet ThreadPool");
                 	_print.println("IOPacketTP          - prints info about the I/O Packet ThreadPool");
@@ -231,73 +234,7 @@ public class GameStatusThread extends Thread
                 }
                 else if (_usrCommand.equals("status"))
                 {
-                    int playerCount = 0, objectCount = 0;
-                    int max = LoginServerThread.getInstance().getMaxPlayer();
-
-                    playerCount = L2World.getInstance().getAllPlayersCount();
-                    objectCount = L2World.getInstance().getAllVisibleObjectsCount();
-
-                    int itemCount=0;
-                    int itemVoidCount=0;
-                    int monsterCount=0;
-                    int minionCount = 0;
-                    int minionsGroupCount = 0;
-                    int npcCount=0;
-                    int charCount=0;
-                    int pcCount=0;
-                    int doorCount=0;
-                    int summonCount=0;
-                    int AICount=0;
-
-		            for (L2Object obj : L2World.getInstance().getAllVisibleObjects())
-		            {
-		            	if(obj == null)
-		            		continue;
-						if (obj instanceof L2Character)
-							if (((L2Character)obj).hasAI())
-								AICount++;
-                        if (obj instanceof L2ItemInstance)
-                            if (((L2ItemInstance)obj).getLocation() == L2ItemInstance.ItemLocation.VOID)
-                                itemVoidCount++;
-                            else
-                                itemCount++;
-
-                        else if (obj instanceof L2MonsterInstance)
-                        {
-                            monsterCount++;
-                            minionCount += ((L2MonsterInstance)obj).getTotalSpawnedMinionsInstances();
-                            minionsGroupCount += ((L2MonsterInstance)obj).getTotalSpawnedMinionsGroups();
-                        }
-                        else if (obj instanceof L2NpcInstance)
-                            npcCount++;
-                        else if (obj instanceof L2PcInstance)
-                            pcCount++;
-                        else if (obj instanceof L2Summon)
-                            summonCount++;
-                        else if (obj instanceof L2DoorInstance)
-                            doorCount++;
-                        else if (obj instanceof L2Character)
-                            charCount++;
-                    }
-                    _print.println("Server Status: ");
-                    _print.println("  --->  Player Count: " + playerCount + "/" + max);
-                    _print.println("  +-->  Object Count: " + objectCount);
-                    _print.println("  +-->      AI Count: " + AICount);
-                    _print.println("  +.... L2Item(Void): " + itemVoidCount);
-                    _print.println("  +.......... L2Item: " + itemCount);
-                    _print.println("  +....... L2Monster: " + monsterCount);
-                    _print.println("  +......... Minions: " + minionCount);
-                    _print.println("  +.. Minions Groups: " + minionsGroupCount);
-                    _print.println("  +........... L2Npc: " + npcCount);
-                    _print.println("  +............ L2Pc: " + pcCount);
-                    _print.println("  +........ L2Summon: " + summonCount);
-                    _print.println("  +.......... L2Door: " + doorCount);
-                    _print.println("  +.......... L2Char: " + charCount);
-                    _print.println("  --->   Ingame Time: " + gameTime());
-                    _print.println("  ---> Server Uptime: " + getUptime(_uptime));
-                    _print.println("  --->      GM Count: " + getOnlineGMS());
-                    _print.println("  --->       Threads: " + Thread.activeCount());
-                    _print.println("  RAM Used: "+((Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory())/1048576)); // 1024 * 1024 = 1048576
+                    _print.print(this.getServerStatus());
                     _print.flush();
                 }
                 else if (_usrCommand.equals("performance"))
@@ -623,6 +560,10 @@ public class GameStatusThread extends Thread
                 			out.close();
                 			fos.close();
                 		}
+                        else if(dbg.equals("full"))
+                        {
+                            this.debugAll();
+                        }
                 	}
                 	catch(Exception e){}
                 }
@@ -892,5 +833,173 @@ public class GameStatusThread extends Thread
         cal.set(Calendar.HOUR_OF_DAY, h);
         cal.set(Calendar.MINUTE, m);
         return format.format(cal.getTime());
+    }
+    
+    public String getServerStatus()
+    {
+        int playerCount = 0, objectCount = 0;
+        int max = LoginServerThread.getInstance().getMaxPlayer();
+
+        playerCount = L2World.getInstance().getAllPlayersCount();
+        objectCount = L2World.getInstance().getAllVisibleObjectsCount();
+
+        int itemCount=0;
+        int itemVoidCount=0;
+        int monsterCount=0;
+        int minionCount = 0;
+        int minionsGroupCount = 0;
+        int npcCount=0;
+        int charCount=0;
+        int pcCount=0;
+        int doorCount=0;
+        int summonCount=0;
+        int AICount=0;
+
+        for (L2Object obj : L2World.getInstance().getAllVisibleObjects())
+        {
+            if(obj == null)
+                continue;
+            if (obj instanceof L2Character)
+                if (((L2Character)obj).hasAI())
+                    AICount++;
+            if (obj instanceof L2ItemInstance)
+                if (((L2ItemInstance)obj).getLocation() == L2ItemInstance.ItemLocation.VOID)
+                    itemVoidCount++;
+                else
+                    itemCount++;
+
+            else if (obj instanceof L2MonsterInstance)
+            {
+                monsterCount++;
+                minionCount += ((L2MonsterInstance)obj).getTotalSpawnedMinionsInstances();
+                minionsGroupCount += ((L2MonsterInstance)obj).getTotalSpawnedMinionsGroups();
+            }
+            else if (obj instanceof L2NpcInstance)
+                npcCount++;
+            else if (obj instanceof L2PcInstance)
+                pcCount++;
+            else if (obj instanceof L2Summon)
+                summonCount++;
+            else if (obj instanceof L2DoorInstance)
+                doorCount++;
+            else if (obj instanceof L2Character)
+                charCount++;
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append("Server Status: ");
+        sb.append("\r\n  --->  Player Count: " + playerCount + "/" + max);
+        sb.append("\r\n  +-->  Object Count: " + objectCount);
+        sb.append("\r\n  +-->      AI Count: " + AICount);
+        sb.append("\r\n  +.... L2Item(Void): " + itemVoidCount);
+        sb.append("\r\n  +.......... L2Item: " + itemCount);
+        sb.append("\r\n  +....... L2Monster: " + monsterCount);
+        sb.append("\r\n  +......... Minions: " + minionCount);
+        sb.append("\r\n  +.. Minions Groups: " + minionsGroupCount);
+        sb.append("\r\n  +........... L2Npc: " + npcCount);
+        sb.append("\r\n  +............ L2Pc: " + pcCount);
+        sb.append("\r\n  +........ L2Summon: " + summonCount);
+        sb.append("\r\n  +.......... L2Door: " + doorCount);
+        sb.append("\r\n  +.......... L2Char: " + charCount);
+        sb.append("\r\n  --->   Ingame Time: " + gameTime());
+        sb.append("\r\n  ---> Server Uptime: " + getUptime(_uptime));
+        sb.append("\r\n  --->      GM Count: " + getOnlineGMS());
+        sb.append("\r\n  --->       Threads: " + Thread.activeCount());
+        sb.append("\r\n  RAM Used: "+((Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory())/1048576)); // 1024 * 1024 = 1048576
+        sb.append("\r\n");
+        
+        return sb.toString();
+    }
+    
+    public void debugAll() throws IOException
+    {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
+        
+        
+        StringBuilder sb = new StringBuilder();
+        sb.append(sdf.format(cal.getTime()));
+        sb.append("\n\nL2J Server Version: "+Config.SERVER_VERSION);
+        sb.append("\nDP Revision: "+Config.DATAPACK_VERSION);
+        sb.append("\n\n");
+        sb.append(this.getServerStatus());
+        sb.append("\n\n");
+        sb.append("\n## Java Platform Information ##");
+        sb.append("\nJava Runtime Name: "+System.getProperty("java.runtime.name"));
+        sb.append("\nJava Version: "+System.getProperty("java.version"));
+        sb.append("\nJava Class Version: "+System.getProperty("java.class.version"));
+        sb.append('\n');
+        sb.append("\n## Virtual Machine Information ##");
+        sb.append("\nVM Name: "+System.getProperty("java.vm.name"));
+        sb.append("\nVM Version: "+System.getProperty("java.vm.version"));
+        sb.append("\nVM Vendor: "+System.getProperty("java.vm.vendor"));
+        sb.append("\nVM Info: "+System.getProperty("java.vm.info"));
+        sb.append('\n');
+        sb.append("\n## OS Information ##");
+        sb.append("\nName: "+System.getProperty("os.name"));
+        sb.append("\nArchiteture: "+System.getProperty("os.arch"));
+        sb.append("\nVersion: "+System.getProperty("os.version"));
+        sb.append('\n');
+        sb.append("\n## Runtime Information ##");
+        sb.append("\nCPU Count: "+Runtime.getRuntime().availableProcessors());
+        sb.append("\nCurrent Free Heap Size: "+(Runtime.getRuntime().freeMemory() / 1024 / 1024)+" mb");
+        sb.append("\nCurrent Heap Size: "+(Runtime.getRuntime().totalMemory() / 1024 / 1024)+" mb");
+        sb.append("\nMaximum Heap Size: "+(Runtime.getRuntime().maxMemory() / 1024 / 1024)+" mb");
+        
+        
+        sb.append('\n');
+        sb.append("\n## Class Path Information ##\n");
+        String cp = System.getProperty("java.class.path");
+        String[] libs = cp.split(File.pathSeparator);
+        for (String lib : libs)
+        {
+            sb.append(lib);
+            sb.append('\n');
+        }
+        
+        sb.append('\n');
+        sb.append("## Threads Information ##\n");
+        Map<Thread, StackTraceElement[]> allThread = Thread.getAllStackTraces();
+        for (Entry<Thread, StackTraceElement[]> entry : allThread.entrySet())
+        {
+            StackTraceElement[] stes = entry.getValue();
+            Thread t = entry.getKey();
+            sb.append("--------------\n");
+            sb.append(t.toString()+" ("+t.getId()+")\n");
+            sb.append("State: "+t.getState()+'\n');
+            sb.append("isAlive: "+t.isAlive()+" | isDaemon: "+t.isDaemon()+" | isInterrupted: "+t.isInterrupted()+'\n');
+            sb.append('\n');
+            for (StackTraceElement ste : stes)
+            {
+                sb.append(ste.toString());
+                sb.append('\n');
+            }
+            sb.append('\n');
+        }
+        
+        sb.append("\n\n## Thread Pool Manager Statistics ##\n");
+        for (String line : ThreadPoolManager.getInstance().getStats())
+        {
+            sb.append(line);
+            sb.append('\n');
+        }
+        
+        
+        int i = 0;
+        File f = new File("./log/Debug-"+i+".txt");
+        while(f.exists())
+        {
+            i++;
+            f = new File("./log/Debug-"+i+".txt");
+        }
+        f.getParentFile().mkdirs();
+        FileOutputStream fos = new FileOutputStream(f);
+        OutputStreamWriter out = new OutputStreamWriter(fos, "UTF-8");
+        out.write(sb.toString());
+        out.flush();
+        out.close();
+        fos.close();
+        
+        _print.println("Debug output saved to log/"+f.getName());
+        _print.flush();
     }
 }
