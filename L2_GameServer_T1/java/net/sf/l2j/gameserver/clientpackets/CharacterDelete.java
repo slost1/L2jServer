@@ -75,6 +75,7 @@ public final class CharacterDelete extends L2GameClientPacket
 			{
 				sendPacket(new CharDeleteFail(CharDeleteFail.REASON_YOU_MAY_NOT_DELETE_CLAN_MEMBER));
 			}
+			character.deleteMe();
 		}
 
 		CharSelectionInfo cl = new CharSelectionInfo(getClient().getAccountName(), getClient().getSessionId().playOkID1, 0);

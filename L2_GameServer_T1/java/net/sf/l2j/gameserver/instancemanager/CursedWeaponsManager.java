@@ -421,7 +421,15 @@ public class CursedWeaponsManager
 			}
 		}
 	}
-
+	
+	public int checkOwnsWeaponId(int ownerId)
+    {
+	    for (CursedWeapon cw : _cursedWeapons.values())
+            if (cw.isActivated() && ownerId == cw.getPlayerId())
+                return cw.getItemId();
+	    return -1;
+    }
+	
     public static void removeFromDb(int itemId)
     {
     	Connection con = null;
