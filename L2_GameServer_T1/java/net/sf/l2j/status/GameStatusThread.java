@@ -835,6 +835,7 @@ public class GameStatusThread extends Thread
         return format.format(cal.getTime());
     }
     
+    @SuppressWarnings("deprecation")
     public String getServerStatus()
     {
         int playerCount = 0, objectCount = 0;

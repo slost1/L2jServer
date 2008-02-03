@@ -118,7 +118,6 @@ public class GameTimeController
         // Create an FastList to contain all L2Character that are arrived to
         // destination
         FastList<L2Character> ended = null;
-        boolean end;
         
         // Go throw the table containing L2Character in movement
         synchronized (_movingObjects)
