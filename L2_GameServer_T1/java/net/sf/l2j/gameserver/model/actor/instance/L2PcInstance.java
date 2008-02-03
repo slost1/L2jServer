@@ -5509,10 +5509,6 @@ public final class L2PcInstance extends L2PlayableInstance
         	if (wpn.isWear())
         		return false;
 
-			// Remove augementation boni on unequip
-            if (wpn.isAugmented())
-            	wpn.getAugmentation().removeBoni(this);
-
             L2ItemInstance[] unequiped = getInventory().unEquipItemInBodySlotAndRecord(wpn.getItem().getBodyPart());
             InventoryUpdate iu = new InventoryUpdate();
             for (int i = 0; i < unequiped.length; i++)
@@ -8985,6 +8981,12 @@ public final class L2PcInstance extends L2PlayableInstance
         //  Cannot switch or change subclasses while transformed
         if (isTransformed())
             return false;
+        
+        // Remove active item skills before saving char to database
+        // because next time when choosing this class, weared items can
+        // be different
+        for (L2ItemInstance temp : getInventory().getAugmentedItems())
+            if (temp != null && temp.isEquipped()) temp.getAugmentation().removeBonus(this);
         
         /*
          * 1. Call store() before modifying _classIndex to avoid skill effects rollover.
