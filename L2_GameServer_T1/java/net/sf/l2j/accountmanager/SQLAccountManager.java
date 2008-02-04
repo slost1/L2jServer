@@ -24,7 +24,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javolution.util.FastList;
-
 import net.sf.l2j.Base64;
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;

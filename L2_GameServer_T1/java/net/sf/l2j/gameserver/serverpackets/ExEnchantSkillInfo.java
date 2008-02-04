@@ -14,11 +14,11 @@
  */
 package net.sf.l2j.gameserver.serverpackets;
 
+import javolution.util.FastList;
 import net.sf.l2j.gameserver.datatables.SkillTreeTable;
 import net.sf.l2j.gameserver.model.L2EnchantSkillLearn.EnchantSkillDetail;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.ExEnchantSkillList.EnchantSkillType;
-import javolution.util.FastList;
 
 public final class ExEnchantSkillInfo extends L2GameServerPacket
 {

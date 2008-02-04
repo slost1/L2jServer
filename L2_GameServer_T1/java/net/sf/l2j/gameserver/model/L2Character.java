@@ -1310,6 +1310,9 @@ public abstract class L2Character extends L2Object
             else if (this instanceof L2Summon)
                 ((L2Summon)this).getOwner().rechargeAutoSoulShot(false, true, true);
         }
+
+        // Set the target of the skill in function of Skill Type and Target Type
+        L2Character target = null;
         //else if (skill.useFishShot())
         //{
         //	if (this instanceof L2PcInstance)
@@ -1319,14 +1322,16 @@ public abstract class L2Character extends L2Object
 		// Get all possible targets of the skill in a table in function of the skill target type
 		L2Object[] targets = skill.getTargetList(this);
 
-		if (targets == null || targets.length == 0)
-		{
-			getAI().notifyEvent(CtrlEvent.EVT_CANCEL);
-			return;
-		}
+        if ((targets == null || targets.length == 0)  && skill.getTargetType() != SkillTargetType.TARGET_AURA)
+        {
+            getAI().notifyEvent(CtrlEvent.EVT_CANCEL);
+            return;
+        }
+        else if ((targets == null || targets.length == 0)  && skill.getTargetType() == SkillTargetType.TARGET_AURA)
+        {
+             target = this;
+        }
 
-		// Set the target of the skill in function of Skill Type and Target Type
-		L2Character target = null;
 
 		if(     skill.getSkillType() == SkillType.BUFF ||
 				skill.getSkillType() == SkillType.HEAL ||
