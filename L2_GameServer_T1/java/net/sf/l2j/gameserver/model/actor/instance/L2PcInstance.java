@@ -84,7 +84,6 @@ import net.sf.l2j.gameserver.model.L2CharPosition;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.L2ClanMember;
-import net.sf.l2j.gameserver.model.L2Decoy;
 import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.L2Fishing;
 import net.sf.l2j.gameserver.model.L2HennaInstance;
@@ -499,8 +498,6 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	/** The L2Summon of the L2PcInstance */
 	private L2Summon _summon = null;
-	/** The L2Decoy of the L2PcInstance */
-    private L2Decoy _decoy = null;
 	// apparently, a L2PcInstance CAN have both a summon AND a tamed beast at the same time!!
 	private L2TamedBeastInstance _tamedBeast = null;
 
@@ -5073,14 +5070,6 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
 		return _summon;
 	}
-	
-	/**
-     * Return the L2Decoy of the L2PcInstance or null.<BR><BR>
-     */
-    public L2Decoy getDecoy()
-    {
-        return _decoy;
-    }
 
 	/**
 	 * Set the L2Summon of the L2PcInstance.<BR><BR>
@@ -5089,13 +5078,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
 		_summon = summon;
 	}
-    /**
-     * Set the L2Decoy of the L2PcInstance.<BR><BR>
-     */
-    public void setDecoy(L2Decoy decoy)
-    {
-        _decoy = decoy;
-    }
+
 	/**
 	 * Return the L2Summon of the L2PcInstance or null.<BR><BR>
 	 */

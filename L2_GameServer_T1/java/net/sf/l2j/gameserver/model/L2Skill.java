@@ -49,7 +49,6 @@ import net.sf.l2j.gameserver.skills.l2skills.L2SkillCharge;
 import net.sf.l2j.gameserver.skills.l2skills.L2SkillChargeDmg;
 import net.sf.l2j.gameserver.skills.l2skills.L2SkillChargeEffect;
 import net.sf.l2j.gameserver.skills.l2skills.L2SkillCreateItem;
-import net.sf.l2j.gameserver.skills.l2skills.L2SkillDecoy;
 import net.sf.l2j.gameserver.skills.l2skills.L2SkillDefault;
 import net.sf.l2j.gameserver.skills.l2skills.L2SkillDrain;
 import net.sf.l2j.gameserver.skills.l2skills.L2SkillSeed;
@@ -201,8 +200,7 @@ public abstract class L2Skill
     	STRSIEGEASSAULT,
     	ERASE,
     	BETRAY,
-    	DECOY(L2SkillDecoy.class),
-    	
+
     	// Cancel
     	CANCEL,
     	MAGE_BANE,
@@ -1380,8 +1378,7 @@ public abstract class L2Skill
                 L2PcInstance src = null;
                 if (activeChar instanceof L2PcInstance) src = (L2PcInstance)activeChar;
                 if (activeChar instanceof L2Summon) src = ((L2Summon)activeChar).getOwner();
-                if (activeChar instanceof L2Decoy) src = ((L2Decoy)activeChar).getOwner();
-                
+
                 // Go through the L2Character _knownList
                 for (L2Object obj : activeChar.getKnownList().getKnownObjects().values())
                 {

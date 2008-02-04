@@ -17,6 +17,7 @@ package net.sf.l2j.gameserver.model;
 import java.util.List;
 
 import javolution.util.FastTable;
+
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
