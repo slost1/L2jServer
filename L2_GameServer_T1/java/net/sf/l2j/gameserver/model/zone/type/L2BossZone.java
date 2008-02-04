@@ -39,6 +39,7 @@ public class L2BossZone extends L2ZoneType
     public L2BossZone(int id)
     {
         super(id);
+        _playerAllowedEntryExpirationTimes = new FastMap<Integer, Long>();
     }
     
     @Override
