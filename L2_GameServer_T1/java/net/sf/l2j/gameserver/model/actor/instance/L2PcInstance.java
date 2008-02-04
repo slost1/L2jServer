@@ -5840,13 +5840,10 @@ public final class L2PcInstance extends L2PlayableInstance
 		// Update the characters table of the database with online status and lastAccess (called when login and logout)
 		updateOnlineStatus();
 	}
-
+    
     public void setIsIn7sDungeon(boolean isIn7sDungeon)
     {
-        if (_isIn7sDungeon != isIn7sDungeon)
-            _isIn7sDungeon = isIn7sDungeon;
-
-        updateIsIn7sDungeonStatus();
+        _isIn7sDungeon = isIn7sDungeon;
     }
 
 	/**
@@ -5875,30 +5872,6 @@ public final class L2PcInstance extends L2PlayableInstance
 			try { con.close(); } catch (Exception e) {}
 		}
 	}
-
-    public void updateIsIn7sDungeonStatus()
-    {
-        java.sql.Connection con = null;
-
-        try
-        {
-            con = L2DatabaseFactory.getInstance().getConnection();
-            PreparedStatement statement = con.prepareStatement("UPDATE characters SET isIn7sDungeon=?, lastAccess=? WHERE obj_id=?");
-            statement.setInt(1, isIn7sDungeon() ? 1 : 0);
-            statement.setLong(2, System.currentTimeMillis());
-            statement.setInt(3, getObjectId());
-            statement.execute();
-            statement.close();
-        }
-        catch (Exception e)
-        {
-            _log.warning("could not set char isIn7sDungeon status:"+e);
-        }
-        finally
-        {
-            try { con.close(); } catch (Exception e) {}
-        }
-    }
 
 	/**
 	 * Create a new player in the characters table of the database.<BR><BR>
@@ -6113,8 +6086,8 @@ public final class L2PcInstance extends L2PlayableInstance
                 player.setApprentice(rset.getInt("apprentice"));
                 player.setSponsor(rset.getInt("sponsor"));
                 player.setLvlJoinedAcademy(rset.getInt("lvl_joined_academy"));
-                player.setIsIn7sDungeon((rset.getInt("isin7sdungeon")==1)? true : false);
-                player.setInJail((rset.getInt("in_jail")==1)? true : false);
+                player.setIsIn7sDungeon(rset.getInt("isin7sdungeon") == 1);
+                player.setInJail(rset.getInt("in_jail") == 1);
                 if (player.isInJail())
                 	player.setJailTimer(rset.getLong("jail_timer"));
                 else
@@ -6538,6 +6511,8 @@ public final class L2PcInstance extends L2PlayableInstance
 
 			// Store all effect data along with calulated remaining
 			// reuse delays for matching skills. 'restore_type'= 0.
+            statement = con.prepareStatement(ADD_SKILL_SAVE);
+            
 			for (L2Effect effect : getAllEffects())
 			{
 				if (effect != null && !effect.isHerbEffect() && effect.getInUse() && !effect.getSkill().isToggle())
@@ -6545,7 +6520,7 @@ public final class L2PcInstance extends L2PlayableInstance
 					int skillId = effect.getSkill().getId();
 					buff_index++;
 
-					statement = con.prepareStatement(ADD_SKILL_SAVE);
+					
 					statement.setInt(1, getObjectId());
 					statement.setInt(2, skillId);
 					statement.setInt(3, effect.getSkill().getLevel());
@@ -6556,7 +6531,8 @@ public final class L2PcInstance extends L2PlayableInstance
 					{
 						TimeStamp t = _reuseTimeStamps.remove(skillId);
 						statement.setLong(6, t.hasNotPassed() ? t.getReuse() : 0 );
-					} else
+					}
+                    else
 					{
 						statement.setLong(6, 0);
 					}
@@ -6565,7 +6541,6 @@ public final class L2PcInstance extends L2PlayableInstance
 					statement.setInt(8, getClassIndex());
 					statement.setInt(9, buff_index);
 					statement.execute();
-					statement.close();
 				}
 			}
 
@@ -6576,7 +6551,6 @@ public final class L2PcInstance extends L2PlayableInstance
 				if (t.hasNotPassed())
 				{
 					buff_index++;
-					statement = con.prepareStatement(ADD_SKILL_SAVE);
 					statement.setInt (1, getObjectId());
 					statement.setInt (2, t.getSkill());
 					statement.setInt (3, -1);
@@ -6587,13 +6561,27 @@ public final class L2PcInstance extends L2PlayableInstance
 					statement.setInt (8, getClassIndex());
 					statement.setInt(9, buff_index);
 					statement.execute();
-					statement.close();
+					
 				}
 			}
 			_reuseTimeStamps.clear();
+            
+            statement.close();
 		}
-		catch (Exception e) { _log.warning("Could not store char effect data: "+ e); }
-		finally { try { con.close(); } catch (Exception e) {} }
+		catch (Exception e)
+        {
+            _log.warning("Could not store char effect data: "+ e);
+        }
+		finally
+        {
+		    try
+            {
+                con.close(); 
+            }
+            catch (Exception e)
+            {  
+            }
+        }
 	}
 
 	/**
