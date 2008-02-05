@@ -2813,14 +2813,15 @@ public abstract class L2Character extends L2Object
 	 */
 	public final void stopImmobileUntilAttacked(L2Effect effect)
 	{
-		if (effect == null)
-			stopEffects(L2Effect.EffectType.IMMOBILEUNTILATTACKED);
-		else
-			removeEffect(effect);
+        if (effect == null)
+            stopEffects(L2Effect.EffectType.IMMOBILEUNTILATTACKED);
+        else
+            removeEffect(effect);
 
-		setIsImmobileUntilAttacked(false);
-		updateAbnormalEffect();
-	}
+        setIsImmobileUntilAttacked(false);
+        getAI().notifyEvent(CtrlEvent.EVT_THINK, null);
+        updateAbnormalEffect();
+    }
 
 	/**
 	 * Stop a specified/all Sleep abnormal L2Effect.<BR><BR>

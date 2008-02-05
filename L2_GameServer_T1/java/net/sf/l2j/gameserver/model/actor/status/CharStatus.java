@@ -141,7 +141,7 @@ public class CharStatus
     	}
         if (awake && getActiveChar().isSleeping()) getActiveChar().stopSleeping(null);
         if (getActiveChar().isStunned() && Rnd.get(10) == 0) getActiveChar().stopStunning(null);
-        if (!getActiveChar().isImmobileUntilAttacked()) getActiveChar().stopImmobileUntilAttacked(null);
+        if (getActiveChar().isImmobileUntilAttacked()) getActiveChar().stopImmobileUntilAttacked(null);
 
         // Add attackers to npc's attacker list
         if (getActiveChar() instanceof L2NpcInstance) getActiveChar().addAttackerToAttackByList(attacker);
