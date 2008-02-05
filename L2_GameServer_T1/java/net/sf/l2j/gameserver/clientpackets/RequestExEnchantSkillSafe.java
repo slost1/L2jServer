@@ -121,24 +121,16 @@ public final class RequestExEnchantSkillSafe extends L2GameClientPacket
         {
             if (player.getExp() >= requiredExp)
             {
-                // only first lvl requires book
-                boolean usesBook = _skillLvl % 100 == 1; // 101, 201, 301 ...
+                // No config option for safe enchant book consume
                 L2ItemInstance spb = player.getInventory().getItemByItemId(reqItemId);
-                if (Config.ES_SP_BOOK_NEEDED && usesBook) 
+                if (spb == null)// Haven't spellbook
                 {
-                    if (spb == null)// Haven't spellbook
-                    {
-                        player.sendPacket(new SystemMessage(SystemMessageId.YOU_DONT_HAVE_ALL_OF_THE_ITEMS_NEEDED_TO_ENCHANT_THAT_SKILL));
-                        return;
-                    }
+                    player.sendPacket(new SystemMessage(SystemMessageId.YOU_DONT_HAVE_ALL_OF_THE_ITEMS_NEEDED_TO_ENCHANT_THAT_SKILL));
+                    return;
                 }
                 
-                boolean check;
-                check = player.getStat().removeExpAndSp(requiredExp, requiredSp);
-                if (Config.ES_SP_BOOK_NEEDED && usesBook)
-                {
-                    check &= player.destroyItem("Consume", spb.getObjectId(), 1, trainer, true);
-                }
+                boolean check = player.getStat().removeExpAndSp(requiredExp, requiredSp);
+                check &= player.destroyItem("Consume", spb.getObjectId(), 1, trainer, true);
                 
                 if (!check)
                 {

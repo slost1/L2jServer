@@ -67,8 +67,10 @@ public final class RequestExEnchantSkillInfoDetail extends L2GameClientPacket
         int reqCount = 0;
         // require book for first level
         int enchantLevel = _skillLvl%100;
-        // if going to first level OR going to Original level(untraining) OR changing route then require book
-        if ((_skillLvl > 100 && enchantLevel == 1) || (_skillLvl < 100) || _type == TYPE_CHANGE_ENCHANT)
+        // if going to first level OR going to Original level(untraining) 
+        // OR changing route OR safe enchant then require book
+        if ((_skillLvl > 100 && enchantLevel == 1) || (_skillLvl < 100) 
+                || _type == TYPE_CHANGE_ENCHANT || _type == TYPE_SAFE_ENCHANT)
         {
             switch (_type)
             {
