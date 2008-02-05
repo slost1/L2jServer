@@ -494,19 +494,14 @@ public abstract class L2Character extends L2Object
 		if (Config.DEBUG)
             _log.fine("Teleporting to: " + x + ", " + y + ", " + z);
 
-		L2WorldRegion oldRegion = getWorldRegion();
+		// remove the object from its old location
+        decayMe();
 		
 		// Send a Server->Client packet TeleportToLocationt to the L2Character AND to all L2PcInstance in the _KnownPlayers of the L2Character
 		broadcastPacket(new TeleportToLocation(this, x, y, z));
 
 		// Set the x,y,z position of the L2Object and if necessary modify its _worldRegion
 		getPosition().setXYZ(x, y, z);
-
-		decayMe();
-		
-      // Remove from world regions zones
-        if (oldRegion != null)
-            oldRegion.removeFromZones(this);
 
 		if (!(this instanceof L2PcInstance))
             onTeleported();
