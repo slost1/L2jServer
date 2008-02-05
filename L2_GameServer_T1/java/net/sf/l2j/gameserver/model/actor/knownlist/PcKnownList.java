@@ -39,7 +39,6 @@ import net.sf.l2j.gameserver.serverpackets.PrivateStoreMsgBuy;
 import net.sf.l2j.gameserver.serverpackets.PrivateStoreMsgSell;
 import net.sf.l2j.gameserver.serverpackets.RecipeShopMsg;
 import net.sf.l2j.gameserver.serverpackets.RelationChanged;
-import net.sf.l2j.gameserver.serverpackets.Ride;
 import net.sf.l2j.gameserver.serverpackets.SpawnItem;
 import net.sf.l2j.gameserver.serverpackets.StaticObject;
 import net.sf.l2j.gameserver.serverpackets.VehicleInfo;

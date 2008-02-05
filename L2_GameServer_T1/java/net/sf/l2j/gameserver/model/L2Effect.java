@@ -81,6 +81,7 @@ public abstract class L2Effect
         SPELL_FORCE,
         CHARM_OF_LUCK,
         INVINCIBLE,
+        IMMOBILEUNTILATTACKED,
         DISARM
     }
 

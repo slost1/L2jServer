@@ -22,9 +22,9 @@ public class ConditionTargetActiveSkillId extends Condition
     
     private final int _skillId;
     
-    public ConditionTargetActiveSkillId(int effectId)
+    public ConditionTargetActiveSkillId(int skillId)
     {
-        _skillId = effectId;
+        _skillId = skillId;
     }
     
     @Override

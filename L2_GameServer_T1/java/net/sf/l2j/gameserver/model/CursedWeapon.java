@@ -351,7 +351,7 @@ public class CursedWeapon
 		{
 	        for (L2Skill sk : _player.getAllSkills())
 	        {
-	            if (sk != null)
+	        	if (sk != null && !sk.isPassive())
 	            _player.addSkill(sk, false);
 	        }
 		}
@@ -362,8 +362,8 @@ public class CursedWeapon
 	{
         for (L2Skill sk : _player.getAllSkills())
         {
-            if (sk != null)
-            _player.removeSkill(sk, false);
+        	if (sk != null && !sk.isPassive())
+        		_player.removeSkill(sk, false);
         }
         _player.sendSkillList();
 	}

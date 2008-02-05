@@ -46,8 +46,6 @@ public final class NpcInfo extends L2GameServerPacket
     private int _collisionHeight, _collisionRadius;
     private String _name = "";
     private String _title = "";
-    private boolean ischar = false;
-    private Inventory _inv;
 
 	/**
 	 * @param _characters

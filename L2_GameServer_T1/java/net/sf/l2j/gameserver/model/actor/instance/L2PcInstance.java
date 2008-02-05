@@ -2351,7 +2351,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			return;
 		}
 
-		if (!_waitTypeSitting && !isAttackingDisabled() && !isOutOfControl() && !isImobilised())
+		if (!_waitTypeSitting && !isAttackingDisabled() && !isOutOfControl() && !isImmobilized())
 		{
 			breakAttack();
 			setIsSitting(true);
@@ -6669,7 +6669,6 @@ public final class L2PcInstance extends L2PlayableInstance
 	@Override
 	public L2Skill removeSkill(L2Skill skill)
 	{
-	    L2PcInstance player = null;
 		// Remove a skill from the L2Character and its Func objects from calculator set of the L2Character
 		L2Skill oldSkill = super.removeSkill(skill);
 
@@ -6700,8 +6699,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			try { con.close(); } catch (Exception e) {}
 		}
 
-
-		if (player != null && (player.transformId() > 0 || player.isCursedWeaponEquipped()))
+		if (this.transformId() == 0 && !this.isCursedWeaponEquipped())
 		{
 		    L2ShortCut[] allShortCuts = getAllShortCuts();
 
@@ -6711,7 +6709,6 @@ public final class L2PcInstance extends L2PlayableInstance
 			        deleteShortCut(sc.getSlot(), sc.getPage());
 		    }
 		}
-
 		return oldSkill;
 	}
 
@@ -9873,7 +9870,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	public void startFishing(int _x, int _y, int _z)
     {
         stopMove(null);
-        setIsImobilised(true);
+        setIsImmobilized(true);
         _fishing = true;
         _fishx = _x;
         _fishy = _y;
@@ -10143,7 +10140,7 @@ public final class L2PcInstance extends L2PlayableInstance
         _lure = null;
         //Ends fishing
         sendPacket(new SystemMessage(SystemMessageId.REEL_LINE_AND_STOP_FISHING));
-        setIsImobilised(false);
+        setIsImmobilized(false);
         stopLookingForFishTask();
     }
     public L2Fishing GetFishCombat()

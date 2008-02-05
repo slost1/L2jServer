@@ -694,20 +694,20 @@ public abstract class L2Summon extends L2PlayableInstance
 	}
 
 	@Override
-	public void setIsImobilised(boolean value)
+	public void setIsImmobilized(boolean value)
 	{
-		super.setIsImobilised(value);
+		super.setIsImmobilized(value);
 
 		if (value)
 		{
 			_previousFollowStatus = getFollowStatus();
-			// if imobilized temporarly disable follow mode
+			// if immobilized temporarly disable follow mode
 			if (_previousFollowStatus)
 				setFollowStatus(false);
 		}
 		else
 		{
-			// if not more imobilized restore previous follow mode
+			// if not more immobilized restore previous follow mode
 			setFollowStatus(_previousFollowStatus);
 		}
 	}

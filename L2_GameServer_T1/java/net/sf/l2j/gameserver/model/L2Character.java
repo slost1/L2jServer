@@ -136,7 +136,7 @@ public abstract class L2Character extends L2Object
 	private boolean _isMuted                                = false; // Cannot use magic
 	private boolean _isPsychicalMuted                       = false; // Cannot use psychical skills
 	private boolean _isKilledAlready                        = false;
-	private boolean _isImobilised                           = false;
+	private boolean _isImmobilized                          = false;
 	private boolean _isOverloaded                           = false; // the char is carrying too much
 	private boolean _isParalyzed                            = false;
     private boolean _isDisarmed                             = false;
@@ -144,6 +144,7 @@ public abstract class L2Character extends L2Object
 	private boolean _isPendingRevive                        = false;
 	private boolean _isRooted                               = false; // Cannot move until root timed out
 	private boolean _isRunning                              = false;
+	private boolean _isImmobileUntilAttacked				= false; // Is in immobile until attacked.
 	private boolean _isSleeping                             = false; // Cannot move/attack until sleep timed out or monster is attacked
 	private boolean _isStunned                              = false; // Cannot move/attack until stun timed out
 	private boolean _isBetrayed                             = false; // Betrayed by own summon
@@ -1763,10 +1764,10 @@ public abstract class L2Character extends L2Object
 	public final boolean isAlikeDead() { return isFakeDeath() || !(getCurrentHp() > 0.5); }
 
 	/** Return True if the L2Character can't use its skills (ex : stun, sleep...). */
-	public final boolean isAllSkillsDisabled() { return _allSkillsDisabled || isStunned() || isSleeping() || isParalyzed(); }
+	public final boolean isAllSkillsDisabled() { return _allSkillsDisabled || isImmobileUntilAttacked() || isStunned() || isSleeping() || isParalyzed(); }
 
 	/** Return True if the L2Character can't attack (stun, sleep, attackEndTime, fakeDeath, paralyse). */
-	public boolean isAttackingDisabled() { return isStunned() || isSleeping() || _attackEndTime > GameTimeController.getGameTicks() || isFakeDeath() || isParalyzed(); }
+	public boolean isAttackingDisabled() { return isStunned() || isImmobileUntilAttacked() || isSleeping() || _attackEndTime > GameTimeController.getGameTicks() || isFakeDeath() || isParalyzed(); }
 
 	public final Calculator[] getCalculators() { return _calculators; }
 
@@ -1784,8 +1785,8 @@ public abstract class L2Character extends L2Object
 	/** Set the L2Character flying mode to True. */
 	public final void setIsFlying(boolean mode) { _isFlying = mode; }
 
-	public boolean isImobilised() { return _isImobilised; }
-	public void setIsImobilised(boolean value){ _isImobilised = value; }
+	public boolean isImmobilized() { return _isImmobilized; }
+	public void setIsImmobilized(boolean value){ _isImmobilized = value; }
 
 	public final boolean isKilledAlready() { return _isKilledAlready; }
 	public final void setIsKilledAlready(boolean value) { _isKilledAlready = value; }
@@ -1797,7 +1798,7 @@ public abstract class L2Character extends L2Object
     public final void setIsPsychicalMuted(boolean value) { _isPsychicalMuted = value; }
 
 	/** Return True if the L2Character can't move (stun, root, sleep, overload, paralyzed). */
-	public boolean isMovementDisabled() { return isStunned() || isRooted() || isSleeping() || isOverloaded() || isParalyzed() || isImobilised() || isFakeDeath(); }
+	public boolean isMovementDisabled() { return isStunned() || isRooted() || isSleeping() || isOverloaded() || isParalyzed() || isImmobilized() || isFakeDeath(); }
 
 	/** Return True if the L2Character can be controlled by the player (confused, afraid). */
 	public final boolean isOutOfControl() { return isConfused() || isAfraid(); }
@@ -1839,9 +1840,12 @@ public abstract class L2Character extends L2Object
 	}
 	/** Set the L2Character movement type to run and send Server->Client packet ChangeMoveType to all others L2PcInstance. */
 	public final void setRunning() { if (!isRunning()) setIsRunning(true); }
+	
+	public final boolean isImmobileUntilAttacked() {return _isImmobileUntilAttacked; }
+	public final void setIsImmobileUntilAttacked(boolean value) { _isImmobileUntilAttacked = value; }
 
 	public final boolean isSleeping() { return _isSleeping; }
-	public final void setIsSleeping(boolean value) { _isSleeping = value; }
+	public final void setIsSleeping(boolean value) { _isSleeping = value; }	
 
 	public final boolean isStunned() { return _isStunned; }
 	public final void setIsStunned(boolean value) { _isStunned = value; }
@@ -2533,6 +2537,18 @@ public abstract class L2Character extends L2Object
         getAI().notifyEvent(CtrlEvent.EVT_ROOTED, null);
 		updateAbnormalEffect();
 	}
+	
+	/**
+	 * Active the abnormal effect Sleep flag, notify the L2Character AI and send Server->Client UserInfo/CharInfo packet.<BR><BR>
+	 */
+	public final void startImmobileUntilAttacked()
+	{
+		setIsImmobileUntilAttacked(true);
+        abortAttack();
+		abortCast();
+		getAI().notifyEvent(CtrlEvent.EVT_SLEEPING, null);
+		updateAbnormalEffect();
+	}
 
 	/**
 	 * Active the abnormal effect Sleep flag, notify the L2Character AI and send Server->Client UserInfo/CharInfo packet.<BR><BR>
@@ -2631,7 +2647,7 @@ public abstract class L2Character extends L2Object
 	}
 
 	/**
-	 * Stop and remove the L2Effects corresponding to the L2Skill Identifier and update client magic icone.<BR><BR>
+	 * Stop and remove the L2Effects corresponding to the L2Skill Identifier and update client magic icon.<BR><BR>
 	 *
 	 * <B><U> Concept</U> :</B><BR><BR>
 	 * All active skills effects in progress on the L2Character are identified in ConcurrentHashMap(Integer,L2Effect) <B>_effects</B>.
@@ -2653,7 +2669,7 @@ public abstract class L2Character extends L2Object
 	}
 
 	/**
-	 * Stop and remove all L2Effect of the selected type (ex : BUFF, DMG_OVER_TIME...) from the L2Character and update client magic icone.<BR><BR>
+	 * Stop and remove all L2Effect of the selected type (ex : BUFF, DMG_OVER_TIME...) from the L2Character and update client magic icon.<BR><BR>
 	 *
 	 * <B><U> Concept</U> :</B><BR><BR>
 	 * All active skills effects in progress on the L2Character are identified in ConcurrentHashMap(Integer,L2Effect) <B>_effects</B>.
@@ -2686,7 +2702,7 @@ public abstract class L2Character extends L2Object
 	 * Stop a specified/all Fake Death abnormal L2Effect.<BR><BR>
 	 *
 	 * <B><U> Actions</U> :</B><BR><BR>
-	 * <li>Delete a specified/all (if effect=null) Fake Death abnormal L2Effect from L2Character and update client magic icone </li>
+	 * <li>Delete a specified/all (if effect=null) Fake Death abnormal L2Effect from L2Character and update client magic icon </li>
 	 * <li>Set the abnormal effect flag _fake_death to False </li>
 	 * <li>Notify the L2Character AI</li><BR><BR>
 	 *
@@ -2714,7 +2730,7 @@ public abstract class L2Character extends L2Object
 	 * Stop a specified/all Fear abnormal L2Effect.<BR><BR>
 	 *
 	 * <B><U> Actions</U> :</B><BR><BR>
-	 * <li>Delete a specified/all (if effect=null) Fear abnormal L2Effect from L2Character and update client magic icone </li>
+	 * <li>Delete a specified/all (if effect=null) Fear abnormal L2Effect from L2Character and update client magic icon </li>
 	 * <li>Set the abnormal effect flag _affraid to False </li>
 	 * <li>Notify the L2Character AI</li>
 	 * <li>Send Server->Client UserInfo/CharInfo packet</li><BR><BR>
@@ -2735,7 +2751,7 @@ public abstract class L2Character extends L2Object
 	 * Stop a specified/all Muted abnormal L2Effect.<BR><BR>
 	 *
 	 * <B><U> Actions</U> :</B><BR><BR>
-	 * <li>Delete a specified/all (if effect=null) Muted abnormal L2Effect from L2Character and update client magic icone </li>
+	 * <li>Delete a specified/all (if effect=null) Muted abnormal L2Effect from L2Character and update client magic icon </li>
 	 * <li>Set the abnormal effect flag _muted to False </li>
 	 * <li>Notify the L2Character AI</li>
 	 * <li>Send Server->Client UserInfo/CharInfo packet</li><BR><BR>
@@ -2767,7 +2783,7 @@ public abstract class L2Character extends L2Object
 	 * Stop a specified/all Root abnormal L2Effect.<BR><BR>
 	 *
 	 * <B><U> Actions</U> :</B><BR><BR>
-	 * <li>Delete a specified/all (if effect=null) Root abnormal L2Effect from L2Character and update client magic icone </li>
+	 * <li>Delete a specified/all (if effect=null) Root abnormal L2Effect from L2Character and update client magic icon </li>
 	 * <li>Set the abnormal effect flag _rooted to False </li>
 	 * <li>Notify the L2Character AI</li>
 	 * <li>Send Server->Client UserInfo/CharInfo packet</li><BR><BR>
@@ -2784,12 +2800,33 @@ public abstract class L2Character extends L2Object
 		getAI().notifyEvent(CtrlEvent.EVT_THINK, null);
 		updateAbnormalEffect();
 	}
+	
+	/**
+	 * Stop immobilization until attacked abnormal L2Effect.<BR><BR>
+	 *
+	 * <B><U> Actions</U> :</B><BR><BR>
+	 * <li>Delete a specified/all (if effect=null) immobilization until attacked abnormal L2Effect from L2Character and update client magic icon </li>
+	 * <li>Set the abnormal effect flag _muted to False </li>
+	 * <li>Notify the L2Character AI</li>
+	 * <li>Send Server->Client UserInfo/CharInfo packet</li><BR><BR>
+	 *
+	 */
+	public final void stopImmobileUntilAttacked(L2Effect effect)
+	{
+		if (effect == null)
+			stopEffects(L2Effect.EffectType.IMMOBILEUNTILATTACKED);
+		else
+			removeEffect(effect);
+
+		setIsImmobileUntilAttacked(false);
+		updateAbnormalEffect();
+	}
 
 	/**
 	 * Stop a specified/all Sleep abnormal L2Effect.<BR><BR>
 	 *
 	 * <B><U> Actions</U> :</B><BR><BR>
-	 * <li>Delete a specified/all (if effect=null) Sleep abnormal L2Effect from L2Character and update client magic icone </li>
+	 * <li>Delete a specified/all (if effect=null) Sleep abnormal L2Effect from L2Character and update client magic icon </li>
 	 * <li>Set the abnormal effect flag _sleeping to False </li>
 	 * <li>Notify the L2Character AI</li>
 	 * <li>Send Server->Client UserInfo/CharInfo packet</li><BR><BR>
@@ -2811,7 +2848,7 @@ public abstract class L2Character extends L2Object
 	 * Stop a specified/all Stun abnormal L2Effect.<BR><BR>
 	 *
 	 * <B><U> Actions</U> :</B><BR><BR>
-	 * <li>Delete a specified/all (if effect=null) Stun abnormal L2Effect from L2Character and update client magic icone </li>
+	 * <li>Delete a specified/all (if effect=null) Stun abnormal L2Effect from L2Character and update client magic icon </li>
 	 * <li>Set the abnormal effect flag _stuned to False </li>
 	 * <li>Notify the L2Character AI</li>
 	 * <li>Send Server->Client UserInfo/CharInfo packet</li><BR><BR>
@@ -2842,7 +2879,7 @@ public abstract class L2Character extends L2Object
 	public abstract void updateAbnormalEffect();
 
 	/**
-	 * Update active skills in progress (In Use and Not In Use because stacked) icones on client.<BR><BR>
+	 * Update active skills in progress (In Use and Not In Use because stacked) icons on client.<BR><BR>
 	 *
 	 * <B><U> Concept</U> :</B><BR><BR>
 	 * All active skills effects in progress (In Use and Not In Use because stacked) are represented by an icone on the client.<BR><BR>
