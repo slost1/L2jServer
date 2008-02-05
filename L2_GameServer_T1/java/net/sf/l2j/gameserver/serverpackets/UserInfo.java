@@ -319,7 +319,7 @@ public final class UserInfo extends L2GameServerPacket
 
         writeH(_activeChar.getRecomLeft()); //c2  recommendations remaining
         writeH(_activeChar.getRecomHave()); //c2  recommendations received
-        writeD(0x00);
+        writeD(_activeChar.getMountNpcId() + 1000000);
         writeH(_activeChar.GetInventoryLimit());
 
         writeD(_activeChar.getClassId().getId());

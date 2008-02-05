@@ -341,7 +341,7 @@ public class CharInfo extends L2GameServerPacket
 				writeC(_activeChar.getAppearance().getInvisible() ? 1 : 0);	// invisible = 1  visible =0
 			}
 
-			writeC(0/*_activeChar.getMountType()*/);	// 1 on strider   2 on wyvern   0 no mount
+			writeC(_activeChar.getMountType());	// 1 on strider   2 on wyvern   0 no mount
 			writeC(_activeChar.getPrivateStoreType());   //  1 - sellshop
 
 			writeH(_activeChar.getCubics().size());
@@ -361,7 +361,7 @@ public class CharInfo extends L2GameServerPacket
 
 			writeC(_activeChar.getRecomLeft());                       //Changed by Thorgrim
 			writeH(_activeChar.getRecomHave()); //Blue value for name (0 = white, 255 = pure blue)
-			writeD(_activeChar.getClassId().getId());
+			writeD(_activeChar.getMountNpcId() + 1000000);
 
 			writeD(_maxCp);
 			writeD((int) _activeChar.getCurrentCp());

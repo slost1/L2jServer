@@ -203,10 +203,6 @@ public class PcKnownList extends PlayableKnownList
                 else
                 {
                 	getActiveChar().sendPacket(new CharInfo(otherPlayer));
-                    if (otherPlayer.isMounted())
-                    {
-                        getActiveChar().sendPacket(new Ride(otherPlayer, true, otherPlayer.getMountNpcId()));
-                    }
                 	int relation = otherPlayer.getRelation(getActiveChar());
                 	if (otherPlayer.getKnownList().getKnownRelations().get(getActiveChar().getObjectId()) != null && otherPlayer.getKnownList().getKnownRelations().get(getActiveChar().getObjectId()) != relation)
                 		getActiveChar().sendPacket(new RelationChanged(otherPlayer, relation, getActiveChar().isAutoAttackable(otherPlayer)));
