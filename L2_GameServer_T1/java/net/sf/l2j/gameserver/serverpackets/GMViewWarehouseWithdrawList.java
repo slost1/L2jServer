@@ -47,8 +47,8 @@ public class GMViewWarehouseWithdrawList extends L2GameServerPacket
 		writeS(_playerName);
 		writeD(_money);
 		writeH(_items.length);
-
-		for (L2ItemInstance item : _items)
+		
+        for (L2ItemInstance item : _items)
 		{
 			writeH(item.getItem().getType1());
 
@@ -57,74 +57,47 @@ public class GMViewWarehouseWithdrawList extends L2GameServerPacket
 			writeD(item.getCount());
 			writeH(item.getItem().getType2());
 			writeH(item.getCustomType1());
-
-			switch (item.getItem().getType2())
-			{
-				case L2Item.TYPE2_WEAPON:
-				{
-					writeD(item.getItem().getBodyPart());
-					writeH(item.getEnchantLevel());
-					writeH(((L2Weapon)item.getItem()).getSoulShotCount());
-					writeH(((L2Weapon)item.getItem()).getSpiritShotCount());
-					break;
-				}
-
-				case L2Item.TYPE2_SHIELD_ARMOR: 
-				case L2Item.TYPE2_ACCESSORY:
-				case L2Item.TYPE2_PET_WOLF:
-				case L2Item.TYPE2_PET_HATCHLING:
-				case L2Item.TYPE2_PET_STRIDER:
-				case L2Item.TYPE2_PET_BABY:
-				{
-					writeD(item.getItem().getBodyPart());
-					writeH(item.getEnchantLevel());
-					writeH(0x00);
-					writeH(0x00);
-					break;
-				}
-			}
-
-			writeD(item.getObjectId());
-
-			switch (item.getItem().getType2())
-			{
-				case L2Item.TYPE2_WEAPON:
-				{
-					if (item.isAugmented())
-					{
-						writeD(0x0000FFFF & item.getAugmentation().getAugmentationId());
-						writeD(item.getAugmentation().getAugmentationId() >> 16);
-					}
-					else
-					{
-						writeD(0);
-						writeD(0);
-					}
-
-					break;
-				}
-
-				case L2Item.TYPE2_SHIELD_ARMOR: 
-				case L2Item.TYPE2_ACCESSORY:
-				case L2Item.TYPE2_PET_WOLF:
-				case L2Item.TYPE2_PET_HATCHLING:
-				case L2Item.TYPE2_PET_STRIDER:
-				case L2Item.TYPE2_PET_BABY:
-				{
-					writeD(0);
-					writeD(0);
-				}
-			}
-            writeD(item.getAttackAttrElement());
-            writeD(item.getAttackAttrElementVal());
-            writeD(item.getDefAttrFire());
-            writeD(item.getDefAttrWater());
-            writeD(item.getDefAttrWind());
-            writeD(item.getDefAttrEarth());
-            writeD(item.getDefAttrHoly()); 
-            writeD(item.getDefAttrUnholy());
             
-            writeD(item.getMana()); // here?
+            if (item.getItem().isEquipable())
+            {
+                writeD(item.getItem().getBodyPart());
+                writeH(item.getEnchantLevel());
+                
+                if (item.getItem() instanceof L2Weapon)
+                {
+                    writeH(((L2Weapon)item.getItem()).getSoulShotCount());
+                    writeH(((L2Weapon)item.getItem()).getSpiritShotCount());
+                }
+                else
+                {
+                    writeH(0x00);
+                    writeH(0x00);
+                }
+                
+                
+                if (item.isAugmented())
+                {
+                    writeD(0x0000FFFF & item.getAugmentation().getAugmentationId());
+                    writeD(item.getAugmentation().getAugmentationId() >> 16);
+                }
+                else
+                {
+                    writeQ(0);
+                }
+                writeD(item.getObjectId());
+                
+                writeD(item.getAttackAttrElement());
+                writeD(item.getAttackAttrElementVal());
+                writeD(item.getDefAttrFire());
+                writeD(item.getDefAttrWater());
+                writeD(item.getDefAttrWind());
+                writeD(item.getDefAttrEarth());
+                writeD(item.getDefAttrHoly()); 
+                writeD(item.getDefAttrUnholy());
+                
+            }
+            
+            writeD(item.getMana());
 		}
 	}
 
