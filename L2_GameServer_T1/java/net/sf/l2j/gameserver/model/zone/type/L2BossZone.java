@@ -88,29 +88,32 @@ public class L2BossZone extends L2ZoneType
                 ((L2PcInstance) character).sendMessage("You entered "
                         + _zoneName);
             }
-            // Get the information about this player's last logout-exit from
-            // this zone.
-            Long expirationTime = _playerAllowedEntryExpirationTimes.get(character.getObjectId());
-            
-            // with legal entries, do nothing.
-            if (expirationTime == null) // legal null expirationTime entries
-            {
-                long serverStartTime = GameServer.dateTimeServerStarted.getTimeInMillis();
-                long playerLastAccess = ((L2PcInstance) character).getLastAccess();
-                if ((serverStartTime > (System.currentTimeMillis() - _timeInvade))
-                        && (playerLastAccess < serverStartTime)
-                        && (playerLastAccess > (serverStartTime - 4 * _timeInvade)))
-                    return;
-            }
             else
-            // legal non-null logoutTime entries
             {
-                _playerAllowedEntryExpirationTimes.remove(character.getObjectId());
-                if (expirationTime.longValue() > System.currentTimeMillis())
-                    return;
+                // Get the information about this player's last logout-exit from
+                // this zone.
+                Long expirationTime = _playerAllowedEntryExpirationTimes.get(character.getObjectId());
+                
+                // with legal entries, do nothing.
+                if (expirationTime == null) // legal null expirationTime entries
+                {
+                    long serverStartTime = GameServer.dateTimeServerStarted.getTimeInMillis();
+                    long playerLastAccess = ((L2PcInstance) character).getLastAccess();
+                    if ((serverStartTime > (System.currentTimeMillis() - _timeInvade))
+                            && (playerLastAccess < serverStartTime)
+                            && (playerLastAccess > (serverStartTime - 4 * _timeInvade)))
+                        return;
+                }
+                else
+                // legal non-null logoutTime entries
+                {
+                    _playerAllowedEntryExpirationTimes.remove(character.getObjectId());
+                    if (expirationTime.longValue() > System.currentTimeMillis())
+                        return;
+                }
+                // teleport out all players who attempt "illegal" (re-)entry
+                ((L2PcInstance) character).teleToLocation(MapRegionTable.TeleportWhereType.Town);
             }
-            // teleport out all players who attempt "illegal" (re-)entry
-            ((L2PcInstance) character).teleToLocation(MapRegionTable.TeleportWhereType.Town);
         }
     }
     
