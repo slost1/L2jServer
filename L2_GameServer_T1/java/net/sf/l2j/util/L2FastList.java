@@ -14,20 +14,39 @@
  */
 package net.sf.l2j.util;
 
-import javolution.util.FastList;
+import java.util.LinkedList;
+
 /**
- *
- * @author  Julian
- */
-public class L2FastList<T extends Object> extends FastList<T>
+*
+* A custom version of LinkedList with extension for iterating without using temporary collection<br>
+* It`s provide synchronization lock when iterating if needed<br>
+* <br>
+* @author  Julian Version 1.0.1 (2008-02-07)<br>
+* Changes:<br>
+*      1.0.0 - Initial version.<br>
+*      1.0.1 - Made forEachP() final.<br>
+*/
+public class L2FastList<T extends Object> extends LinkedList<T>
 {
 	static final long serialVersionUID = 1L;
 	
+    /**
+     * Public inner interface used by ForEach iterations<br>
+     *
+     * @author  Julian
+     */
 	public interface I2ForEach<T> {
 		public boolean ForEach(T obj);
-		public FastList.Node<T> getNext(FastList.Node<T> priv);
 	}
 	
+     /**
+      * Public method that iterate entire collection.<br>
+      * <br>
+      * @param func - a class method that must be executed on every element of collection.<br>
+      * @param sync - if set to true, will lock entire collection.<br>
+      * @return - returns true if entire collection is iterated, false if it`s been interrupted by<br>
+      *             check method (I2ForEach.forEach())<br>
+      */
 	public final boolean forEach(I2ForEach<T> func, boolean sync) {
 		if (sync)
 			synchronized(this) { return forEachP(func); }
@@ -35,9 +54,10 @@ public class L2FastList<T extends Object> extends FastList<T>
 			return forEachP(func);
 	}
 	
-	private boolean forEachP(I2ForEach<T> func) {
-		for (FastList.Node<T> e = head(), end = tail(); (e = func.getNext(e))!=end;)
-			if (!func.ForEach(e.getValue())) return false;
+    // private method that implements forEach iteration
+	private final boolean forEachP(I2ForEach<T> func) {
+		for (T e: this)
+			if (!func.ForEach(e)) return false;
 		return true;
 	}
 }
