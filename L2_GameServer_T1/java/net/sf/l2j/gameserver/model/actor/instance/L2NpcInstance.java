@@ -1656,7 +1656,7 @@ public class L2NpcInstance extends L2Character
         
       
         // If the player is too high level, display a message and return
-        if (player_level > higestLevel || !player.isNewbie())
+        if (player_level > higestLevel)
         {
             String content = "<html><body>Newbie Guide:<br>Only a <font color=\"LEVEL\">novice character of level "+ higestLevel +" or less</font> can receive my support magic.<br>Your novice character is the first one that you created and raised in this world.</body></html>";
             insertObjectIdAndShowChatWindow(player, content);
