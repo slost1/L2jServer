@@ -79,6 +79,9 @@ public class ThreadPoolManager
 	// temp
 	private ScheduledThreadPoolExecutor _aiScheduledThreadPool;
 
+    /** temp workaround for VM issue */
+    private static final long MAX_DELAY = Long.MAX_VALUE/1000000/2;
+    
 	private boolean _shutdown;
 
 	public static ThreadPoolManager getInstance()
@@ -117,63 +120,100 @@ public class ThreadPoolManager
 
 		_aiScheduledThreadPool = new ScheduledThreadPoolExecutor(Config.AI_MAX_THREAD, new PriorityThreadFactory("AISTPool", Thread.NORM_PRIORITY));
 	}
+    
+    public static long validateDelay(long delay)
+    {
+        if (delay < 0)
+        {
+            delay = 0;
+        }
+        else if (delay > MAX_DELAY)
+        {
+            delay = MAX_DELAY;
+        }
+        return delay;
+    }
 
 	public ScheduledFuture<?> scheduleEffect(Runnable r, long delay)
 	{
 		try
 		{
-			if (delay < 0) delay = 0;
-			return _effectsScheduledThreadPool.schedule(r, delay, TimeUnit.MILLISECONDS);
-		} catch (RejectedExecutionException e) { return null; /* shutdown, ignore */ }
+            delay = ThreadPoolManager.validateDelay(delay);
+            return _effectsScheduledThreadPool.schedule(r, delay, TimeUnit.MILLISECONDS);
+        }
+        catch (RejectedExecutionException e)
+        {
+            return null;
+        }
 	}
 
 	public ScheduledFuture<?> scheduleEffectAtFixedRate(Runnable r, long initial, long delay)
 	{
 		try
-		{
-			if (delay < 0) delay = 0;
-			if (initial < 0) initial = 0;
-			return _effectsScheduledThreadPool.scheduleAtFixedRate(r, initial, delay, TimeUnit.MILLISECONDS);
-		} catch (RejectedExecutionException e) { return null; /* shutdown, ignore */ }
+        {
+            delay = ThreadPoolManager.validateDelay(delay);
+            initial = ThreadPoolManager.validateDelay(initial);
+            return _effectsScheduledThreadPool.scheduleAtFixedRate(r, initial, delay, TimeUnit.MILLISECONDS);
+        }
+        catch (RejectedExecutionException e)
+        {
+            return null; /* shutdown, ignore */
+        }
 	}
 
 	public ScheduledFuture<?> scheduleGeneral(Runnable r, long delay)
 	{
 		try
-		{
-			if (delay < 0) delay = 0;
-			return _generalScheduledThreadPool.schedule(r, delay, TimeUnit.MILLISECONDS);
-		} catch (RejectedExecutionException e) { return null; /* shutdown, ignore */ }
-	}
+        {
+            delay = ThreadPoolManager.validateDelay(delay);
+            return _generalScheduledThreadPool.schedule(r, delay, TimeUnit.MILLISECONDS);
+        }
+        catch (RejectedExecutionException e)
+        {
+            return null; /* shutdown, ignore */
+        }
+    }
 
 	public ScheduledFuture<?> scheduleGeneralAtFixedRate(Runnable r, long initial, long delay)
-	{
-		try
-		{
-			if (delay < 0) delay = 0;
-			if (initial < 0) initial = 0;
-			return _generalScheduledThreadPool.scheduleAtFixedRate(r, initial, delay, TimeUnit.MILLISECONDS);
-		} catch (RejectedExecutionException e) { return null; /* shutdown, ignore */ }
-	}
+    {
+        try
+        {
+            delay = ThreadPoolManager.validateDelay(delay);
+            initial = ThreadPoolManager.validateDelay(initial);
+            return _generalScheduledThreadPool.scheduleAtFixedRate(r, initial, delay, TimeUnit.MILLISECONDS);
+        }
+        catch (RejectedExecutionException e)
+        {
+            return null; /* shutdown, ignore */
+        }
+    }
 
 	public ScheduledFuture<?> scheduleAi(Runnable r, long delay)
 	{
-		try
-		{
-			if (delay < 0) delay = 0;
-			return _aiScheduledThreadPool.schedule(r, delay, TimeUnit.MILLISECONDS);
-		} catch (RejectedExecutionException e) { return null; /* shutdown, ignore */ }
-	}
+        try
+        {
+            delay = ThreadPoolManager.validateDelay(delay);
+            return _aiScheduledThreadPool.schedule(r, delay, TimeUnit.MILLISECONDS);
+        }
+        catch (RejectedExecutionException e)
+        {
+            return null; /* shutdown, ignore */
+        }
+    }
 
 	public ScheduledFuture<?> scheduleAiAtFixedRate(Runnable r, long initial, long delay)
 	{
-		try
-		{
-			if (delay < 0) delay = 0;
-			if (initial < 0) initial = 0;
-			return _aiScheduledThreadPool.scheduleAtFixedRate(r, initial, delay, TimeUnit.MILLISECONDS);
-		} catch (RejectedExecutionException e) { return null; /* shutdown, ignore */ }
-	}
+        try
+        {
+            delay = ThreadPoolManager.validateDelay(delay);
+            initial = ThreadPoolManager.validateDelay(initial);
+            return _aiScheduledThreadPool.scheduleAtFixedRate(r, initial, delay, TimeUnit.MILLISECONDS);
+        }
+        catch (RejectedExecutionException e)
+        {
+            return null; /* shutdown, ignore */
+        }
+    }
 
 	public void executePacket(ReceivablePacket<L2GameClient> pkt)
 	{
