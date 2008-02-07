@@ -30,6 +30,8 @@ public class TvTManager implements Runnable
 	/** The one and only instance of this class<br> */
 	private static TvTManager _instance = null;
 
+    private TvTStartTask _task;
+    
 	/**
 	 * New instance only by getInstance()<br>
 	 */
@@ -37,11 +39,15 @@ public class TvTManager implements Runnable
 	{
 		if (Config.TVT_EVENT_ENABLED)
 		{
-			ThreadPoolManager.getInstance().scheduleGeneral(this, 0);
+            TvTEvent.init();
+            
+            this.scheduleEventStart();
 			_log.info("TvTEventEngine[TvTManager.TvTManager()]: Started.");
 		}
 		else
+        {
 			_log.info("TvTEventEngine[TvTManager.TvTManager()]: Engine is disabled.");
+        }
 	}
 
 	/**
@@ -56,6 +62,12 @@ public class TvTManager implements Runnable
 
 		return _instance;
 	}
+    
+    public void scheduleEventStart()
+    {
+        _task = new TvTStartTask(System.currentTimeMillis() + Config.TVT_EVENT_INTERVAL*60*1000);
+        ThreadPoolManager.getInstance().executeTask(_task);
+    }
 
 	/**
 	 * The task method to handle cycles of the event<br><br>
@@ -64,38 +76,168 @@ public class TvTManager implements Runnable
 	 */
 	public void run()
 	{
-		TvTEvent.init();
-
-		for (;;)
-		{
-			waiter(Config.TVT_EVENT_INTERVAL * 60); // in config given as minutes
-
-			if (!TvTEvent.startParticipation())
-			{
-				Announcements.getInstance().announceToAll("TvT Event: Event was canceled.");
-				_log.warning("TvTEventEngine[TvTManager.run()]: Error spawning event npc for participation.");
-				continue;
-			}
-			else
-				Announcements.getInstance().announceToAll("TvT Event: Registration opened for " + Config.TVT_EVENT_PARTICIPATION_TIME +  " minute(s).");
-
-			waiter(Config.TVT_EVENT_PARTICIPATION_TIME * 60); // in config given as minutes
-
-			if (!TvTEvent.startFight())
-			{
-				Announcements.getInstance().announceToAll("TvT Event: Event canceled due to lack of Participation.");
-				_log.info("TvTEventEngine[TvTManager.run()]: Lack of registration, abort event.");
-				continue;
-			}
-			else
-				TvTEvent.sysMsgToAllParticipants("TvT Event: Teleporting participants to an arena in " + Config.TVT_EVENT_START_LEAVE_TELEPORT_DELAY + " second(s).");
-
-			waiter(Config.TVT_EVENT_RUNNING_TIME * 60); // in config given as minutes
-			Announcements.getInstance().announceToAll(TvTEvent.calculateRewards());
-			TvTEvent.sysMsgToAllParticipants("TvT Event: Teleporting back to the registration npc in " + Config.TVT_EVENT_START_LEAVE_TELEPORT_DELAY + " second(s).");
-			TvTEvent.stopFight();
-		}
+	    if (!TvTEvent.startParticipation())
+	    {
+	        Announcements.getInstance().announceToAll("TvT Event: Event was canceled.");
+	        _log.warning("TvTEventEngine[TvTManager.run()]: Error spawning event npc for participation.");
+	        
+	        this.scheduleEventStart();
+	    }
+	    else
+	    {
+	        Announcements.getInstance().announceToAll("TvT Event: Registration opened for " + Config.TVT_EVENT_PARTICIPATION_TIME +  " minute(s).");
+            
+	        // schedule registration end
+	        _task.setStartTime(System.currentTimeMillis() + Config.TVT_EVENT_PARTICIPATION_TIME*60*1000);
+	        ThreadPoolManager.getInstance().executeTask(_task);
+	    }
 	}
+
+    public void startEvent()
+    {
+        if (!TvTEvent.startFight())
+        {
+            Announcements.getInstance().announceToAll("TvT Event: Event canceled due to lack of Participation.");
+            _log.info("TvTEventEngine[TvTManager.run()]: Lack of registration, abort event.");
+            
+            this.scheduleEventStart();
+        }
+        else
+        {
+            TvTEvent.sysMsgToAllParticipants("TvT Event: Teleporting participants to an arena in " + Config.TVT_EVENT_START_LEAVE_TELEPORT_DELAY + " second(s).");
+            _task.setStartTime(System.currentTimeMillis() + Config.TVT_EVENT_RUNNING_TIME*60*1000);
+            ThreadPoolManager.getInstance().executeTask(_task);
+        }
+    }
+    
+    public void endEvent()
+    {
+        Announcements.getInstance().announceToAll(TvTEvent.calculateRewards());
+        TvTEvent.sysMsgToAllParticipants("TvT Event: Teleporting back to the registration npc in " + Config.TVT_EVENT_START_LEAVE_TELEPORT_DELAY + " second(s).");
+        TvTEvent.stopFight();
+        
+        this.scheduleEventStart();
+    }
+    
+    class TvTStartTask implements Runnable
+    {
+        private long _startTime;
+
+        public TvTStartTask(long startTime)
+        {
+            _startTime = startTime;
+        }
+        
+        public void setStartTime(long startTime)
+        {
+            _startTime = startTime;
+        }
+        
+        /**
+         * @see java.lang.Runnable#run()
+         */
+        public void run()
+        {
+            int delay = (int) Math.round((_startTime - System.currentTimeMillis()) / 1000.0);
+            
+            if (delay > 0)
+            {
+                this.announce(delay);
+            }
+            
+            int nextMsg = 0;
+            if (delay > 3600)
+            {
+                nextMsg = delay - 3600;
+            }
+            else if (delay > 1800)
+            {
+                nextMsg = delay - 1800;
+            }
+            else if (delay > 900)
+            {
+                nextMsg = delay - 900;
+            }
+            else if (delay > 600)
+            {
+                nextMsg = delay - 600;
+            }
+            else if (delay > 300)
+            {
+                nextMsg = delay - 300;
+            }
+            else if (delay > 60)
+            {
+                nextMsg = delay - 60;
+            }
+            else if (delay > 5)
+            {
+                nextMsg = delay - 5;
+            }
+            else if (delay > 0)
+            {
+                nextMsg = delay;
+            }
+            else
+            {
+                // start
+                if (TvTEvent.isInactive())
+                {
+                    TvTManager.this.run();
+                }
+                else if (TvTEvent.isParticipating())
+                {
+                    TvTManager.this.startEvent();
+                }
+                else
+                {
+                    TvTManager.this.endEvent();
+                }
+            }
+            
+            if (delay > 0)
+            {
+                ThreadPoolManager.getInstance().scheduleGeneral(this, nextMsg*1000);
+            }
+        }
+        
+        private void announce(long time)
+        {
+            if (time >= 3600 && time%3600 == 0)
+            {
+                if (TvTEvent.isParticipating())
+                {
+                    Announcements.getInstance().announceToAll("TvT Event: "+(time/60/60)+" hour(s) umtil registration is closed!");
+                }
+                else if (TvTEvent.isStarted())
+                {
+                    TvTEvent.sysMsgToAllParticipants("TvT Event: "+(time/60/60)+" hour(s) until event is finished!");
+                }
+            }
+            else if (time >= 60)
+            {
+                if (TvTEvent.isParticipating())
+                {
+                    Announcements.getInstance().announceToAll("TvT Event: "+(time/60)+" minute(s) until registration is closed!");
+                }
+                else if (TvTEvent.isStarted())
+                {
+                    TvTEvent.sysMsgToAllParticipants("TvT Event: "+(time/60)+" minute(s) until the event is finished!");
+                }
+            }
+            else
+            {
+                if (TvTEvent.isParticipating())
+                {
+                    Announcements.getInstance().announceToAll("TvT Event: "+time+" second(s) until registration is closed!");
+                }
+                else if (TvTEvent.isStarted())
+                {
+                    TvTEvent.sysMsgToAllParticipants("TvT Event: "+time+" second(s) until the event is finished!");
+                }
+            }
+        }
+    }
 
 	/**
 	 * This method waits for a period time delay<br><br>
@@ -110,50 +252,7 @@ public class TvTManager implements Runnable
 
 			if (TvTEvent.isParticipating() || TvTEvent.isStarted())
 			{
-				switch (seconds)
-				{
-				case 3600: // 1 hour left
-					if (TvTEvent.isParticipating())
-						Announcements.getInstance().announceToAll("TvT Event: " + seconds / 60 / 60 + " hour(s) umtil registration is closed!");
-					else if (TvTEvent.isStarted())
-						TvTEvent.sysMsgToAllParticipants("TvT Event: " + seconds / 60 / 60 + " hour(s) until event is finished!");
-
-					break;
-				case 1800: // 30 minutes left
-				case 900: // 15 minutes left
-				case 600: //  10 minutes left
-				case 300: // 5 minutes left
-				case 240: // 4 minutes left
-				case 180: // 3 minutes left
-				case 120: // 2 minutes left
-				case 60: // 1 minute left
-					if (TvTEvent.isParticipating())
-						Announcements.getInstance().announceToAll("TvT Event: " + seconds / 60 + " minute(s) until registration is closed!");
-					else if (TvTEvent.isStarted())
-						TvTEvent.sysMsgToAllParticipants("TvT Event: " + seconds / 60 + " minute(s) until the event is finished!");
-
-					break;
-				case 30: // 30 seconds left
-				/**
-				 * case 15: // 15 seconds left
-				 * case 10: // 10 seconds left
-				*/
-				case 5: // 5 seconds left
-
-				/**
-				 *
-				 * case 4: // 4 seconds left
-				 * case 3: // 3 seconds left
-				 * case 2: // 2 seconds left
-				 * case 1: // 1 seconds left
-				*/
-					if (TvTEvent.isParticipating())
-						Announcements.getInstance().announceToAll("TvT Event: " + seconds + " second(s) until registration is closed!");
-					else if (TvTEvent.isStarted())
-						TvTEvent.sysMsgToAllParticipants("TvT Event: " + seconds + " second(s) until the event is finished!");
-
-					break;
-				}
+				
 			}
 
 			long oneSecWaitStart = System.currentTimeMillis();
