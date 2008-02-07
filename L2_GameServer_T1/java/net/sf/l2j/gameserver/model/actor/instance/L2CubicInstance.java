@@ -174,7 +174,7 @@ public class L2CubicInstance
 
         public void run()
         {
-            if (_owner.isDead() || _target.isDead() || _owner.getTarget() != _target)
+            if (_owner.isDead() || _target == null || _target.isDead() || _owner.getTarget() != _target)
             {
                 stopAction();
                 if (_owner.isDead())
