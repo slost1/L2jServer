@@ -491,6 +491,10 @@ public abstract class L2Skill
     protected EffectTemplate[] _effectTemplates;
     protected EffectTemplate[] _effectTemplatesSelf;
 
+    // Flying support
+    private final String _flyType;
+    private final int _flyRadius;
+
     protected L2Skill(StatsSet set)
     {
         _id = set.getInteger("skill_id");
@@ -580,6 +584,9 @@ public abstract class L2Skill
         _nextDanceCost = set.getInteger("nextDanceCost", 0);
         _sSBoost = set.getFloat("SSBoost", 0.f);
         _aggroPoints = set.getInteger("aggroPoints", 0);
+
+	_flyType = set.getString("flyType", null);
+	_flyRadius = set.getInteger("flyRadius", 200);
 
         String canLearn = set.getString("canLearn", null);
         if (canLearn == null)
@@ -1138,6 +1145,17 @@ public abstract class L2Skill
     {
     	return _directHpDmg;
     }
+
+    public final String getFlyType()
+    {
+    	return _flyType;
+    }
+
+    public final int getFlyRadius()
+    {
+    	return _flyRadius;
+    }
+
     public final boolean isSkillTypeOffensive()
     {
         switch (_skillType)
@@ -1446,10 +1464,10 @@ public abstract class L2Skill
                         if (obj == activeChar || obj == src) continue;
                     	if (src != null)
                         {
-				if (!GeoData.getInstance().canSeeTarget(activeChar, obj))
+				if (!((L2Character) obj).isFront(activeChar))
                     			continue;
 
-				if (!((L2Character) obj).isFront(activeChar))
+				if (!GeoData.getInstance().canSeeTarget(activeChar, obj))
                     			continue;
 
 				// check if both attacker and target are L2PcInstances and if they are in same party
@@ -1505,10 +1523,10 @@ public abstract class L2Skill
                         if (obj == activeChar || obj == src) continue;
                     	if (src != null)
                         {
-				if (!GeoData.getInstance().canSeeTarget(activeChar, obj))
+				if (!((L2Character) obj).isBehind(activeChar))
                     			continue;
 
-				if (!((L2Character) obj).isBehind(activeChar))
+				if (!GeoData.getInstance().canSeeTarget(activeChar, obj))
                     			continue;
 
 				// check if both attacker and target are L2PcInstances and if they are in same party
@@ -1695,21 +1713,28 @@ public abstract class L2Skill
 
                 for (L2Object obj : activeChar.getKnownList().getKnownObjects().values())
                 {
-                    if (obj == null) continue;
-                	if (!(obj instanceof L2Attackable || obj instanceof L2PlayableInstance)) continue;
-                    if (obj == cha) continue;
-                    target = (L2Character) obj;
+                    if (obj == null)
+			continue;
 
-                    if (!GeoData.getInstance().canSeeTarget(activeChar, target))
-            			continue;
+		    if (!(obj instanceof L2Attackable
+			|| obj instanceof L2PlayableInstance))
+			continue;
+
+                    if (obj == cha)
+			continue;
+
+                    target = (L2Character) obj;
 
                     if(!target.isAlikeDead() && (target != activeChar))
                     {
                         if (!Util.checkIfInRange(radius, obj, activeChar, true))
-                          continue;
+			   continue;
 
-			if (!target.isFront(activeChar))
-				continue;
+			if (!((L2Character) obj).isFront(activeChar))
+			   continue;
+
+			if (!GeoData.getInstance().canSeeTarget(activeChar, obj))
+			   continue;
 
                         if (src != null) // caster is l2playableinstance and exists
                         {
@@ -1819,16 +1844,16 @@ public abstract class L2Skill
                     if (obj == cha) continue;
                     target = (L2Character) obj;
 
-                    if (!GeoData.getInstance().canSeeTarget(activeChar, target))
-            			continue;
-
                     if(!target.isAlikeDead() && (target != activeChar))
                     {
                         if (!Util.checkIfInRange(radius, obj, activeChar, true))
-                          continue;
+                        	continue;
 
-			if (!target.isBehind(activeChar))
+			if (!((L2Character) obj).isBehind(activeChar))
 				continue;
+
+			if (!GeoData.getInstance().canSeeTarget(activeChar, obj))
+            			continue;
 
                         if (src != null) // caster is l2playableinstance and exists
                         {

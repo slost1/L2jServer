@@ -18,7 +18,7 @@
 package net.sf.l2j.gameserver.serverpackets;
 
 import net.sf.l2j.gameserver.model.L2Object;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.L2Character;
 
 /**
  *
@@ -26,7 +26,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
  */
 public final class FlyToLocation extends L2GameServerPacket
 {
-    private final L2PcInstance _cha;
+    private final L2Character _cha;
     private final int _destX, _destY, _destZ;
     private final FlyType _type;
     
@@ -38,7 +38,7 @@ public final class FlyToLocation extends L2GameServerPacket
         CHARGE;
     }
     
-    public FlyToLocation(L2PcInstance cha, int destX, int destY, int destZ, FlyType type)
+    public FlyToLocation(L2Character cha, int destX, int destY, int destZ, FlyType type)
     {
         _cha = cha;
         _destX = destX;
@@ -47,7 +47,7 @@ public final class FlyToLocation extends L2GameServerPacket
         _type = type;
     }
     
-    public FlyToLocation(L2PcInstance cha, L2Object dest, FlyType type)
+    public FlyToLocation(L2Character cha, L2Object dest, FlyType type)
     {
         this(cha, dest.getX(), dest.getY(), dest.getZ(), type);
     }

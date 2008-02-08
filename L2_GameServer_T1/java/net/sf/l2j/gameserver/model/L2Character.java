@@ -89,6 +89,8 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.serverpackets.TargetUnselected;
 import net.sf.l2j.gameserver.serverpackets.TeleportToLocation;
 import net.sf.l2j.gameserver.serverpackets.UserInfo;
+import net.sf.l2j.gameserver.serverpackets.FlyToLocation;
+import net.sf.l2j.gameserver.serverpackets.FlyToLocation.FlyType;
 import net.sf.l2j.gameserver.skills.Calculator;
 import net.sf.l2j.gameserver.skills.Formulas;
 import net.sf.l2j.gameserver.skills.Stats;
@@ -1484,6 +1486,12 @@ public abstract class L2Character extends L2Object
 			startForceBuff(target, skill);
 		}
 
+		// Before start AI Cast Broadcast Fly Effect is Need
+		if (skill.getFlyType() != null && (this instanceof L2PcInstance))
+		{
+			ThreadPoolManager.getInstance().scheduleEffect(new FlyToLocationTask(this, target, skill), 50);
+		}
+
 		// launch the magic in hitTime milliseconds
 		if (hitTime > 210)
 		{
@@ -2101,9 +2109,37 @@ public abstract class L2Character extends L2Object
 
 
 
+	/** Task lauching the magic skill phases */
+	class FlyToLocationTask implements Runnable
+	{
+		@SuppressWarnings("hiding")
+        L2Object _target;
+		L2Character _actor;
+		L2Skill _skill;
 
+		public FlyToLocationTask(L2Character actor, L2Object target, L2Skill skill)
+		{
+			_actor = actor;
+			_target = target;
+			_skill = skill;
+		}
 
+		public void run()
+		{
+			try
+			{
+				FlyType _flyType;
+	
+				_flyType = FlyType.valueOf(_skill.getFlyType());
 
+				broadcastPacket(new FlyToLocation(_actor,_target,_flyType));
+			}
+			catch (Throwable e)
+			{
+				_log.log(Level.SEVERE, "", e);
+			}
+		}
+	}
 
 
 
