@@ -978,8 +978,10 @@ public final class Config
     public static double   RAID_HP_REGEN_MULTIPLIER;
     /** Mulitplier for Raid boss MP regeneration */
     public static double   RAID_MP_REGEN_MULTIPLIER;
-    /** Multiplier for Raid boss defense multiplier */
-    public static double   RAID_DEFENCE_MULTIPLIER;
+    /** Multiplier for Raid boss power defense multiplier */
+    public static double   RAID_PDEFENCE_MULTIPLIER;
+    /** Multiplier for Raid boss magic defense multiplier */
+    public static double   RAID_MDEFENCE_MULTIPLIER;
     /** Raid Boss Minin Spawn Timer */
     public static double   RAID_MINION_RESPAWN_TIMER;
     /** Mulitplier for Raid boss minimum time respawn */
@@ -1522,7 +1524,8 @@ public final class Config
 
                 RAID_HP_REGEN_MULTIPLIER  = Double.parseDouble(otherSettings.getProperty("RaidHpRegenMultiplier", "100")) /100;
                 RAID_MP_REGEN_MULTIPLIER  = Double.parseDouble(otherSettings.getProperty("RaidMpRegenMultiplier", "100")) /100;
-                RAID_DEFENCE_MULTIPLIER  = Double.parseDouble(otherSettings.getProperty("RaidDefenceMultiplier", "100")) /100;
+                RAID_PDEFENCE_MULTIPLIER  = Double.parseDouble(otherSettings.getProperty("RaidPDefenceMultiplier", "100")) /100;
+                RAID_MDEFENCE_MULTIPLIER  = Double.parseDouble(otherSettings.getProperty("RaidMDefenceMultiplier", "100")) /100;
                 RAID_MINION_RESPAWN_TIMER  = Integer.parseInt(otherSettings.getProperty("RaidMinionRespawnTime", "300000"));
                 RAID_MIN_RESPAWN_MULTIPLIER = Float.parseFloat(otherSettings.getProperty("RaidMinRespawnMultiplier", "1.0"));
                 RAID_MAX_RESPAWN_MULTIPLIER = Float.parseFloat(otherSettings.getProperty("RaidMaxRespawnMultiplier", "1.0"));
@@ -2318,7 +2321,8 @@ public final class Config
 
         else if (pName.equalsIgnoreCase("RaidHpRegenMultiplier")) RAID_HP_REGEN_MULTIPLIER = Double.parseDouble(pValue);
         else if (pName.equalsIgnoreCase("RaidMpRegenMultiplier")) RAID_MP_REGEN_MULTIPLIER = Double.parseDouble(pValue);
-        else if (pName.equalsIgnoreCase("RaidDefenceMultiplier")) RAID_DEFENCE_MULTIPLIER = Double.parseDouble(pValue) /100;
+        else if (pName.equalsIgnoreCase("RaidPDefenceMultiplier")) RAID_PDEFENCE_MULTIPLIER = Double.parseDouble(pValue) /100;
+        else if (pName.equalsIgnoreCase("RaidMDefenceMultiplier")) RAID_MDEFENCE_MULTIPLIER = Double.parseDouble(pValue) /100;
         else if (pName.equalsIgnoreCase("RaidMinionRespawnTime")) RAID_MINION_RESPAWN_TIMER =Integer.parseInt(pValue);
 
         else if (pName.equalsIgnoreCase("StartingAdena")) STARTING_ADENA = Integer.parseInt(pValue);

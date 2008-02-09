@@ -393,7 +393,7 @@ public class CharStat
 
 		// Calculate modifier for Raid Bosses
 		if (_activeChar.isRaid())
-			defence *= Config.RAID_DEFENCE_MULTIPLIER;
+			defence *= Config.RAID_MDEFENCE_MULTIPLIER;
 
 		// Calculate modifiers Magic Attack
 		return (int) calcStat(Stats.MAGIC_DEFENCE, defence, target, skill);
@@ -526,7 +526,7 @@ public class CharStat
     	if (_activeChar == null)
     		return 1;
 
-		return (int) calcStat(Stats.POWER_DEFENCE, (_activeChar.isRaid()) ? _activeChar.getTemplate().basePDef * Config.RAID_DEFENCE_MULTIPLIER : _activeChar.getTemplate().basePDef, target, null);
+		return (int) calcStat(Stats.POWER_DEFENCE, (_activeChar.isRaid()) ? _activeChar.getTemplate().basePDef * Config.RAID_PDEFENCE_MULTIPLIER : _activeChar.getTemplate().basePDef, target, null);
 	}
 
 	/** Return the Physical Attack range (base+modifier) of the L2Character. */
