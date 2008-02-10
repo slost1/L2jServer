@@ -41,6 +41,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.scripting.ManagedScript;
 import net.sf.l2j.gameserver.scripting.ScriptManager;
+import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
@@ -383,6 +384,7 @@ public class Quest extends ManagedScript
 			NpcHtmlMessage npcReply = new NpcHtmlMessage(5);
 			npcReply.setHtml(res);
 			player.sendPacket(npcReply);
+			player.sendPacket(new ActionFailed());
 		}
 		else {
 			SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
@@ -973,6 +975,7 @@ public class Quest extends ManagedScript
              NpcHtmlMessage npcReply = new NpcHtmlMessage(5);
              npcReply.setHtml(content);
              player.sendPacket(npcReply);
+             player.sendPacket(new ActionFailed());
          }
          
          return content;
