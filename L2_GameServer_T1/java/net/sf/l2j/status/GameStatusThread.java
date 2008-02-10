@@ -171,7 +171,7 @@ public class GameStatusThread extends Thread
                 else
                 {
                     _print.println("Password Correct!");
-                    _print.println("[L2J]");
+                    _print.println("[L2J Game Server]");
                     _print.print("");
                     _print.flush();
                     start();

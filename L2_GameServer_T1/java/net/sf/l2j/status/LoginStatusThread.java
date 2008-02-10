@@ -22,20 +22,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-import net.sf.l2j.Base64;
 import net.sf.l2j.Config;
-import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.loginserver.GameServerTable;
 import net.sf.l2j.loginserver.L2LoginServer;
 import net.sf.l2j.loginserver.LoginController;
@@ -52,8 +44,6 @@ public class LoginStatusThread extends Thread
 
 
 	private boolean _redirectLogger;
-
-	private String _pass;
 
 	private void telnetOutput(int type, String text) {
 		if ( type == 1 ) System.out.println("TELNET | "+text);
@@ -104,144 +94,49 @@ public class LoginStatusThread extends Thread
 		return result;
 	}
 
-	public LoginStatusThread(Socket client, int uptime) throws IOException
+	public LoginStatusThread(Socket client, int uptime, String StatusPW) throws IOException
 	{
-		_cSocket = client;
+        _cSocket = client;
 
-		_print = new PrintWriter(_cSocket.getOutputStream());
-		_read  = new BufferedReader(new InputStreamReader(_cSocket.getInputStream()));
+        _print = new PrintWriter(_cSocket.getOutputStream());
+        _read  = new BufferedReader(new InputStreamReader(_cSocket.getInputStream()));
 
-		if ( isValidIP(client) ) {
-			telnetOutput(1, client.getInetAddress().getHostAddress()+" accepted.");
-			_print.println("Welcome To The L2J Telnet Session.");
-			_print.println("Please Insert Your Login!");
-			_print.print("Login: ");
-			_print.flush();
-			String tmpLine = _read.readLine();
-			if ( tmpLine == null )  {
-				_print.println("Error.");
-				_print.println("Disconnected...");
-				_print.flush();
-				_cSocket.close();
-				return;
-			}
-			else {
-				if (!validLogin(tmpLine))
-				{
-					_print.println("Incorrect Login!");
-					_print.println("Disconnected...");
-					_print.flush();
-					_cSocket.close();
-					return;
-				}
-				else
-				{
-					_print.println("Login Correct!");
-					_print.flush();
-				}
-			}
-			_print.println("Please Insert Your Password!");
-			_print.print("Password: ");
-			_print.flush();
-			tmpLine = _read.readLine();
-			if ( tmpLine == null )  {
-				_print.println("Error.");
-				_print.println("Disconnected...");
-				_print.flush();
-				_cSocket.close();
-			}
-			else {
-				if (!validPassword(tmpLine))
-				{
-					_print.println("Incorrect Password!");
-					_print.println("Disconnected...");
-					_print.flush();
-					_cSocket.close();
-				}
-				else
-				{
-					_print.println("Password Correct!");
-					_print.println("[L2J]");
-					_print.print("");
-					_print.flush();
-					start();
-				}
-			}
-		}
-		else {
-			telnetOutput(1, "Connection attempt from "+ client.getInetAddress().getHostAddress() +" rejected.");
-			_cSocket.close();
-		}
-	}
-
-	/**
-	 * @param tmpLine
-	 * @return
-	 */
-	private boolean validPassword(String password)
-	{
-		byte[] expectedPass = Base64.decode(_pass);
-		MessageDigest md;
-		try
-		{
-			md = MessageDigest.getInstance("SHA");
-			byte[] raw = password.getBytes("UTF-8");
-			byte[] hash = md.digest(raw);
-			for (int i=0;i<expectedPass.length;i++)
-			{
-				if (hash[i] != expectedPass[i])
-				{
-					return false;
-				}
-			}
-			return true;
-		}
-		catch (NoSuchAlgorithmException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch( UnsupportedEncodingException uee)
-		{
-
-		}
-		return false;
-	}
-
-	/**
-	 * @param tmpLine
-	 * @return
-	 */
-	private boolean validLogin(String login)
-	{
-		if(!LoginController.getInstance().isGM(login))
-			return false;
-		java.sql.Connection con = null;
-		try
-		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("SELECT password FROM accounts WHERE login=?");
-			statement.setString(1, login);
-			ResultSet rset = statement.executeQuery();
-			if (rset.next())
-			{
-				_pass = rset.getString("password");
-				statement.close();
-				con.close();
-				return true;
-			}
-			statement.close();
-		}
-		catch(SQLException sqle)
-		{
-			sqle.printStackTrace();
-		}
-		finally
-		{
-			try { con.close(); } catch (Exception e) {}
-		}
-		return false;
-	}
+        if ( isValidIP(client) ) {
+            telnetOutput(1, client.getInetAddress().getHostAddress()+" accepted.");
+            _print.println("Welcome To The L2J Telnet Session.");
+            _print.println("Please Insert Your Password!");
+            _print.print("Password: ");
+            _print.flush();
+            String tmpLine = _read.readLine();
+            if ( tmpLine == null )  {
+                _print.println("Error.");
+                _print.println("Disconnected...");
+                _print.flush();
+                _cSocket.close();
+            }
+            else {
+                if (tmpLine.compareTo(StatusPW) != 0)
+                {
+                    _print.println("Incorrect Password!");
+                    _print.println("Disconnected...");
+                    _print.flush();
+                    _cSocket.close();
+                }
+                else
+                {
+                    _print.println("Password Correct!");
+                    _print.println("[L2J Login Server]");
+                    _print.print("");
+                    _print.flush();
+                    start();
+                }
+            }
+        }
+        else {
+            telnetOutput(5, "Connection attempt from "+ client.getInetAddress().getHostAddress() +" rejected.");
+            _cSocket.close();
+        }
+    }
 
 	@Override
 	public void run()

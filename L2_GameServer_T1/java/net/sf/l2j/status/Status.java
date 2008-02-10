@@ -58,7 +58,7 @@ public class Status extends Thread
                 }
                 else if(_mode == Server.MODE_LOGINSERVER)
                 {
-                	LoginStatusThread lst = new LoginStatusThread(connection, _uptime);
+                	LoginStatusThread lst = new LoginStatusThread(connection, _uptime, _statusPw);
                 	if(lst.isAlive())
                 	{
                 		_loginStatus.add(lst);
@@ -100,26 +100,17 @@ public class Status extends Thread
 
         _statusPort       = Integer.parseInt(telnetSettings.getProperty("StatusPort", "12345"));
         _statusPw         = telnetSettings.getProperty("StatusPW");
-        if(_mode == Server.MODE_GAMESERVER)
+
+        if(_mode == Server.MODE_GAMESERVER || _mode == Server.MODE_LOGINSERVER)
         {
-	        if (_statusPw == null)
-	        {
-	            _log.info("Server's Telnet Function Has No Password Defined!");
-	            _log.info("A Password Has Been Automaticly Created!");
-	            _statusPw = rndPW(10);
-	            _log.info("Password Has Been Set To: " + _statusPw);
-	        }
-	        _log.info("Telnet StatusServer started successfully, listening on Port: " + _statusPort);
-        }
-        else
-        {
-            if (_statusPw != null)
-            {
-                _log.info("Telnet StatusServer started successfully, listening on Port: " + _statusPort);
-            }
-            else 
-            _log.info("StatusServer Started! - Listening on Port: " + _statusPort);
-            _log.info("Password Has Been Set To: " + _statusPw);
+	    if (_statusPw == null)
+	    {
+	        _log.info("Server's Telnet Function Has No Password Defined!");
+	        _log.info("A Password Has Been Automaticly Created!");
+	        _statusPw = rndPW(10);
+	        _log.info("Password Has Been Set To: " + _statusPw);
+	    }
+	    _log.info("Telnet StatusServer started successfully, listening on Port: " + _statusPort);
         }
         statusServerSocket = new ServerSocket(_statusPort);
         _uptime = (int) System.currentTimeMillis();
