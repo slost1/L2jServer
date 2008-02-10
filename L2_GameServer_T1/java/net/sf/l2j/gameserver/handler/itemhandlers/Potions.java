@@ -73,6 +73,8 @@ public class Potions implements IItemHandler
 				8193, 8194, 8195, 8196, 8197, 8198, 8199, 8200, 8201, 8202,
 				8600, 8601, 8602, 8603, 8604, 8605, 8606, 8607, 8608, 8609,
 				8610, 8611, 8612, 8613, 8614,
+				 //Attribute Potion
+				9997, 9998, 9999, 10000, 10001,10002,
 				//elixir of life
 				8622, 8623, 8624, 8625, 8626, 8627,
 				//elixir of Strength
@@ -177,6 +179,26 @@ public class Potions implements IItemHandler
 			case 6036: // Greater Magic Haste Potion, xml: 2169
 				res = usePotion(activeChar, 2169, 2);
 				break;
+				
+			// ATTRIBUTE POTION
+			case 9997: // Fire Resist Potion, xml: 2335
+			res = usePotion(activeChar, 2335, 1);
+			break;
+			case 9998: // Water Resist Potion, xml: 2336
+			res = usePotion(activeChar, 2336, 1);
+			break;
+			case 9999: // Earth Resist Potion, xml: 2338
+			res = usePotion(activeChar, 2338, 1);
+			break;
+			case 10000: // Wind Resist Potion, xml: 2337
+			res = usePotion(activeChar, 2337, 1);
+			break;
+			case 10001: // Dark Resist Potion, xml: 2340
+			res = usePotion(activeChar, 2340, 1);
+			break;
+			case 10002: // Divine Resist Potion, xml: 2339
+			res = usePotion(activeChar, 2339, 1);
+			break;
 
 			// ELIXIR
 			case 8622:
