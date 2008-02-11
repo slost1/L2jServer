@@ -22,6 +22,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.knownlist.ObjectKnownList;
 import net.sf.l2j.gameserver.model.actor.poly.ObjectPoly;
 import net.sf.l2j.gameserver.model.actor.position.ObjectPosition;
+import net.sf.l2j.gameserver.model.quest.QuestState;
 import net.sf.l2j.gameserver.network.L2GameClient;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.GetItem;
@@ -199,6 +200,12 @@ public abstract class L2Object
         	{
         		MercTicketManager.getInstance().removeTicket((L2ItemInstance)this);
         		ItemsOnGroundManager.getInstance().removeObject(this);
+        	}
+        	if (itemId == 57 || itemId == 6353)
+        	{
+        		QuestState qs = ((L2PcInstance) player).getQuestState("255_Tutorial");
+        		if(qs != null)
+        			qs.getQuest().notifyEvent("CE"+itemId+"",null,(L2PcInstance)player);
         	}
         }
 

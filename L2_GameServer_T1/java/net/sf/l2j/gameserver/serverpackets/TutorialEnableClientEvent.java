@@ -14,34 +14,27 @@
  */
 package net.sf.l2j.gameserver.serverpackets;
 
-public final class TutorialShowQuestionMark extends L2GameServerPacket
+public class TutorialEnableClientEvent extends L2GameServerPacket
 {
-	private static final String _S__A7_TUTORIALSHOWQUESTIONMARK = "[S] a7 TutorialShowQuestionMark";
-	private int _markId;
+	private static final String _S__A8_TUTORIALENABLECLIENTEVENT = "[S] a8 TutorialEnableClientEvent";
+	private int _eventId = 0;
 
-	public TutorialShowQuestionMark(int blink)
+	public TutorialEnableClientEvent(int event)
 	{
-		_markId = blink; 
+		_eventId = event;
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#writeImpl()
-	 */
+
 	@Override
 	protected void writeImpl()
 	{
-		writeC(0xa7);
-		writeD(_markId);
-
+		writeC(0xa8);
+		writeD(_eventId);
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
-		return _S__A7_TUTORIALSHOWQUESTIONMARK;
+		return _S__A8_TUTORIALENABLECLIENTEVENT;
 	}
-
-}
+} 

@@ -20,10 +20,12 @@ import java.util.logging.Logger;
 import javolution.util.FastMap;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.GameTimeController;
+import net.sf.l2j.gameserver.cache.HtmCache;
 import net.sf.l2j.gameserver.instancemanager.QuestManager;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2DropData;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2MonsterInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -33,6 +35,10 @@ import net.sf.l2j.gameserver.serverpackets.PlaySound;
 import net.sf.l2j.gameserver.serverpackets.QuestList;
 import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
+import net.sf.l2j.gameserver.serverpackets.TutorialCloseHtml;
+import net.sf.l2j.gameserver.serverpackets.TutorialEnableClientEvent;
+import net.sf.l2j.gameserver.serverpackets.TutorialShowHtml;
+import net.sf.l2j.gameserver.serverpackets.TutorialShowQuestionMark;
 import net.sf.l2j.gameserver.skills.Stats;
 import net.sf.l2j.util.Rnd;
 
@@ -800,5 +806,38 @@ public final class QuestState
         }
 
 		return this;
+	}
+
+	public void showQuestionMark(int number)
+	{
+		getPlayer().sendPacket(new TutorialShowQuestionMark(number));
+	}
+
+	public void playTutorialVoice(String voice)
+	{
+		getPlayer().sendPacket(new PlaySound(2, voice, 0, 0, getPlayer().getX(), getPlayer().getY(), getPlayer().getZ()));
+	}
+
+	public void showTutorialHTML(String html)
+	{
+		String text = HtmCache.getInstance().getHtm("data/scripts/quests/255_Tutorial/"+ html);
+		if(text == null || text.equalsIgnoreCase(""))
+			text = "<html><body>File data/scripts/quests/255_Tutorial/" + html + " not found or file is empty.</body></html>";
+		getPlayer().sendPacket(new TutorialShowHtml(text));
+	}
+
+	public void closeTutorialHtml()
+	{
+		getPlayer().sendPacket(new TutorialCloseHtml());
+	}
+
+	public void onTutorialClientEvent(int number)
+	{
+		getPlayer().sendPacket(new TutorialEnableClientEvent(number));
+	}
+
+	public void dropItem(L2MonsterInstance npc, L2PcInstance player, int itemId, int count)
+	{
+		npc.DropItem(player, itemId, count);
 	}
 }

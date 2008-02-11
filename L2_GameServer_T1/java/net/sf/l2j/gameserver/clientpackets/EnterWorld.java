@@ -50,6 +50,7 @@ import net.sf.l2j.gameserver.model.entity.L2Event;
 import net.sf.l2j.gameserver.model.entity.Siege;
 import net.sf.l2j.gameserver.model.entity.TvTEvent;
 import net.sf.l2j.gameserver.model.quest.Quest;
+import net.sf.l2j.gameserver.model.quest.QuestState;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.Die;
 import net.sf.l2j.gameserver.serverpackets.EtcStatusUpdate;
@@ -126,6 +127,7 @@ public class EnterWorld extends L2GameClientPacket
         
         Quest.playerEnter(activeChar);
         activeChar.sendPacket(new QuestList());
+        loadTutorial(activeChar);
         
         // Register in flood protector
         FloodProtector.getInstance().registerNewPlayer(activeChar.getObjectId());
@@ -512,6 +514,13 @@ public class EnterWorld extends L2GameClientPacket
         }
     }
 
+    private void loadTutorial(L2PcInstance player)
+    {
+    	QuestState qs = player.getQuestState("255_Tutorial");
+    	if(qs != null)
+    		qs.getQuest().notifyEvent("UC", null, player);
+    }
+     
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
      */

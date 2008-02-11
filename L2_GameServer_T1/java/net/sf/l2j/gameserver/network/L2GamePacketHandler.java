@@ -413,6 +413,18 @@ public final class L2GamePacketHandler extends TCPHeaderHandler<L2GameClient> im
                     case 0x83:
                         msg = new RequestPrivateStoreBuy();
                         break;
+                    case 0x85:
+                        msg = new RequestTutorialLinkHtml();
+                        break;
+                    case 0x86:
+                       	msg = new RequestTutorialPassCmdToServer();
+                      	break;
+                    case 0x87:
+                        msg = new RequestTutorialQuestionMark();
+                        break;
+                    case 0x88:
+                       	msg = new RequestTutorialClientEvent();
+                      	break;
                     case 0x89:
                         msg = new RequestPetition();
                         break;

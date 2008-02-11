@@ -12,36 +12,33 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package net.sf.l2j.gameserver.serverpackets;
+package net.sf.l2j.gameserver.clientpackets;
 
-public final class TutorialShowQuestionMark extends L2GameServerPacket
+import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.quest.QuestState;
+
+public class RequestTutorialPassCmdToServer extends L2GameClientPacket
 {
-	private static final String _S__A7_TUTORIALSHOWQUESTIONMARK = "[S] a7 TutorialShowQuestionMark";
-	private int _markId;
+	String _bypass = null;
 
-	public TutorialShowQuestionMark(int blink)
+	protected void readImpl()
 	{
-		_markId = blink; 
-	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#writeImpl()
-	 */
-	@Override
-	protected void writeImpl()
+		_bypass = readS();
+	} 
+	protected void runImpl()
 	{
-		writeC(0xa7);
-		writeD(_markId);
+		L2PcInstance player = getClient().getActiveChar();
 
-	}
+		if(player == null)
+			return;
 
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.BasePacket#getType()
-	 */
-	@Override
+		QuestState qs = player.getQuestState("255_Tutorial");
+		if(qs != null)
+			qs.getQuest().notifyEvent(_bypass, null, player);
+       	}
+
 	public String getType()
 	{
-		return _S__A7_TUTORIALSHOWQUESTIONMARK;
+		return "[C] 86 RequestTutorialPassCmdToServer";
 	}
-
 }

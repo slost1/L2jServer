@@ -12,36 +12,35 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package net.sf.l2j.gameserver.serverpackets;
+package net.sf.l2j.gameserver.clientpackets;
 
-public final class TutorialShowQuestionMark extends L2GameServerPacket
+import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.quest.QuestState;
+
+public class RequestTutorialClientEvent extends L2GameClientPacket
 {
-	private static final String _S__A7_TUTORIALSHOWQUESTIONMARK = "[S] a7 TutorialShowQuestionMark";
-	private int _markId;
+	private static final String _C__88_REQUESTTUTORIALCLIENTEVENT = "[C] 88 RequestTutorialClientEvent";
+	int eventId = 0;
 
-	public TutorialShowQuestionMark(int blink)
+	protected void readImpl()
 	{
-		_markId = blink; 
+		eventId = readD();
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#writeImpl()
-	 */
-	@Override
-	protected void writeImpl()
+	protected void runImpl()
 	{
-		writeC(0xa7);
-		writeD(_markId);
+		L2PcInstance player = getClient().getActiveChar();
 
+		if(player == null)
+			return;
+
+		QuestState qs = player.getQuestState("255_Tutorial");
+		if(qs != null)
+			qs.getQuest().notifyEvent("CE" + eventId + "",null,player);
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.BasePacket#getType()
-	 */
-	@Override
 	public String getType()
 	{
-		return _S__A7_TUTORIALSHOWQUESTIONMARK;
+		return _C__88_REQUESTTUTORIALCLIENTEVENT;
 	}
-
 }

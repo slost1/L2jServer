@@ -31,6 +31,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2SummonInstance;
 import net.sf.l2j.gameserver.model.actor.stat.CharStat;
 import net.sf.l2j.gameserver.model.entity.Duel;
+import net.sf.l2j.gameserver.model.quest.QuestState;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.skills.Formulas;
 import net.sf.l2j.util.Rnd;
@@ -208,6 +209,12 @@ public class CharStatus
 
             // now reset currentHp to zero
             setCurrentHp(0);
+            if (getActiveChar() instanceof L2PcInstance)
+            {
+            	QuestState qs = ((L2PcInstance)getActiveChar()).getQuestState("255_Tutorial");
+            	if(qs != null)
+            		qs.getQuest().notifyEvent("CE30",null,((L2PcInstance)getActiveChar()));
+            }
         }
         else
         {

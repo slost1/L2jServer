@@ -25,11 +25,14 @@ import net.sf.l2j.gameserver.datatables.CharTemplateTable;
 import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.datatables.SkillTreeTable;
 import net.sf.l2j.gameserver.idfactory.IdFactory;
+import net.sf.l2j.gameserver.instancemanager.QuestManager;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2ShortCut;
 import net.sf.l2j.gameserver.model.L2SkillLearn;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.quest.Quest;
+import net.sf.l2j.gameserver.model.quest.QuestState;
 import net.sf.l2j.gameserver.network.L2GameClient;
 import net.sf.l2j.gameserver.serverpackets.CharCreateFail;
 import net.sf.l2j.gameserver.serverpackets.CharCreateOk;
@@ -214,7 +217,7 @@ public final class CharacterCreate extends L2GameClientPacket
 			if (Config.DEBUG)
 				_log.fine("adding starter skill:" + startSkills[i].getId()+ " / "+ startSkills[i].getLevel());
 		}
-
+		startTutorialQuest(newChar);
 		L2GameClient.saveCharToDisk(newChar);
 		newChar.deleteMe(); // release the world of this character and it's inventory
 
@@ -224,6 +227,16 @@ public final class CharacterCreate extends L2GameClientPacket
 		client.getConnection().sendPacket(cl);
         client.setCharSelection(cl.getCharInfo());
         if (Config.DEBUG) _log.fine("Character init end");
+	}
+
+	public void startTutorialQuest(L2PcInstance player)
+	{
+		QuestState qs = player.getQuestState("255_Tutorial");
+		Quest q = null;
+		if (qs == null)
+			q = QuestManager.getInstance().getQuest("255_Tutorial");
+		if (q != null)
+			q.newQuestState(player);
 	}
 
 	/* (non-Javadoc)
