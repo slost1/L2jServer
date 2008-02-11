@@ -15,7 +15,7 @@
 package net.sf.l2j.gameserver.clientpackets;
 
 import java.util.logging.Logger;
-
+import net.sf.l2j.Config;
 /**
  * Format: (ch) d
  * @author  -Wooden-
@@ -37,10 +37,13 @@ public class RequestGetBossRecord extends L2GameClientPacket
      * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#runImpl()
      */
     @Override
-	protected void runImpl()
+    protected void runImpl()
     {
-        // TODO
-        _log.info("C5: RequestGetBossRecord: d: "+_bossId);
+        if (Config.DEBUG)
+        {
+            // TODO
+            _log.info("C5: RequestGetBossRecord: d: "+_bossId);
+        }
     }
 
     /**

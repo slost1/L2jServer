@@ -46,7 +46,7 @@ public class TransformDispel implements ISkillHandler
             
             if (trg.isTransformed())
             {
-                trg.untransform();
+                activeChar.stopTransformation(null);
             }
         }
     }

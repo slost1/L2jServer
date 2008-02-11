@@ -2897,6 +2897,31 @@ public abstract class L2Character extends L2Object
 		getAI().notifyEvent(CtrlEvent.EVT_THINK, null);
 		updateAbnormalEffect();
 	}
+	
+	/**
+     * Stop L2Effect: Transformation<BR><BR>
+     *
+     * <B><U> Actions</U> :</B><BR><BR>
+     * <li>Remove Transformation Effect</li>
+     * <li>Notify the L2Character AI</li>
+     * <li>Send Server->Client UserInfo/CharInfo packet</li><BR><BR>
+     *
+     */
+    public final void stopTransformation(L2Effect effect)
+    {
+        if (effect == null)
+            stopEffects(L2Effect.EffectType.TRANSFORMATION);
+        else
+            removeEffect(effect);
+        
+        // if this is a player instance, then untransform.
+        if (this instanceof L2PcInstance)
+        {
+            ((L2PcInstance) this).untransform();
+        }
+        getAI().notifyEvent(CtrlEvent.EVT_THINK, null);
+        updateAbnormalEffect();
+    }
 
 	/**
 	 * Not Implemented.<BR><BR>
