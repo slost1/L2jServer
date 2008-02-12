@@ -24,6 +24,7 @@ import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
 import net.sf.l2j.gameserver.model.base.Experience;
+import net.sf.l2j.gameserver.model.quest.QuestState;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.PledgeShowMemberListUpdate;
 import net.sf.l2j.gameserver.serverpackets.SocialAction;
@@ -206,6 +207,10 @@ public class PcStat extends PlayableStat
 					if (Config.DEBUG) _log.info("Newbie character ended: " + getActiveChar().getCharId());
 	        	};
         	};
+        	
+        	QuestState qs = getActiveChar().getQuestState("255_Tutorial"); 
+        		if (qs != null)
+        			qs.getQuest().notifyEvent("CE40", null, getActiveChar());
 
         	getActiveChar().setCurrentCp(getMaxCp());
             getActiveChar().broadcastPacket(new SocialAction(getActiveChar().getObjectId(), 15));
